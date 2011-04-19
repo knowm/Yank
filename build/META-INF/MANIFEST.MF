@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Ant-Version: Apache Ant 1.7.1
+Created-By: 17.1-b03-307 (Apple Inc.)
+Built-By: timmolter
+Build-Version: 1.0.0.2
+Build-Date: 2011-04-19 16:01:33 CEST
+

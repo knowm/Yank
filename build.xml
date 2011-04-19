@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<project name="yank" default="jar" basedir=".">
+
+    <property file="build.properties"/>
+	
+    <path id="classpath">
+    	<fileset dir="${lib.dir}" />
+    </path>
+
+    <target name="clean">
+        <echo>Cleaning the ${build.dir}</echo>
+        <delete dir="${build.dir}"/>
+        <delete dir="${dist.dir}"/>
+    </target>
+
+    <target name="init" depends="clean">
+        <echo>Creating the build directory</echo>
+        <mkdir dir="${build.dir}"/>
+    	<mkdir dir="${build.dir}/META-INF"/>
+        <mkdir dir="${dist.dir}"/>
+    </target>
+
+    <target name="compile" depends="init">
+        <echo>Compile the source files</echo>
+        <javac srcdir="${src.dir}" destdir="${build.dir}" debug="on">
+            <classpath refid="classpath"/>
+        </javac>
+    </target>
+	
+	<target name="jar" depends="compile,manifest">
+	      <jar jarfile="${dist.dir}/${project.name}-${build.version}.jar">
+	         <fileset dir="${build.dir}">
+	             <include name="**/*.class"/>
+	         </fileset>
+	       </jar>
+	</target>
+
+    <target name="manifest">
+        <echo>Creating manifest</echo>
+        <buildnumber file="build.version"/>
+        <tstamp>
+           <format property="timestamp" pattern="yyyy-MM-dd HH:mm:ss z" />
+        </tstamp>
+        <manifest file="${build.dir}/META-INF/MANIFEST.MF">
+           <attribute name="Built-By" value="${user.name}"/>
+           <attribute name="Build-Version" value="${build.version}.${build.number}"/> 
+           <attribute name="Build-Date" value="${timestamp}"/>                 
+       </manifest>
+    </target>
+	
+</project>
