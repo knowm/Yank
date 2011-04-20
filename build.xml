@@ -37,13 +37,12 @@
 
     <target name="manifest">
         <echo>Creating manifest</echo>
-        <buildnumber file="build.version"/>
         <tstamp>
            <format property="timestamp" pattern="yyyy-MM-dd HH:mm:ss z" />
         </tstamp>
         <manifest file="${build.dir}/META-INF/MANIFEST.MF">
            <attribute name="Built-By" value="${user.name}"/>
-           <attribute name="Build-Version" value="${build.version}.${build.number}"/> 
+           <attribute name="Build-Version" value="${build.version}"/> 
            <attribute name="Build-Date" value="${timestamp}"/>                 
        </manifest>
     </target>
