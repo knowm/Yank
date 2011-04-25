@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<project name="yank" default="jar" basedir=".">
+<project name="yank" default="build" basedir=".">
 
     <property file="build.properties"/>
 	
@@ -10,6 +10,7 @@
     <target name="clean">
         <echo>Cleaning the ${build.dir}</echo>
         <delete dir="${build.dir}"/>
+        <echo>Cleaning the ${dist.dir}</echo>
         <delete dir="${dist.dir}"/>
     </target>
 
@@ -27,14 +28,6 @@
         </javac>
     </target>
 	
-	<target name="jar" depends="compile,manifest">
-	      <jar jarfile="${dist.dir}/${project.name}-${build.version}.jar">
-	         <fileset dir="${build.dir}">
-	             <include name="**/*.class"/>
-	         </fileset>
-	       </jar>
-	</target>
-
     <target name="manifest">
         <echo>Creating manifest</echo>
         <tstamp>
@@ -45,6 +38,22 @@
            <attribute name="Build-Version" value="${build.version}"/> 
            <attribute name="Build-Date" value="${timestamp}"/>                 
        </manifest>
+    </target>
+	
+	<target name="jar" depends="compile, manifest">
+	      <jar jarfile="${dist.dir}/${project.name}-${build.version}.jar">
+	         <fileset dir="${build.dir}">
+	             <include name="**/*.class"/>
+	         </fileset>
+	       </jar>
+	</target>
+	
+    <target name="delete">
+        <delete dir="${build.dir}"/>
+    </target>
+	
+   <target name="build" depends="jar, delete">
+        <delete dir="${build.dir}"/>
     </target>
 	
 </project>
