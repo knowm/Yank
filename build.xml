@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<project name="yank" default="build" basedir=".">
+<project name="yank" default="jar" basedir=".">
 
     <property file="build.properties"/>
 	
@@ -40,7 +40,7 @@
        </manifest>
     </target>
 	
-	<target name="jar" depends="compile, manifest">
+	<target name="build" depends="compile, manifest">
 	      <jar jarfile="${dist.dir}/${project.name}-${build.version}.jar">
 	         <fileset dir="${build.dir}">
 	             <include name="**/*.class"/>
@@ -52,7 +52,7 @@
         <delete dir="${build.dir}"/>
     </target>
 	
-   <target name="build" depends="jar, delete">
+   <target name="jar" depends="build, delete">
     </target>
 	
 </project>
