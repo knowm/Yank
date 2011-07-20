@@ -120,7 +120,7 @@ public class DBConnectionManager {
                     max = 0;
                 }
 
-                DBConnectionPool pool = new DBConnectionPool(poolName, url, user, password, max);
+                DBConnectionPool pool = new DBConnectionPool(url, user, password, max);
                 pools.put(poolName, pool);
                 logger.info("Initialized pool '" + poolName + "'");
             }

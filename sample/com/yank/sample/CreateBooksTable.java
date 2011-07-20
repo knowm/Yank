@@ -20,7 +20,7 @@ import java.util.Properties;
 import com.xeiam.yank.DBConnectionManager;
 
 /**
- * Create a table called BOOKS. Demonstrates hardcoding the connection pool properties
+ * Create a table called BOOKS. Demonstrates hardcoding the connection pool properties.
  * 
  * @author timmolter
  */

@@ -66,9 +66,11 @@ public class DBProxy {
     }
 
     /**
-     * @param string
-     * @param sQL
-     * @param object
+     * Execute a UID - Update, Insert, Delete statement using an SQL String
+     * 
+     * @param poolName
+     * @param sql
+     * @param params
      * @return
      */
     public static int executeIUDSQL(String poolName, String sql, Object[] params) {

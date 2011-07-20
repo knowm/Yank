@@ -20,7 +20,7 @@ import java.util.List;
 import com.xeiam.yank.DBProxy;
 
 /**
- * DAO Class for Book beans
+ * DAO Class for BOOKS table
  * 
  * @author timmolter
  */

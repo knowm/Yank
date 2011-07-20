@@ -27,9 +27,6 @@ import org.slf4j.LoggerFactory;
  */
 public class PropertiesUtils extends Properties {
 
-    private static final long serialVersionUID = -7997446570265335696L;
-
-    /** log4j logger */
     static Logger logger = LoggerFactory.getLogger(PropertiesUtils.class);
 
     /**

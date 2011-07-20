@@ -18,7 +18,7 @@ package com.xeiam.yank;
 import java.io.Serializable;
 
 /**
- * This abstract class represents a Bean. A Bean needs to implement Serializable and have getters and setters for all of it's fields. The field names must match the column names (case-insensitive) in the table. Create all field names with all
+ * This abstract class represents a Bean. A Bean needs to implement Serializable and have getters and setters for all of its fields. The field names must match the column names (case-insensitive) in the table. Create all field names with all
  * lowercase letters and no underscores or other symbol. Must have a no-arg constructor!!!!
  * 
  * @author timmolter

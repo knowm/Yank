@@ -13,8 +13,15 @@ created and managed by DBConnenctionManager.
     ********************************************************
     *                     DISCLAIMER                       *
     *                                                      *
-    * Use Yank AT YOUR OWN RISK. Using this system in      *
+    * Use Yank AT YOUR OWN RISK. Using this api in      *
     * production may result in data loss, data corruption, *
     * or other serious problems.                           *
     *                                                      *
     ********************************************************
+    
+Dependencies: 
+	commons-dbutils-1.3.jar (required)
+	slf4j-log4j12-1.6.1.jar (required)
+	slf4j-api-1.6.1.jar (required)
+	mysql-connector-java-5.1.13-bin.jar (a JDBC connector)
+	log4j-1.2.16.jar (not required)

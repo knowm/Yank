@@ -44,13 +44,12 @@ public class DBConnectionPool {
     /**
      * Creates new connection pool.
      * 
-     * @param name The pool name
      * @param URL The JDBC URL for the database
      * @param user The database user, or null
      * @param password The database user password, or null
      * @param maxConn The maximal number of connections, or 0 for no limit
      */
-    public DBConnectionPool(String poolname, String URL, String user, String password, int maxConn) {
+    public DBConnectionPool(String URL, String user, String password, int maxConn) {
 
         this.URL = URL;
         this.user = user;
