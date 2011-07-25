@@ -13,7 +13,7 @@ created and managed by DBConnenctionManager.
     ********************************************************
     *                     DISCLAIMER                       *
     *                                                      *
-    * Use Yank AT YOUR OWN RISK. Using this api in      *
+    * Use Yank AT YOUR OWN RISK. Using this api in         *
     * production may result in data loss, data corruption, *
     * or other serious problems.                           *
     *                                                      *

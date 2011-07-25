@@ -26,17 +26,17 @@ import com.xeiam.yank.DBProxy;
  */
 public class BooksDAO {
 
-    public static int createBooksTable() {
-
-        String SQL = "CREATE TABLE `Books` (`TITLE` varchar(42) DEFAULT NULL, `AUTHOR` varchar(42) DEFAULT NULL,`PRICE` double DEFAULT NULL) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-        return DBProxy.executeIUDSQL("yank", SQL, null);
-    }
-
     public static int insertBook(Book pBook) {
 
         Object[] params = new Object[] { pBook.getTitle(), pBook.getAuthor(), pBook.getPrice() };
         String SQL = "INSERT INTO BOOKS  (TITLE, AUTHOR, PRICE) VALUES (?, ?, ?)";
         return DBProxy.executeIUDSQL("yank", SQL, params);
+    }
+
+    public static List<Book> selectAllBooks() {
+
+        String SQL = "SELECT * FROM BOOKS";
+        return (List<Book>) DBProxy.queryBeanListSQL("yank", SQL, null, Book.class);
     }
 
     public static int[] insertBatch(List<Book> pBooks) {
@@ -52,10 +52,9 @@ public class BooksDAO {
         return DBProxy.executeBatchIUDSQL("yank", SQL, params);
     }
 
-    public static List<Book> selectAllBooks() {
-
-        String SQL = "SELECT * FROM BOOKS";
-        return (List<Book>) DBProxy.queryBeanListSQL("yank", SQL, null, Book.class);
+    public static int createBooksTable() {
+        String SQL = "CREATE TABLE `Books` (`TITLE` varchar(42) DEFAULT NULL, `AUTHOR` varchar(42) DEFAULT NULL,`PRICE` double DEFAULT NULL) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
+        return DBProxy.executeIUDSQL("yank", SQL, null);
     }
 
     public static Book selectBook(String pTitle) {
