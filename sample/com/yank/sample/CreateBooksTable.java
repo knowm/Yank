@@ -30,10 +30,10 @@ public class CreateBooksTable {
 
         Properties props = new Properties();
         props.setProperty("driverclassname", "com.mysql.jdbc.Driver");
-        props.setProperty("yank.url", "jdbc:mysql://localhost:3306/Yank");
-        props.setProperty("yank.user", "root");
-        props.setProperty("yank.password", "");
-        props.setProperty("yank.maxconn", "5");
+        props.setProperty("local.url", "jdbc:mysql://localhost:3306/Yank");
+        props.setProperty("local.user", "root");
+        props.setProperty("local.password", "");
+        props.setProperty("local.maxconn", "5");
 
         DBConnectionManager.INSTANCE.init(props, null);
 

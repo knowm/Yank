@@ -30,13 +30,13 @@ public class BooksDAO {
 
         Object[] params = new Object[] { pBook.getTitle(), pBook.getAuthor(), pBook.getPrice() };
         String SQL = "INSERT INTO BOOKS  (TITLE, AUTHOR, PRICE) VALUES (?, ?, ?)";
-        return DBProxy.executeIUDSQL("yank", SQL, params);
+        return DBProxy.executeIUDSQL("local", SQL, params);
     }
 
     public static List<Book> selectAllBooks() {
 
         String SQL = "SELECT * FROM BOOKS";
-        return (List<Book>) DBProxy.queryBeanListSQL("yank", SQL, null, Book.class);
+        return (List<Book>) DBProxy.queryBeanListSQL("local", SQL, null, Book.class);
     }
 
     public static int[] insertBatch(List<Book> pBooks) {
@@ -49,23 +49,23 @@ public class BooksDAO {
         }
 
         String SQL = "INSERT INTO BOOKS  (TITLE, AUTHOR, PRICE) VALUES (?, ?, ?)";
-        return DBProxy.executeBatchIUDSQL("yank", SQL, params);
+        return DBProxy.executeBatchIUDSQL("local", SQL, params);
     }
 
     public static int createBooksTable() {
         String SQL = "CREATE TABLE `Books` (`TITLE` varchar(42) DEFAULT NULL, `AUTHOR` varchar(42) DEFAULT NULL,`PRICE` double DEFAULT NULL) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-        return DBProxy.executeIUDSQL("yank", SQL, null);
+        return DBProxy.executeIUDSQL("local", SQL, null);
     }
 
     public static Book selectBook(String pTitle) {
 
         Object[] params = new Object[] { pTitle };
-        return (Book) DBProxy.querySingleBeanSQLKey("yank", "BOOKS_SELECT_BY_TITLE", params, Book.class);
+        return (Book) DBProxy.querySingleBeanSQLKey("local", "BOOKS_SELECT_BY_TITLE", params, Book.class);
     }
 
     public static List<Object[]> getTableStatus() {
 
-        return DBProxy.queryObjectListSQLKey("yank", "BOOKS_SELECT_TABLE_STATUS", null);
+        return DBProxy.queryObjectListSQLKey("local", "BOOKS_SELECT_TABLE_STATUS", null);
     }
 
 }

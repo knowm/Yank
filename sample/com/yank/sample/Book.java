@@ -25,9 +25,9 @@ import com.xeiam.yank.Bean;
 public class Book extends Bean {
 
     // class fields rule: data type and name must match SQL table!
-    String title;
-    String author;
-    double price;
+    private String title;
+    private String author;
+    private double price;
 
     // ** Pro-tip: In Eclipse, generate all getters and setters after defining class fields: Right-click --> Source --> Generate Getters and Setters...
 
