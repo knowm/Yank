@@ -35,7 +35,7 @@ public class CreateBooksTable {
         props.setProperty("local.password", "");
         props.setProperty("local.maxconn", "5");
 
-        DBConnectionManager.INSTANCE.init(props, null);
+        DBConnectionManager.INSTANCE.init(props);
 
         BooksDAO.createBooksTable();
 

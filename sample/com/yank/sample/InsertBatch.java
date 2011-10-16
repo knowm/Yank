@@ -33,7 +33,7 @@ public class InsertBatch {
 
         Properties props = PropertiesUtils.getPropertiesFromClasspath("DB.properties");
 
-        DBConnectionManager.INSTANCE.init(props, null);
+        DBConnectionManager.INSTANCE.init(props);
 
         List<Book> books = new ArrayList<Book>();
 

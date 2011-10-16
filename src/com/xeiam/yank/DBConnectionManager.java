@@ -46,7 +46,7 @@ public class DBConnectionManager {
 
     private Properties sqlProperties;
 
-    // The singleton instance
+    /** The singleton instance */
     public static final DBConnectionManager INSTANCE = new DBConnectionManager();
 
     /**
@@ -55,6 +55,12 @@ public class DBConnectionManager {
     private DBConnectionManager() {
     }
 
+    /**
+     * Init method with both DB.properties and SQL.properties file
+     * 
+     * @param pDBProps
+     * @param pSQLProps
+     */
     public void init(Properties pDBProps, Properties pSQLProps) {
 
         logger.info("Initializing DBConnectionManager...");
@@ -66,6 +72,25 @@ public class DBConnectionManager {
             logger.warn("SQL PROPS NULL!!!");
         }
         sqlProperties = pSQLProps;
+
+        loadDriver(pDBProps);
+        createPools(pDBProps);
+    }
+
+    /**
+     * Init method without a SQL.properties file
+     * 
+     * @param pDBProps
+     */
+    public void init(Properties pDBProps) {
+
+        logger.info("Initializing DBConnectionManager...");
+
+        if (pDBProps == null) {
+            logger.error("DB PROPS NULL!!!");
+        }
+
+        sqlProperties = new Properties(); // create an empty properites file
 
         loadDriver(pDBProps);
         createPools(pDBProps);

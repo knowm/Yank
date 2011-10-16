@@ -32,7 +32,7 @@ public class SelectAllBooks {
 
         Properties props = PropertiesUtils.getPropertiesFromClasspath("DB.properties");
 
-        DBConnectionManager.INSTANCE.init(props, null);
+        DBConnectionManager.INSTANCE.init(props);
 
         List<Book> allBooks = BooksDAO.selectAllBooks();
         for (Book book : allBooks) {

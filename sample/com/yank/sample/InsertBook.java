@@ -31,7 +31,7 @@ public class InsertBook {
 
         Properties props = PropertiesUtils.getPropertiesFromClasspath("DB.properties");
 
-        DBConnectionManager.INSTANCE.init(props, null);
+        DBConnectionManager.INSTANCE.init(props);
 
         Book book = new Book();
         book.setTitle("Cryptonomicon");
