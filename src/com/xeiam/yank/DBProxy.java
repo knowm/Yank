@@ -122,9 +122,9 @@ public class DBProxy {
      * @param beanClass
      * @return Bean - null if returned list is not equal to one
      */
-    public static Bean querySingleBeanSQLKey(String poolName, String sqlKey, Object[] params, Class<? extends Bean> beanClass) {
+    public static Object querySingleBeanSQLKey(String poolName, String sqlKey, Object[] params, Class<? extends Object> beanClass) {
 
-        List<? extends Bean> list = queryBeanListSQLKey(poolName, sqlKey, params, beanClass);
+        List<? extends Object> list = queryBeanListSQLKey(poolName, sqlKey, params, beanClass);
 
         if (list != null && list.size() == 1) {
             return list.get(0);
@@ -142,9 +142,9 @@ public class DBProxy {
      * @param beanClass
      * @return Bean - null if returned list is not equal to one
      */
-    public static Bean querySingleBeanSQL(String poolName, String sql, Object[] params, Class<? extends Bean> beanClass) {
+    public static Object querySingleBeanSQL(String poolName, String sql, Object[] params, Class<? extends Object> beanClass) {
 
-        List<? extends Bean> list = queryBeanListSQL(poolName, sql, params, beanClass);
+        List<? extends Object> list = queryBeanListSQL(poolName, sql, params, beanClass);
 
         if (list != null && list.size() == 1) {
             return list.get(0);
@@ -162,9 +162,9 @@ public class DBProxy {
      * @param beanClass
      * @return
      */
-    public static List<? extends Bean> queryBeanListSQLKey(String poolName, String sqlKey, Object[] params, Class<? extends Bean> beanClass) {
+    public static List<? extends Object> queryBeanListSQLKey(String poolName, String sqlKey, Object[] params, Class<? extends Object> beanClass) {
 
-        List<Bean> returnList = null;
+        List<Object> returnList = null;
 
         String sql = mDBConnectionManager.getSqlProperties().getProperty(sqlKey);
         if (sql == null || sql.equalsIgnoreCase("")) {
@@ -185,11 +185,11 @@ public class DBProxy {
      * @return
      */
     @SuppressWarnings("unchecked")
-    public static List<? extends Bean> queryBeanListSQL(String poolName, String sql, Object[] params, Class<? extends Bean> beanClass) {
+    public static List<? extends Object> queryBeanListSQL(String poolName, String sql, Object[] params, Class<? extends Object> beanClass) {
 
         // logger.debug(sql);
 
-        List<Bean> returnList = null;
+        List<Object> returnList = null;
 
         Connection con = null;
 
@@ -205,7 +205,7 @@ public class DBProxy {
 
             ResultSetHandler rsh = new BeanListHandler(beanClass);
 
-            returnList = (List<Bean>) new QueryRunner().query(con, sql, rsh, params);
+            returnList = (List<Object>) new QueryRunner().query(con, sql, rsh, params);
 
             con.commit();
 

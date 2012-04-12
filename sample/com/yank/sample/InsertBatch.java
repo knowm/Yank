@@ -23,7 +23,7 @@ import com.xeiam.yank.DBConnectionManager;
 import com.xeiam.yank.PropertiesUtils;
 
 /**
- * Inserts a Batch of Book Beans into the BOOKS table.
+ * Inserts a Batch of Book Objects into the BOOKS table.
  * 
  * @author timmolter
  */

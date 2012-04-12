@@ -21,7 +21,7 @@ import com.xeiam.yank.DBConnectionManager;
 import com.xeiam.yank.PropertiesUtils;
 
 /**
- * Selects a single Book Bean from the BOOKS table. Demonstrates using a SQL Key in SQL.properties
+ * Selects a single Book from the BOOKS table. Demonstrates using a SQL Key in SQL.properties
  * 
  * @author timmolter
  */

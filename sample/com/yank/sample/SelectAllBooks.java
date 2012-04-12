@@ -22,7 +22,7 @@ import com.xeiam.yank.DBConnectionManager;
 import com.xeiam.yank.PropertiesUtils;
 
 /**
- * Selects all Book Beans from the BOOKS table. Demonstrates fetching the connection pool properties from a file on the classpath
+ * Selects all Book Objects from the BOOKS table. Demonstrates fetching the connection pool properties from a file on the classpath
  * 
  * @author timmolter
  */

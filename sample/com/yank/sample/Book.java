@@ -15,14 +15,12 @@
  */
 package com.yank.sample;
 
-import com.xeiam.yank.Bean;
-
 /**
  * A Bean used to represent rows in the BOOKS table
  * 
  * @author timmolter
  */
-public class Book extends Bean {
+public class Book {
 
     // class fields rule: data type and name must match SQL table!
     private String title;

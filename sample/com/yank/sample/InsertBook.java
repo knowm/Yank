@@ -21,7 +21,7 @@ import com.xeiam.yank.DBConnectionManager;
 import com.xeiam.yank.PropertiesUtils;
 
 /**
- * Inserts a Book Bean into the BOOKS table. Demonstrates fetching the connection pool properties from a file on the classpath
+ * Inserts a Book into the BOOKS table. Demonstrates fetching the connection pool properties from a file on the classpath
  * 
  * @author timmolter
  */
