@@ -1,0 +1,4 @@
+log all actual SQL statements
+return the id of an inserted Bean
+add caching mechanism
+add transactions
