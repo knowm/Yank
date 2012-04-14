@@ -21,7 +21,7 @@ created and managed by DBConnenctionManager.
     
 Dependencies: 
 	commons-dbutils-1.3.jar (required)
-	slf4j-log4j12-1.6.1.jar (required)
 	slf4j-api-1.6.1.jar (required)
-	mysql-connector-java-5.1.13-bin.jar (a JDBC connector)
+	mysql-connector-java-5.1.13-bin.jar (a JDBC connector, required)
+	slf4j-log4j12-1.6.1.jar (not required)
 	log4j-1.2.16.jar (not required)
