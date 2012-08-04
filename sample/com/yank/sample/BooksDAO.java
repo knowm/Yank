@@ -26,46 +26,47 @@ import com.xeiam.yank.DBProxy;
  */
 public class BooksDAO {
 
-    public static int insertBook(Book pBook) {
+  public static int insertBook(Book pBook) {
 
-        Object[] params = new Object[] { pBook.getTitle(), pBook.getAuthor(), pBook.getPrice() };
-        String SQL = "INSERT INTO BOOKS  (TITLE, AUTHOR, PRICE) VALUES (?, ?, ?)";
-        return DBProxy.executeIUDSQL("local", SQL, params);
+    Object[] params = new Object[] { pBook.getTitle(), pBook.getAuthor(), pBook.getPrice() };
+    String SQL = "INSERT INTO BOOKS  (TITLE, AUTHOR, PRICE) VALUES (?, ?, ?)";
+    return DBProxy.executeIUDSQL("local", SQL, params);
+  }
+
+  public static List<Book> selectAllBooks() {
+
+    String SQL = "SELECT * FROM BOOKS";
+    return (List<Book>) DBProxy.queryBeanListSQL("local", SQL, null, Book.class);
+  }
+
+  public static int[] insertBatch(List<Book> pBooks) {
+
+    Object[][] params = new Object[pBooks.size()][];
+
+    for (int i = 0; i < pBooks.size(); i++) {
+      Book book = pBooks.get(i);
+      params[i] = new Object[] { book.getTitle(), book.getAuthor(), book.getPrice() };
     }
 
-    public static List<Book> selectAllBooks() {
+    String SQL = "INSERT INTO BOOKS  (TITLE, AUTHOR, PRICE) VALUES (?, ?, ?)";
+    return DBProxy.executeBatchIUDSQL("local", SQL, params);
+  }
 
-        String SQL = "SELECT * FROM BOOKS";
-        return (List<Book>) DBProxy.queryBeanListSQL("local", SQL, null, Book.class);
-    }
+  public static int createBooksTable() {
 
-    public static int[] insertBatch(List<Book> pBooks) {
+    String SQL = "CREATE TABLE `Books` (`TITLE` varchar(42) DEFAULT NULL, `AUTHOR` varchar(42) DEFAULT NULL,`PRICE` double DEFAULT NULL) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
+    return DBProxy.executeIUDSQL("local", SQL, null);
+  }
 
-        Object[][] params = new Object[pBooks.size()][];
+  public static Book selectBook(String pTitle) {
 
-        for (int i = 0; i < pBooks.size(); i++) {
-            Book book = pBooks.get(i);
-            params[i] = new Object[] { book.getTitle(), book.getAuthor(), book.getPrice() };
-        }
+    Object[] params = new Object[] { pTitle };
+    return (Book) DBProxy.querySingleBeanSQLKey("local", "BOOKS_SELECT_BY_TITLE", params, Book.class);
+  }
 
-        String SQL = "INSERT INTO BOOKS  (TITLE, AUTHOR, PRICE) VALUES (?, ?, ?)";
-        return DBProxy.executeBatchIUDSQL("local", SQL, params);
-    }
+  public static List<Object[]> getTableStatus() {
 
-    public static int createBooksTable() {
-        String SQL = "CREATE TABLE `Books` (`TITLE` varchar(42) DEFAULT NULL, `AUTHOR` varchar(42) DEFAULT NULL,`PRICE` double DEFAULT NULL) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-        return DBProxy.executeIUDSQL("local", SQL, null);
-    }
-
-    public static Book selectBook(String pTitle) {
-
-        Object[] params = new Object[] { pTitle };
-        return (Book) DBProxy.querySingleBeanSQLKey("local", "BOOKS_SELECT_BY_TITLE", params, Book.class);
-    }
-
-    public static List<Object[]> getTableStatus() {
-
-        return DBProxy.queryObjectListSQLKey("local", "BOOKS_SELECT_TABLE_STATUS", null);
-    }
+    return DBProxy.queryObjectListSQLKey("local", "BOOKS_SELECT_TABLE_STATUS", null);
+  }
 
 }

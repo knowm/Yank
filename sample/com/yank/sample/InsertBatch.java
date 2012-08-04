@@ -29,35 +29,35 @@ import com.xeiam.yank.PropertiesUtils;
  */
 public class InsertBatch {
 
-    public static void main(String[] args) {
+  public static void main(String[] args) {
 
-        Properties props = PropertiesUtils.getPropertiesFromClasspath("DB.properties");
+    Properties props = PropertiesUtils.getPropertiesFromClasspath("DB.properties");
 
-        DBConnectionManager.INSTANCE.init(props);
+    DBConnectionManager.INSTANCE.init(props);
 
-        List<Book> books = new ArrayList<Book>();
+    List<Book> books = new ArrayList<Book>();
 
-        Book book = new Book();
-        book.setTitle("Cryptonomicon");
-        book.setAuthor("Neal Stephenson");
-        book.setPrice(23.99);
-        books.add(book);
+    Book book = new Book();
+    book.setTitle("Cryptonomicon");
+    book.setAuthor("Neal Stephenson");
+    book.setPrice(23.99);
+    books.add(book);
 
-        book = new Book();
-        book.setTitle("Harry Potter");
-        book.setAuthor("Joanne K. Rowling");
-        book.setPrice(11.99);
-        books.add(book);
+    book = new Book();
+    book.setTitle("Harry Potter");
+    book.setAuthor("Joanne K. Rowling");
+    book.setPrice(11.99);
+    books.add(book);
 
-        book = new Book();
-        book.setTitle("Don Quijote");
-        book.setAuthor("Cervantes");
-        book.setPrice(21.99);
-        books.add(book);
+    book = new Book();
+    book.setTitle("Don Quijote");
+    book.setAuthor("Cervantes");
+    book.setPrice(21.99);
+    books.add(book);
 
-        BooksDAO.insertBatch(books);
+    BooksDAO.insertBatch(books);
 
-        DBConnectionManager.INSTANCE.release();
+    DBConnectionManager.INSTANCE.release();
 
-    }
+  }
 }

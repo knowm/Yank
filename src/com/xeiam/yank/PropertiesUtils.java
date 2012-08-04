@@ -27,43 +27,43 @@ import org.slf4j.LoggerFactory;
  */
 public class PropertiesUtils extends Properties {
 
-    static Logger logger = LoggerFactory.getLogger(PropertiesUtils.class);
+  static Logger logger = LoggerFactory.getLogger(PropertiesUtils.class);
 
-    /**
-     * Loads a Properties file from the classpath matching the given file name
-     * 
-     * @param pFileName
-     * @return
-     */
-    public static Properties getPropertiesFromClasspath(String pFileName) {
+  /**
+   * Loads a Properties file from the classpath matching the given file name
+   * 
+   * @param pFileName
+   * @return
+   */
+  public static Properties getPropertiesFromClasspath(String pFileName) {
 
-        Properties props = new Properties();
-        try {
-            props.load(ClassLoader.getSystemResourceAsStream(pFileName));
-        } catch (IOException e) {
-            logger.error("ERROR LOADING PROPERTIES FROM CLASSPATH!!!", e);
-        }
-        return props;
+    Properties props = new Properties();
+    try {
+      props.load(ClassLoader.getSystemResourceAsStream(pFileName));
+    } catch (IOException e) {
+      logger.error("ERROR LOADING PROPERTIES FROM CLASSPATH!!!", e);
     }
+    return props;
+  }
 
-    /**
-     * Loads a Properties file from the given file name
-     * 
-     * @param pFileName
-     * @return
-     */
-    public static Properties getPropertiesFromPath(String pFileName) {
+  /**
+   * Loads a Properties file from the given file name
+   * 
+   * @param pFileName
+   * @return
+   */
+  public static Properties getPropertiesFromPath(String pFileName) {
 
-        Properties props = new Properties();
-        FileInputStream fis;
-        try {
-            fis = new FileInputStream(pFileName);
-            props.load(fis);
-            fis.close();
-        } catch (Exception e) {
-            logger.error("ERROR LOADING PROPERTIES FROM PATH!!!", e);
-        }
-        return props;
+    Properties props = new Properties();
+    FileInputStream fis;
+    try {
+      fis = new FileInputStream(pFileName);
+      props.load(fis);
+      fis.close();
+    } catch (Exception e) {
+      logger.error("ERROR LOADING PROPERTIES FROM PATH!!!", e);
     }
+    return props;
+  }
 
 }

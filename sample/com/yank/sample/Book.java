@@ -22,42 +22,49 @@ package com.yank.sample;
  */
 public class Book {
 
-    // class fields rule: data type and name must match SQL table!
-    private String title;
-    private String author;
-    private double price;
+  // class fields rule: data type and name must match SQL table!
+  private String title;
+  private String author;
+  private double price;
 
-    // ** Pro-tip: In Eclipse, generate all getters and setters after defining class fields: Right-click --> Source --> Generate Getters and Setters...
+  // ** Pro-tip: In Eclipse, generate all getters and setters after defining class fields: Right-click --> Source --> Generate Getters and Setters...
 
-    public String getTitle() {
-        return title;
-    }
+  public String getTitle() {
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
+    return title;
+  }
 
-    public String getAuthor() {
-        return author;
-    }
+  public void setTitle(String title) {
 
-    public void setAuthor(String author) {
-        this.author = author;
-    }
+    this.title = title;
+  }
 
-    public double getPrice() {
-        return price;
-    }
+  public String getAuthor() {
 
-    public void setPrice(double price) {
-        this.price = price;
-    }
+    return author;
+  }
 
-    // ** Pro-tip: In Eclipse, generate a toString() method for a class: Right-click --> Source --> Generate toString()...
+  public void setAuthor(String author) {
 
-    @Override
-    public String toString() {
-        return "Book [title=" + title + ", author=" + author + ", price=" + price + "]";
-    }
+    this.author = author;
+  }
+
+  public double getPrice() {
+
+    return price;
+  }
+
+  public void setPrice(double price) {
+
+    this.price = price;
+  }
+
+  // ** Pro-tip: In Eclipse, generate a toString() method for a class: Right-click --> Source --> Generate toString()...
+
+  @Override
+  public String toString() {
+
+    return "Book [title=" + title + ", author=" + author + ", price=" + price + "]";
+  }
 
 }

@@ -26,20 +26,20 @@ import com.xeiam.yank.DBConnectionManager;
  */
 public class CreateBooksTable {
 
-    public static void main(String[] args) {
+  public static void main(String[] args) {
 
-        Properties props = new Properties();
-        props.setProperty("driverclassname", "com.mysql.jdbc.Driver");
-        props.setProperty("local.url", "jdbc:mysql://localhost:3306/Yank");
-        props.setProperty("local.user", "root");
-        props.setProperty("local.password", "");
-        props.setProperty("local.maxconn", "5");
+    Properties props = new Properties();
+    props.setProperty("driverclassname", "com.mysql.jdbc.Driver");
+    props.setProperty("local.url", "jdbc:mysql://localhost:3306/Yank");
+    props.setProperty("local.user", "root");
+    props.setProperty("local.password", "");
+    props.setProperty("local.maxconn", "5");
 
-        DBConnectionManager.INSTANCE.init(props);
+    DBConnectionManager.INSTANCE.init(props);
 
-        BooksDAO.createBooksTable();
+    BooksDAO.createBooksTable();
 
-        DBConnectionManager.INSTANCE.release();
+    DBConnectionManager.INSTANCE.release();
 
-    }
+  }
 }

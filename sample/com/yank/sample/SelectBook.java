@@ -27,17 +27,17 @@ import com.xeiam.yank.PropertiesUtils;
  */
 public class SelectBook {
 
-    public static void main(String[] args) {
+  public static void main(String[] args) {
 
-        Properties dbprops = PropertiesUtils.getPropertiesFromClasspath("DB.properties");
-        Properties sqlprops = PropertiesUtils.getPropertiesFromClasspath("SQL.properties");
+    Properties dbprops = PropertiesUtils.getPropertiesFromClasspath("DB.properties");
+    Properties sqlprops = PropertiesUtils.getPropertiesFromClasspath("SQL.properties");
 
-        DBConnectionManager.INSTANCE.init(dbprops, sqlprops);
+    DBConnectionManager.INSTANCE.init(dbprops, sqlprops);
 
-        Book book = BooksDAO.selectBook("Cryptonomicon");
-        System.out.println(book.toString());
+    Book book = BooksDAO.selectBook("Cryptonomicon");
+    System.out.println(book.toString());
 
-        DBConnectionManager.INSTANCE.release();
+    DBConnectionManager.INSTANCE.release();
 
-    }
+  }
 }

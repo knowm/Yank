@@ -28,17 +28,17 @@ import com.xeiam.yank.PropertiesUtils;
  */
 public class SelectAllBooks {
 
-    public static void main(String[] args) {
+  public static void main(String[] args) {
 
-        Properties props = PropertiesUtils.getPropertiesFromClasspath("DB.properties");
+    Properties props = PropertiesUtils.getPropertiesFromClasspath("DB.properties");
 
-        DBConnectionManager.INSTANCE.init(props);
+    DBConnectionManager.INSTANCE.init(props);
 
-        List<Book> allBooks = BooksDAO.selectAllBooks();
-        for (Book book : allBooks) {
-            System.out.println(book.getTitle());
-        }
-        DBConnectionManager.INSTANCE.release();
-
+    List<Book> allBooks = BooksDAO.selectAllBooks();
+    for (Book book : allBooks) {
+      System.out.println(book.getTitle());
     }
+    DBConnectionManager.INSTANCE.release();
+
+  }
 }

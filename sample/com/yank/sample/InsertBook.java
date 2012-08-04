@@ -27,19 +27,19 @@ import com.xeiam.yank.PropertiesUtils;
  */
 public class InsertBook {
 
-    public static void main(String[] args) {
+  public static void main(String[] args) {
 
-        Properties props = PropertiesUtils.getPropertiesFromClasspath("DB.properties");
+    Properties props = PropertiesUtils.getPropertiesFromClasspath("DB.properties");
 
-        DBConnectionManager.INSTANCE.init(props);
+    DBConnectionManager.INSTANCE.init(props);
 
-        Book book = new Book();
-        book.setTitle("Cryptonomicon");
-        book.setAuthor("Neal Stephenson");
-        book.setPrice(23.99);
-        BooksDAO.insertBook(book);
+    Book book = new Book();
+    book.setTitle("Cryptonomicon");
+    book.setAuthor("Neal Stephenson");
+    book.setPrice(23.99);
+    BooksDAO.insertBook(book);
 
-        DBConnectionManager.INSTANCE.release();
+    DBConnectionManager.INSTANCE.release();
 
-    }
+  }
 }

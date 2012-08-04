@@ -33,314 +33,315 @@ import org.slf4j.LoggerFactory;
  */
 public class DBProxy {
 
-    private static final DBConnectionManager mDBConnectionManager = DBConnectionManager.INSTANCE;
+  private static final DBConnectionManager mDBConnectionManager = DBConnectionManager.INSTANCE;
 
-    /** slf4J logger wrapper */
-    static Logger logger = LoggerFactory.getLogger(DBProxy.class);
+  /** slf4J logger wrapper */
+  static Logger logger = LoggerFactory.getLogger(DBProxy.class);
 
-    /**
-     * Prevent class instantiation.
-     */
-    private DBProxy() {
+  /**
+   * Prevent class instantiation.
+   */
+  private DBProxy() {
+
+  }
+
+  // ////// INSERT, UPDATE, DELETE, or UPSERT //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+  /**
+   * Executes the given INSERT, UPDATE, DELETE, REPLACE or UPSERT SQL statement with params. Returns the number of rows affected
+   * 
+   * @param sqlKey
+   * @param params
+   * @return int - -1 means something went wrong
+   * @throws Exception
+   */
+  public static int executeIUDSQLKey(String poolName, String sqlKey, Object[] params) {
+
+    String sql = mDBConnectionManager.getSqlProperties().getProperty(sqlKey);
+    if (sql == null || sql.equalsIgnoreCase("")) {
+      logger.warn("NO SQL statement found with key: '" + sqlKey + "' in SQL properties file");
+
+      return -1;
     }
+    return executeIUDSQL(poolName, sql, params);
+  }
 
-    // ////// INSERT, UPDATE, DELETE, or UPSERT //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  /**
+   * Execute a UID - Update, Insert, Delete statement using an SQL String
+   * 
+   * @param poolName
+   * @param sql
+   * @param params
+   * @return
+   */
+  public static int executeIUDSQL(String poolName, String sql, Object[] params) {
 
-    /**
-     * Executes the given INSERT, UPDATE, DELETE, REPLACE or UPSERT SQL statement with params. Returns the number of rows affected
-     * 
-     * @param sqlKey
-     * @param params
-     * @return int - -1 means something went wrong
-     * @throws Exception
-     */
-    public static int executeIUDSQLKey(String poolName, String sqlKey, Object[] params) {
+    int returnInt = -1;
 
-        String sql = mDBConnectionManager.getSqlProperties().getProperty(sqlKey);
-        if (sql == null || sql.equalsIgnoreCase("")) {
-            logger.warn("NO SQL statement found with key: '" + sqlKey + "' in SQL properties file");
+    Connection con = null;
 
-            return -1;
-        }
-        return executeIUDSQL(poolName, sql, params);
-    }
+    try {
+      con = mDBConnectionManager.getConnection(poolName);
 
-    /**
-     * Execute a UID - Update, Insert, Delete statement using an SQL String
-     * 
-     * @param poolName
-     * @param sql
-     * @param params
-     * @return
-     */
-    public static int executeIUDSQL(String poolName, String sql, Object[] params) {
-
-        int returnInt = -1;
-
-        Connection con = null;
-
-        try {
-            con = mDBConnectionManager.getConnection(poolName);
-
-            if (con == null) {
-                return returnInt;
-            }
-
-            con.setAutoCommit(false);
-
-            returnInt = new QueryRunner().update(con, sql, params);
-
-            con.commit();
-
-        } catch (Exception e) {
-            if (con != null) {
-                try {
-                    con.rollback();
-                } catch (SQLException e1) {
-                    logger.error("Exception caught while rolling back transaction", e1);
-                }
-            }
-
-            logger.error("Error in SQL query!!!", e);
-            // e.printStackTrace();
-        } finally {
-            mDBConnectionManager.freeConnection(poolName, con);
-        }
-
+      if (con == null) {
         return returnInt;
+      }
 
-    }
+      con.setAutoCommit(false);
 
-    // ////// BEAN QUERY //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+      returnInt = new QueryRunner().update(con, sql, params);
 
-    /**
-     * Convenience method to return just one Bean given a SQL Key
-     * 
-     * @param poolName
-     * @param sqlKey
-     * @param params
-     * @param beanClass
-     * @return Bean - null if returned list is not equal to one
-     */
-    public static Object querySingleBeanSQLKey(String poolName, String sqlKey, Object[] params, Class<? extends Object> beanClass) {
+      con.commit();
 
-        List<? extends Object> list = queryBeanListSQLKey(poolName, sqlKey, params, beanClass);
-
-        if (list != null && list.size() == 1) {
-            return list.get(0);
-        }
-
-        return null;
-    }
-
-    /**
-     * Convenience method to return just one Bean given an SQL statement
-     * 
-     * @param poolName
-     * @param sql
-     * @param params
-     * @param beanClass
-     * @return Bean - null if returned list is not equal to one
-     */
-    public static Object querySingleBeanSQL(String poolName, String sql, Object[] params, Class<? extends Object> beanClass) {
-
-        List<? extends Object> list = queryBeanListSQL(poolName, sql, params, beanClass);
-
-        if (list != null && list.size() == 1) {
-            return list.get(0);
-        }
-
-        return null;
-    }
-
-    /**
-     * Convenience method to return a List of Beans given an SQL Key with params
-     * 
-     * @param poolName
-     * @param sqlKey
-     * @param params
-     * @param beanClass
-     * @return
-     */
-    public static List<? extends Object> queryBeanListSQLKey(String poolName, String sqlKey, Object[] params, Class<? extends Object> beanClass) {
-
-        List<Object> returnList = null;
-
-        String sql = mDBConnectionManager.getSqlProperties().getProperty(sqlKey);
-        if (sql == null || sql.equalsIgnoreCase("")) {
-            logger.warn("NO SQL statement found with key: '" + sqlKey + "' in SQL properties file");
-            return returnList;
-        }
-
-        return queryBeanListSQL(poolName, sql, params, beanClass);
-    }
-
-    /**
-     * Returns a List of Beans given an SQL Statement with params
-     * 
-     * @param poolName
-     * @param sql
-     * @param params
-     * @param beanClass
-     * @return
-     */
-    @SuppressWarnings("unchecked")
-    public static List<? extends Object> queryBeanListSQL(String poolName, String sql, Object[] params, Class<? extends Object> beanClass) {
-
-        // logger.debug(sql);
-
-        List<Object> returnList = null;
-
-        Connection con = null;
-
+    } catch (Exception e) {
+      if (con != null) {
         try {
-            con = mDBConnectionManager.getConnection(poolName);
-
-            if (con == null) {
-                logger.warn("Connection was null! Poolname = " + poolName);
-                return returnList;
-            }
-
-            con.setAutoCommit(false);
-
-            ResultSetHandler rsh = new BeanListHandler(beanClass);
-
-            returnList = (List<Object>) new QueryRunner().query(con, sql, rsh, params);
-
-            con.commit();
-
-        } catch (Exception e) {
-            logger.error("ERROR QUERYING!!!", e);
-            try {
-                con.rollback();
-            } catch (SQLException e2) {
-                logger.error("Exception caught while rolling back transaction", e2);
-            }
-        } finally {
-            mDBConnectionManager.freeConnection(poolName, con);
+          con.rollback();
+        } catch (SQLException e1) {
+          logger.error("Exception caught while rolling back transaction", e1);
         }
+      }
 
+      logger.error("Error in SQL query!!!", e);
+      // e.printStackTrace();
+    } finally {
+      mDBConnectionManager.freeConnection(poolName, con);
+    }
+
+    return returnInt;
+
+  }
+
+  // ////// BEAN QUERY //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+  /**
+   * Convenience method to return just one Bean given a SQL Key
+   * 
+   * @param poolName
+   * @param sqlKey
+   * @param params
+   * @param beanClass
+   * @return Bean - null if returned list is not equal to one
+   */
+  public static Object querySingleBeanSQLKey(String poolName, String sqlKey, Object[] params, Class<? extends Object> beanClass) {
+
+    List<? extends Object> list = queryBeanListSQLKey(poolName, sqlKey, params, beanClass);
+
+    if (list != null && list.size() == 1) {
+      return list.get(0);
+    }
+
+    return null;
+  }
+
+  /**
+   * Convenience method to return just one Bean given an SQL statement
+   * 
+   * @param poolName
+   * @param sql
+   * @param params
+   * @param beanClass
+   * @return Bean - null if returned list is not equal to one
+   */
+  public static Object querySingleBeanSQL(String poolName, String sql, Object[] params, Class<? extends Object> beanClass) {
+
+    List<? extends Object> list = queryBeanListSQL(poolName, sql, params, beanClass);
+
+    if (list != null && list.size() == 1) {
+      return list.get(0);
+    }
+
+    return null;
+  }
+
+  /**
+   * Convenience method to return a List of Beans given an SQL Key with params
+   * 
+   * @param poolName
+   * @param sqlKey
+   * @param params
+   * @param beanClass
+   * @return
+   */
+  public static List<? extends Object> queryBeanListSQLKey(String poolName, String sqlKey, Object[] params, Class<? extends Object> beanClass) {
+
+    List<Object> returnList = null;
+
+    String sql = mDBConnectionManager.getSqlProperties().getProperty(sqlKey);
+    if (sql == null || sql.equalsIgnoreCase("")) {
+      logger.warn("NO SQL statement found with key: '" + sqlKey + "' in SQL properties file");
+      return returnList;
+    }
+
+    return queryBeanListSQL(poolName, sql, params, beanClass);
+  }
+
+  /**
+   * Returns a List of Beans given an SQL Statement with params
+   * 
+   * @param poolName
+   * @param sql
+   * @param params
+   * @param beanClass
+   * @return
+   */
+  @SuppressWarnings("unchecked")
+  public static List<? extends Object> queryBeanListSQL(String poolName, String sql, Object[] params, Class<? extends Object> beanClass) {
+
+    // logger.debug(sql);
+
+    List<Object> returnList = null;
+
+    Connection con = null;
+
+    try {
+      con = mDBConnectionManager.getConnection(poolName);
+
+      if (con == null) {
+        logger.warn("Connection was null! Poolname = " + poolName);
         return returnList;
+      }
+
+      con.setAutoCommit(false);
+
+      ResultSetHandler rsh = new BeanListHandler(beanClass);
+
+      returnList = (List<Object>) new QueryRunner().query(con, sql, rsh, params);
+
+      con.commit();
+
+    } catch (Exception e) {
+      logger.error("ERROR QUERYING!!!", e);
+      try {
+        con.rollback();
+      } catch (SQLException e2) {
+        logger.error("Exception caught while rolling back transaction", e2);
+      }
+    } finally {
+      mDBConnectionManager.freeConnection(poolName, con);
     }
 
-    // ////// OBJECT QUERY //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    return returnList;
+  }
 
-    /**
-     * Returns a List of Objects given an SQL Key with params
-     * 
-     * @param poolName
-     * @param sqlKey
-     * @param params
-     * @return
-     */
-    public static List<Object[]> queryObjectListSQLKey(String poolName, String sqlKey, Object[] params) {
+  // ////// OBJECT QUERY //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        List<Object[]> returnList = null;
+  /**
+   * Returns a List of Objects given an SQL Key with params
+   * 
+   * @param poolName
+   * @param sqlKey
+   * @param params
+   * @return
+   */
+  public static List<Object[]> queryObjectListSQLKey(String poolName, String sqlKey, Object[] params) {
 
-        String sql = mDBConnectionManager.getSqlProperties().getProperty(sqlKey);
-        if (sql == null || sql.equalsIgnoreCase("")) {
-            logger.warn("NO SQL statement found with key: '" + sqlKey + "' in SQL properties file");
-            return returnList;
-        }
+    List<Object[]> returnList = null;
 
-        return queryObjectListSQL(poolName, sql, params);
+    String sql = mDBConnectionManager.getSqlProperties().getProperty(sqlKey);
+    if (sql == null || sql.equalsIgnoreCase("")) {
+      logger.warn("NO SQL statement found with key: '" + sqlKey + "' in SQL properties file");
+      return returnList;
     }
 
-    /**
-     * Returns a List of Objects given an SQL String with params
-     * 
-     * @param poolName
-     * @param sql
-     * @param params
-     * @return
-     */
-    @SuppressWarnings("unchecked")
-    public static List<Object[]> queryObjectListSQL(String poolName, String sql, Object[] params) {
+    return queryObjectListSQL(poolName, sql, params);
+  }
 
-        List<Object[]> returnList = null;
+  /**
+   * Returns a List of Objects given an SQL String with params
+   * 
+   * @param poolName
+   * @param sql
+   * @param params
+   * @return
+   */
+  @SuppressWarnings("unchecked")
+  public static List<Object[]> queryObjectListSQL(String poolName, String sql, Object[] params) {
 
-        Connection con = null;
+    List<Object[]> returnList = null;
 
-        try {
-            con = mDBConnectionManager.getConnection(poolName);
+    Connection con = null;
 
-            if (con == null) {
-                return returnList;
-            }
+    try {
+      con = mDBConnectionManager.getConnection(poolName);
 
-            con.setAutoCommit(false);
-
-            ResultSetHandler rsh = new ArrayListHandler();
-            returnList = (List<Object[]>) new QueryRunner().query(con, sql, rsh, params);
-
-            con.commit();
-        } catch (Exception e) {
-            try {
-                con.rollback();
-            } catch (SQLException e1) {
-                logger.error("Exception caught while rolling back transaction", e1);
-            }
-        } finally {
-            mDBConnectionManager.freeConnection(poolName, con);
-        }
-
+      if (con == null) {
         return returnList;
+      }
+
+      con.setAutoCommit(false);
+
+      ResultSetHandler rsh = new ArrayListHandler();
+      returnList = (List<Object[]>) new QueryRunner().query(con, sql, rsh, params);
+
+      con.commit();
+    } catch (Exception e) {
+      try {
+        con.rollback();
+      } catch (SQLException e1) {
+        logger.error("Exception caught while rolling back transaction", e1);
+      }
+    } finally {
+      mDBConnectionManager.freeConnection(poolName, con);
     }
 
-    // ////// BATCH //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    return returnList;
+  }
 
-    /**
-     * @param poolName
-     * @param sqlKey
-     * @param params
-     * @return
-     */
-    public static int[] executeBatchIUDSQLKey(String poolName, String sqlKey, Object[][] params) {
+  // ////// BATCH //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        String sql = mDBConnectionManager.getSqlProperties().getProperty(sqlKey);
-        if (sql == null || sql.equalsIgnoreCase("")) {
-            logger.warn("NO SQL statement found with key: '" + sqlKey + "' in SQL properties file");
-        }
+  /**
+   * @param poolName
+   * @param sqlKey
+   * @param params
+   * @return
+   */
+  public static int[] executeBatchIUDSQLKey(String poolName, String sqlKey, Object[][] params) {
 
-        return executeBatchIUDSQL(poolName, sql, params);
+    String sql = mDBConnectionManager.getSqlProperties().getProperty(sqlKey);
+    if (sql == null || sql.equalsIgnoreCase("")) {
+      logger.warn("NO SQL statement found with key: '" + sqlKey + "' in SQL properties file");
     }
 
-    /**
-     * @param poolName
-     * @param sql
-     * @param params
-     * @return
-     */
-    public static int[] executeBatchIUDSQL(String poolName, String sql, Object[][] params) {
+    return executeBatchIUDSQL(poolName, sql, params);
+  }
 
-        int[] returnIntArray = null;
+  /**
+   * @param poolName
+   * @param sql
+   * @param params
+   * @return
+   */
+  public static int[] executeBatchIUDSQL(String poolName, String sql, Object[][] params) {
 
-        Connection con = null;
+    int[] returnIntArray = null;
 
-        try {
-            con = mDBConnectionManager.getConnection(poolName);
+    Connection con = null;
 
-            if (con == null) {
-                return returnIntArray;
-            }
+    try {
+      con = mDBConnectionManager.getConnection(poolName);
 
-            con.setAutoCommit(false);
-
-            returnIntArray = new QueryRunner().batch(con, sql, params);
-
-            con.commit();
-        } catch (Exception e) {
-            try {
-                con.rollback();
-            } catch (SQLException e1) {
-                logger.error("Exception caught while rolling back transaction", e1);
-                e1.printStackTrace();
-            }
-        } finally {
-            mDBConnectionManager.freeConnection(poolName, con);
-        }
-
+      if (con == null) {
         return returnIntArray;
+      }
+
+      con.setAutoCommit(false);
+
+      returnIntArray = new QueryRunner().batch(con, sql, params);
+
+      con.commit();
+    } catch (Exception e) {
+      try {
+        con.rollback();
+      } catch (SQLException e1) {
+        logger.error("Exception caught while rolling back transaction", e1);
+        e1.printStackTrace();
+      }
+    } finally {
+      mDBConnectionManager.freeConnection(poolName, con);
     }
+
+    return returnIntArray;
+  }
 
 }

@@ -28,21 +28,21 @@ import com.xeiam.yank.PropertiesUtils;
  */
 public class ShowTableStatus {
 
-    public static void main(String[] args) {
+  public static void main(String[] args) {
 
-        Properties dbprops = PropertiesUtils.getPropertiesFromClasspath("DB.properties");
-        Properties sqlprops = PropertiesUtils.getPropertiesFromClasspath("SQL.properties");
+    Properties dbprops = PropertiesUtils.getPropertiesFromClasspath("DB.properties");
+    Properties sqlprops = PropertiesUtils.getPropertiesFromClasspath("SQL.properties");
 
-        DBConnectionManager.INSTANCE.init(dbprops, sqlprops);
+    DBConnectionManager.INSTANCE.init(dbprops, sqlprops);
 
-        List<Object[]> matrix = BooksDAO.getTableStatus();
-        for (Object[] objects : matrix) {
-            for (Object object : objects) {
-                System.out.println(object == null ? "null" : object.toString());
-            }
-        }
-
-        DBConnectionManager.INSTANCE.release();
-
+    List<Object[]> matrix = BooksDAO.getTableStatus();
+    for (Object[] objects : matrix) {
+      for (Object object : objects) {
+        System.out.println(object == null ? "null" : object.toString());
+      }
     }
+
+    DBConnectionManager.INSTANCE.release();
+
+  }
 }
