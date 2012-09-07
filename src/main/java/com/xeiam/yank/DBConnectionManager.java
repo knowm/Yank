@@ -37,8 +37,7 @@ import org.slf4j.LoggerFactory;
  */
 public class DBConnectionManager {
 
-  /** slf4J logger wrapper */
-  static Logger logger = LoggerFactory.getLogger(DBConnectionManager.class);
+  private final Logger logger = LoggerFactory.getLogger(DBConnectionManager.class);
 
   private final Map<String, DBConnectionPool> pools = new HashMap<String, DBConnectionPool>();
 
