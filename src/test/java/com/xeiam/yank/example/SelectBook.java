@@ -13,20 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.yank.sample;
+package com.xeiam.yank.example;
 
-import java.util.List;
 import java.util.Properties;
 
 import com.xeiam.yank.DBConnectionManager;
 import com.xeiam.yank.PropertiesUtils;
 
 /**
- * Gets table status from the YANK database. Demonstrates fetching Object arrays from the DB. You need not return lists of Beans!
+ * Selects a single Book from the BOOKS table. Demonstrates using a SQL Key in SQL.properties
  * 
  * @author timmolter
  */
-public class ShowTableStatus {
+public class SelectBook {
 
   public static void main(String[] args) {
 
@@ -35,12 +34,8 @@ public class ShowTableStatus {
 
     DBConnectionManager.INSTANCE.init(dbprops, sqlprops);
 
-    List<Object[]> matrix = BooksDAO.getTableStatus();
-    for (Object[] objects : matrix) {
-      for (Object object : objects) {
-        System.out.println(object == null ? "null" : object.toString());
-      }
-    }
+    Book book = BooksDAO.selectBook("Cryptonomicon");
+    System.out.println(book.toString());
 
     DBConnectionManager.INSTANCE.release();
 

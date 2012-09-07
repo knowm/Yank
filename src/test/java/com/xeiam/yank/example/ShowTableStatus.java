@@ -13,31 +13,34 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.yank.sample;
+package com.xeiam.yank.example;
 
+import java.util.List;
 import java.util.Properties;
 
 import com.xeiam.yank.DBConnectionManager;
+import com.xeiam.yank.PropertiesUtils;
 
 /**
- * Create a table called BOOKS. Demonstrates hardcoding the connection pool properties.
+ * Gets table status from the YANK database. Demonstrates fetching Object arrays from the DB. You need not return lists of Beans!
  * 
  * @author timmolter
  */
-public class CreateBooksTable {
+public class ShowTableStatus {
 
   public static void main(String[] args) {
 
-    Properties props = new Properties();
-    props.setProperty("driverclassname", "com.mysql.jdbc.Driver");
-    props.setProperty("local.url", "jdbc:mysql://localhost:3306/Yank");
-    props.setProperty("local.user", "root");
-    props.setProperty("local.password", "");
-    props.setProperty("local.maxconn", "5");
+    Properties dbprops = PropertiesUtils.getPropertiesFromClasspath("DB.properties");
+    Properties sqlprops = PropertiesUtils.getPropertiesFromClasspath("SQL.properties");
 
-    DBConnectionManager.INSTANCE.init(props);
+    DBConnectionManager.INSTANCE.init(dbprops, sqlprops);
 
-    BooksDAO.createBooksTable();
+    List<Object[]> matrix = BooksDAO.getTableStatus();
+    for (Object[] objects : matrix) {
+      for (Object object : objects) {
+        System.out.println(object == null ? "null" : object.toString());
+      }
+    }
 
     DBConnectionManager.INSTANCE.release();
 

@@ -13,20 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.yank.sample;
+package com.xeiam.yank.example;
 
-import java.util.List;
 import java.util.Properties;
 
 import com.xeiam.yank.DBConnectionManager;
 import com.xeiam.yank.PropertiesUtils;
 
 /**
- * Selects all Book Objects from the BOOKS table. Demonstrates fetching the connection pool properties from a file on the classpath
+ * Inserts a Book into the BOOKS table. Demonstrates fetching the connection pool properties from a file on the classpath
  * 
  * @author timmolter
  */
-public class SelectAllBooks {
+public class InsertBook {
 
   public static void main(String[] args) {
 
@@ -34,10 +33,12 @@ public class SelectAllBooks {
 
     DBConnectionManager.INSTANCE.init(props);
 
-    List<Book> allBooks = BooksDAO.selectAllBooks();
-    for (Book book : allBooks) {
-      System.out.println(book.getTitle());
-    }
+    Book book = new Book();
+    book.setTitle("Cryptonomicon");
+    book.setAuthor("Neal Stephenson");
+    book.setPrice(23.99);
+    BooksDAO.insertBook(book);
+
     DBConnectionManager.INSTANCE.release();
 
   }

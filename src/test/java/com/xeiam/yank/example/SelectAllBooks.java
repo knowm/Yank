@@ -13,9 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.yank.sample;
+package com.xeiam.yank.example;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
@@ -23,11 +22,11 @@ import com.xeiam.yank.DBConnectionManager;
 import com.xeiam.yank.PropertiesUtils;
 
 /**
- * Inserts a Batch of Book Objects into the BOOKS table.
+ * Selects all Book Objects from the BOOKS table. Demonstrates fetching the connection pool properties from a file on the classpath
  * 
  * @author timmolter
  */
-public class InsertBatch {
+public class SelectAllBooks {
 
   public static void main(String[] args) {
 
@@ -35,28 +34,10 @@ public class InsertBatch {
 
     DBConnectionManager.INSTANCE.init(props);
 
-    List<Book> books = new ArrayList<Book>();
-
-    Book book = new Book();
-    book.setTitle("Cryptonomicon");
-    book.setAuthor("Neal Stephenson");
-    book.setPrice(23.99);
-    books.add(book);
-
-    book = new Book();
-    book.setTitle("Harry Potter");
-    book.setAuthor("Joanne K. Rowling");
-    book.setPrice(11.99);
-    books.add(book);
-
-    book = new Book();
-    book.setTitle("Don Quijote");
-    book.setAuthor("Cervantes");
-    book.setPrice(21.99);
-    books.add(book);
-
-    BooksDAO.insertBatch(books);
-
+    List<Book> allBooks = BooksDAO.selectAllBooks();
+    for (Book book : allBooks) {
+      System.out.println(book.getTitle());
+    }
     DBConnectionManager.INSTANCE.release();
 
   }

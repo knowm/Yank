@@ -13,29 +13,49 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.yank.sample;
+package com.xeiam.yank.example;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 import com.xeiam.yank.DBConnectionManager;
 import com.xeiam.yank.PropertiesUtils;
 
 /**
- * Selects a single Book from the BOOKS table. Demonstrates using a SQL Key in SQL.properties
+ * Inserts a Batch of Book Objects into the BOOKS table.
  * 
  * @author timmolter
  */
-public class SelectBook {
+public class InsertBatch {
 
   public static void main(String[] args) {
 
-    Properties dbprops = PropertiesUtils.getPropertiesFromClasspath("DB.properties");
-    Properties sqlprops = PropertiesUtils.getPropertiesFromClasspath("SQL.properties");
+    Properties props = PropertiesUtils.getPropertiesFromClasspath("DB.properties");
 
-    DBConnectionManager.INSTANCE.init(dbprops, sqlprops);
+    DBConnectionManager.INSTANCE.init(props);
 
-    Book book = BooksDAO.selectBook("Cryptonomicon");
-    System.out.println(book.toString());
+    List<Book> books = new ArrayList<Book>();
+
+    Book book = new Book();
+    book.setTitle("Cryptonomicon");
+    book.setAuthor("Neal Stephenson");
+    book.setPrice(23.99);
+    books.add(book);
+
+    book = new Book();
+    book.setTitle("Harry Potter");
+    book.setAuthor("Joanne K. Rowling");
+    book.setPrice(11.99);
+    books.add(book);
+
+    book = new Book();
+    book.setTitle("Don Quijote");
+    book.setAuthor("Cervantes");
+    book.setPrice(21.99);
+    books.add(book);
+
+    BooksDAO.insertBatch(books);
 
     DBConnectionManager.INSTANCE.release();
 
