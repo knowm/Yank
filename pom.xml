@@ -5,7 +5,7 @@
     <name>Yank</name>
 	<groupId>com.xeiam</groupId>
 	<artifactId>yank</artifactId>
-	<version>1.1.0-SNAPSHOT</version>
+	<version>1.1.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<description>A Very Easy-to-Use Yet Flexible Java Persistence Layer for JDBC Databases </description>
 	<url>http://xeiam.com/yank.jsp</url>
