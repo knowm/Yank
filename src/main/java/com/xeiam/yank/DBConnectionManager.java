@@ -35,7 +35,7 @@ import org.slf4j.LoggerFactory;
  * 
  * @author timmolter
  */
-public class DBConnectionManager {
+public final class DBConnectionManager {
 
   private final Logger logger = LoggerFactory.getLogger(DBConnectionManager.class);
 
@@ -128,7 +128,7 @@ public class DBConnectionManager {
     while (propNames.hasMoreElements()) {
       String name = (String) propNames.nextElement();
       if (name.endsWith(".url")) {
-        String poolName = name.substring(0, name.lastIndexOf("."));
+        String poolName = name.substring(0, name.lastIndexOf('.'));
         String url = dbProperties.getProperty(poolName + ".url");
         if (url == null) {
           logger.warn("No URL specified for " + poolName);
@@ -190,8 +190,6 @@ public class DBConnectionManager {
 
     logger.info("Releasing DBConnectionManager...");
 
-    // DBConnectionPool p = pools.get("local");
-
     Set<String> allPools = pools.keySet();
 
     for (Iterator<String> iterator = allPools.iterator(); iterator.hasNext();) {
@@ -217,12 +215,6 @@ public class DBConnectionManager {
   public Properties getSqlProperties() {
 
     return sqlProperties;
-  }
-
-  @Override
-  public Object clone() throws CloneNotSupportedException {
-
-    throw new CloneNotSupportedException();
   }
 
 }

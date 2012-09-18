@@ -33,10 +33,10 @@ import org.slf4j.LoggerFactory;
  */
 public class DBProxy {
 
-  private static final DBConnectionManager mDBConnectionManager = DBConnectionManager.INSTANCE;
+  private static final DBConnectionManager DB_CONNECTION_MANAGER = DBConnectionManager.INSTANCE;
 
   /** slf4J logger wrapper */
-  static Logger logger = LoggerFactory.getLogger(DBProxy.class);
+  private static Logger logger = LoggerFactory.getLogger(DBProxy.class);
 
   /**
    * Prevent class instantiation.
@@ -57,7 +57,7 @@ public class DBProxy {
    */
   public static int executeIUDSQLKey(String poolName, String sqlKey, Object[] params) {
 
-    String sql = mDBConnectionManager.getSqlProperties().getProperty(sqlKey);
+    String sql = DB_CONNECTION_MANAGER.getSqlProperties().getProperty(sqlKey);
     if (sql == null || sql.equalsIgnoreCase("")) {
       logger.warn("NO SQL statement found with key: '" + sqlKey + "' in SQL properties file");
 
@@ -81,7 +81,7 @@ public class DBProxy {
     Connection con = null;
 
     try {
-      con = mDBConnectionManager.getConnection(poolName);
+      con = DB_CONNECTION_MANAGER.getConnection(poolName);
 
       if (con == null) {
         throw new IllegalArgumentException("Connection was null! There is no connection pool assocuiated with the given name: " + poolName);
@@ -103,9 +103,9 @@ public class DBProxy {
       }
 
       logger.error("Error in SQL query!!!", e);
-      // e.printStackTrace();
+
     } finally {
-      mDBConnectionManager.freeConnection(poolName, con);
+      DB_CONNECTION_MANAGER.freeConnection(poolName, con);
     }
 
     return returnInt;
@@ -167,7 +167,7 @@ public class DBProxy {
 
     List<Object> returnList = null;
 
-    String sql = mDBConnectionManager.getSqlProperties().getProperty(sqlKey);
+    String sql = DB_CONNECTION_MANAGER.getSqlProperties().getProperty(sqlKey);
     if (sql == null || sql.equalsIgnoreCase("")) {
       logger.warn("NO SQL statement found with key: '" + sqlKey + "' in SQL properties file");
       return returnList;
@@ -193,7 +193,7 @@ public class DBProxy {
     Connection con = null;
 
     try {
-      con = mDBConnectionManager.getConnection(poolName);
+      con = DB_CONNECTION_MANAGER.getConnection(poolName);
 
       if (con == null) {
         throw new IllegalArgumentException("Connection was null! There is no connection pool assocuiated with the given name: " + poolName);
@@ -215,7 +215,7 @@ public class DBProxy {
         logger.error("Exception caught while rolling back transaction", e2);
       }
     } finally {
-      mDBConnectionManager.freeConnection(poolName, con);
+      DB_CONNECTION_MANAGER.freeConnection(poolName, con);
     }
 
     return returnList;
@@ -235,7 +235,7 @@ public class DBProxy {
 
     List<Object[]> returnList = null;
 
-    String sql = mDBConnectionManager.getSqlProperties().getProperty(sqlKey);
+    String sql = DB_CONNECTION_MANAGER.getSqlProperties().getProperty(sqlKey);
     if (sql == null || sql.equalsIgnoreCase("")) {
       logger.warn("NO SQL statement found with key: '" + sqlKey + "' in SQL properties file");
       return returnList;
@@ -260,7 +260,7 @@ public class DBProxy {
     Connection con = null;
 
     try {
-      con = mDBConnectionManager.getConnection(poolName);
+      con = DB_CONNECTION_MANAGER.getConnection(poolName);
 
       if (con == null) {
         throw new IllegalArgumentException("Connection was null! There is no connection pool assocuiated with the given name: " + poolName);
@@ -279,7 +279,7 @@ public class DBProxy {
         logger.error("Exception caught while rolling back transaction", e1);
       }
     } finally {
-      mDBConnectionManager.freeConnection(poolName, con);
+      DB_CONNECTION_MANAGER.freeConnection(poolName, con);
     }
 
     return returnList;
@@ -295,7 +295,7 @@ public class DBProxy {
    */
   public static int[] executeBatchIUDSQLKey(String poolName, String sqlKey, Object[][] params) {
 
-    String sql = mDBConnectionManager.getSqlProperties().getProperty(sqlKey);
+    String sql = DB_CONNECTION_MANAGER.getSqlProperties().getProperty(sqlKey);
     if (sql == null || sql.equalsIgnoreCase("")) {
       logger.warn("NO SQL statement found with key: '" + sqlKey + "' in SQL properties file");
     }
@@ -316,7 +316,7 @@ public class DBProxy {
     Connection con = null;
 
     try {
-      con = mDBConnectionManager.getConnection(poolName);
+      con = DB_CONNECTION_MANAGER.getConnection(poolName);
 
       if (con == null) {
         throw new IllegalArgumentException("Connection was null! There is no connection pool assocuiated with the given name: " + poolName);
@@ -332,10 +332,9 @@ public class DBProxy {
         con.rollback();
       } catch (SQLException e1) {
         logger.error("Exception caught while rolling back transaction", e1);
-        e1.printStackTrace();
       }
     } finally {
-      mDBConnectionManager.freeConnection(poolName, con);
+      DB_CONNECTION_MANAGER.freeConnection(poolName, con);
     }
 
     return returnIntArray;
