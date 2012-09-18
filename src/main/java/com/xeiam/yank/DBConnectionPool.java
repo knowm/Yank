@@ -32,26 +32,26 @@ import org.slf4j.LoggerFactory;
 public class DBConnectionPool {
 
   /** slf4J logger wrapper */
-  static Logger logger = LoggerFactory.getLogger(DBConnectionPool.class);
+  private static Logger logger = LoggerFactory.getLogger(DBConnectionPool.class);
 
   private int checkedOut;
   private Vector<Connection> freeConnections = new Vector<Connection>();
   private int maxConn;
   private String password;
-  private String URL;
+  private String url;
   private String user;
 
   /**
    * Creates new connection pool.
    * 
-   * @param URL The JDBC URL for the database
+   * @param url The JDBC URL for the database
    * @param user The database user, or null
    * @param password The database user password, or null
    * @param maxConn The maximal number of connections, or 0 for no limit
    */
-  public DBConnectionPool(String URL, String user, String password, int maxConn) {
+  public DBConnectionPool(String url, String user, String password, int maxConn) {
 
-    this.URL = URL;
+    this.url = url;
     this.user = user;
     this.password = password;
     this.maxConn = maxConn;
@@ -133,13 +133,13 @@ public class DBConnectionPool {
     Connection con = null;
     try {
       if (user == null) {
-        con = DriverManager.getConnection(URL);
+        con = DriverManager.getConnection(url);
       } else {
-        con = DriverManager.getConnection(URL, user, password);
+        con = DriverManager.getConnection(url, user, password);
       }
       logger.debug("Created a new connection in pool.");
     } catch (SQLException e) {
-      logger.error("Can't create a new connection for " + URL + ".", e);
+      logger.error("Can't create a new connection for " + url + ".", e);
       return null;
     }
     return con;

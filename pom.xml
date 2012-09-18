@@ -5,7 +5,7 @@
     <name>Yank</name>
 	<groupId>com.xeiam</groupId>
 	<artifactId>yank</artifactId>
-	<version>1.1.0</version>
+	<version>1.1.1</version>
 	<packaging>jar</packaging>
 	<description>A Very Easy-to-Use Yet Flexible Java Persistence Layer for JDBC Databases </description>
 	<url>http://xeiam.com/yank.jsp</url>
@@ -56,11 +56,10 @@
 	</distributionManagement>
 
 	<dependencies>
-
 		<dependency>
 			<groupId>commons-dbutils</groupId>
 			<artifactId>commons-dbutils</artifactId>
-			<version>1.3</version>
+			<version>1.5</version>
 		</dependency>
 		<dependency>
 			<groupId>ch.qos.logback</groupId>

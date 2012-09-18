@@ -35,7 +35,7 @@ import org.slf4j.LoggerFactory;
  * 
  * @author timmolter
  */
-public class DBConnectionManager {
+public final class DBConnectionManager {
 
   private final Logger logger = LoggerFactory.getLogger(DBConnectionManager.class);
 
@@ -104,7 +104,7 @@ public class DBConnectionManager {
       DriverManager.registerDriver(jdbcDriver);
       logger.info("Registered JDBC driver " + jdbcDriverClassName);
     } catch (Exception e) {
-      logger.error("Can't register JDBC driver: " + jdbcDriverClassName + ". ", e);
+      logger.error("Can't register JDBC driver: " + jdbcDriverClassName + ". Make sure a vendor-specific JDBC driver is on the classpath!", e);
       return false;
     }
     return true;
@@ -128,7 +128,7 @@ public class DBConnectionManager {
     while (propNames.hasMoreElements()) {
       String name = (String) propNames.nextElement();
       if (name.endsWith(".url")) {
-        String poolName = name.substring(0, name.lastIndexOf("."));
+        String poolName = name.substring(0, name.lastIndexOf('.'));
         String url = dbProperties.getProperty(poolName + ".url");
         if (url == null) {
           logger.warn("No URL specified for " + poolName);
@@ -163,6 +163,8 @@ public class DBConnectionManager {
     DBConnectionPool pool = pools.get(poolName);
     if (pool != null) {
       return pool.getConnection();
+    } else {
+      logger.error("No connection pool defined with name: " + poolName);
     }
     return null;
   }
@@ -187,8 +189,6 @@ public class DBConnectionManager {
   public synchronized void release() {
 
     logger.info("Releasing DBConnectionManager...");
-
-    // DBConnectionPool p = pools.get("local");
 
     Set<String> allPools = pools.keySet();
 
@@ -215,12 +215,6 @@ public class DBConnectionManager {
   public Properties getSqlProperties() {
 
     return sqlProperties;
-  }
-
-  @Override
-  public Object clone() throws CloneNotSupportedException {
-
-    throw new CloneNotSupportedException();
   }
 
 }
