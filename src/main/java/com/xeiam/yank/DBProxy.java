@@ -84,7 +84,7 @@ public class DBProxy {
       con = mDBConnectionManager.getConnection(poolName);
 
       if (con == null) {
-        return returnInt;
+        throw new IllegalArgumentException("Connection was null! There is no connection pool assocuiated with the given name: " + poolName);
       }
 
       con.setAutoCommit(false);
@@ -188,8 +188,6 @@ public class DBProxy {
   @SuppressWarnings("unchecked")
   public static List<? extends Object> queryBeanListSQL(String poolName, String sql, Object[] params, Class<? extends Object> beanClass) {
 
-    // logger.debug(sql);
-
     List<Object> returnList = null;
 
     Connection con = null;
@@ -198,8 +196,7 @@ public class DBProxy {
       con = mDBConnectionManager.getConnection(poolName);
 
       if (con == null) {
-        logger.warn("Connection was null! Poolname = " + poolName);
-        return returnList;
+        throw new IllegalArgumentException("Connection was null! There is no connection pool assocuiated with the given name: " + poolName);
       }
 
       con.setAutoCommit(false);
@@ -266,7 +263,7 @@ public class DBProxy {
       con = mDBConnectionManager.getConnection(poolName);
 
       if (con == null) {
-        return returnList;
+        throw new IllegalArgumentException("Connection was null! There is no connection pool assocuiated with the given name: " + poolName);
       }
 
       con.setAutoCommit(false);
@@ -322,7 +319,7 @@ public class DBProxy {
       con = mDBConnectionManager.getConnection(poolName);
 
       if (con == null) {
-        return returnIntArray;
+        throw new IllegalArgumentException("Connection was null! There is no connection pool assocuiated with the given name: " + poolName);
       }
 
       con.setAutoCommit(false);
@@ -343,5 +340,4 @@ public class DBProxy {
 
     return returnIntArray;
   }
-
 }
