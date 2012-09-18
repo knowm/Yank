@@ -163,9 +163,9 @@ public class DBConnectionManager {
     DBConnectionPool pool = pools.get(poolName);
     if (pool != null) {
       return pool.getConnection();
-    }else{
-logger.error("No connection pool defined with name: "+poolName);
-}
+    } else {
+      logger.error("No connection pool defined with name: " + poolName);
+    }
     return null;
   }
 
