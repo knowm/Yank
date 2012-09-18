@@ -104,7 +104,7 @@ public class DBConnectionManager {
       DriverManager.registerDriver(jdbcDriver);
       logger.info("Registered JDBC driver " + jdbcDriverClassName);
     } catch (Exception e) {
-      logger.error("Can't register JDBC driver: " + jdbcDriverClassName + ". ", e);
+      logger.error("Can't register JDBC driver: " + jdbcDriverClassName + ". Make sure a vendor-specific JDBC driver is on the classpath!", e);
       return false;
     }
     return true;
@@ -163,7 +163,9 @@ public class DBConnectionManager {
     DBConnectionPool pool = pools.get(poolName);
     if (pool != null) {
       return pool.getConnection();
-    }
+    }else{
+logger.error("No connection pool defined with name: "+poolName);
+}
     return null;
   }
 
