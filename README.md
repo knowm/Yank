@@ -41,7 +41,7 @@ Add this to dependencies in pom.xml:
     <dependency>
       <groupId>com.xeiam</groupId>
       <artifactId>yank</artifactId>
-      <version>1.1.0</version>
+      <version>1.1.2</version>
     </dependency>
 
 Building
