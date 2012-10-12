@@ -17,6 +17,7 @@ package com.xeiam.yank;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Properties;
 
 import org.slf4j.Logger;
@@ -32,15 +33,22 @@ public class PropertiesUtils extends Properties {
   /**
    * Loads a Properties file from the classpath matching the given file name
    * 
-   * @param pFileName
+   * @param fileName
    * @return
    */
-  public static Properties getPropertiesFromClasspath(String pFileName) {
+  public static Properties getPropertiesFromClasspath(String fileName) {
 
     Properties props = new Properties();
     try {
-      props.load(ClassLoader.getSystemResourceAsStream(pFileName));
+      InputStream is = ClassLoader.getSystemResourceAsStream(fileName);
+      if (is == null) { // try this instead
+        is = Thread.currentThread().getContextClassLoader().getResourceAsStream(fileName);
+        logger.debug("loaded properties file with Thread.currentThread()");
+      }
+      props.load(is);
     } catch (IOException e) {
+      logger.error("ERROR LOADING PROPERTIES FROM CLASSPATH!!!", e);
+    } catch (NullPointerException e) {
       logger.error("ERROR LOADING PROPERTIES FROM CLASSPATH!!!", e);
     }
     return props;
@@ -49,15 +57,15 @@ public class PropertiesUtils extends Properties {
   /**
    * Loads a Properties file from the given file name
    * 
-   * @param pFileName
+   * @param fileName
    * @return
    */
-  public static Properties getPropertiesFromPath(String pFileName) {
+  public static Properties getPropertiesFromPath(String fileName) {
 
     Properties props = new Properties();
     FileInputStream fis;
     try {
-      fis = new FileInputStream(pFileName);
+      fis = new FileInputStream(fileName);
       props.load(fis);
       fis.close();
     } catch (Exception e) {
