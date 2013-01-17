@@ -5,7 +5,7 @@
 	<name>Yank</name>
 	<groupId>com.xeiam</groupId>
 	<artifactId>yank</artifactId>
-	<version>1.1.2-SNAPSHOT</version>
+	<version>1.2.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<description>A Very Easy-to-Use Yet Flexible Java Persistence Layer for JDBC Databases </description>
 	<url>http://xeiam.com/yank.jsp</url>
@@ -20,40 +20,31 @@
 		<developer>
 			<name>Tim Molter</name>
 		</developer>
-		<developer>
-			<name>Alex Nugent</name>
-		</developer>
 	</developers>
+
 	<licenses>
 		<license>
-			<name>Apache 2</name>
-			<url>http://www.apache.org/licenses/LICENSE-2.0</url>
+			<name>The Apache Software License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
 			<distribution>repo</distribution>
 			<comments>A business-friendly OSS license</comments>
 		</license>
 	</licenses>
+
 	<issueManagement>
 		<system>GitHub</system>
 		<url>https://github.com/timmolter/Yank/issues</url>
 	</issueManagement>
+
 	<scm>
-		<url>https://github.com/timmolter/Yank</url>
+		<connection>scm:git:git@github.com:timmolter/Yank.git</connection>
+		<developerConnection>scm:git:git@github.com:timmolter/Yank.git</developerConnection>
+		<url>git@github.com:timmolter/Yank.git</url>
 	</scm>
+
 	<ciManagement>
 		<url>http://ci.xeiam.com/</url>
 	</ciManagement>
-	<distributionManagement>
-		<snapshotRepository>
-			<id>xeiam_oss.snapshots</id>
-			<name>Nexus Snapshots Repo</name>
-			<url>http://nexus.xeiam.com/content/repositories/snapshots/</url>
-		</snapshotRepository>
-		<repository>
-			<id>xeiam_oss.releases</id>
-			<name>Nexus Release Repo</name>
-			<url>http://nexus.xeiam.com/content/repositories/releases/</url>
-		</repository>
-	</distributionManagement>
 
 	<dependencies>
 		<dependency>
@@ -86,6 +77,50 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
+
+	<distributionManagement>
+		<snapshotRepository>
+			<id>xeiam_oss.sonatype-nexus-snapshots</id>
+			<name>Sonatype Nexus Snapshots</name>
+			<url>http://oss.sonatype.org/content/repositories/snapshots</url>
+		</snapshotRepository>
+		<repository>
+			<id>xeiam_oss.sonatype-nexus-staging</id>
+			<name>Nexus Release Repository</name>
+			<url>http://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+		</repository>
+		<downloadUrl>https://oss.sonatype.org/content/groups/public/com/xeiam/yank</downloadUrl>
+	</distributionManagement>
+
+	<profiles>
+		<profile>
+			<id>release-sign-artifacts</id>
+			<activation>
+				<property>
+					<name>performRelease</name>
+					<value>true</value>
+				</property>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-gpg-plugin</artifactId>
+						<version>1.4</version>
+						<executions>
+							<execution>
+								<id>sign-artifacts</id>
+								<phase>verify</phase>
+								<goals>
+									<goal>sign</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 
 	<build>
 		<plugins>
@@ -130,6 +165,19 @@
 				</executions>
 			</plugin>
 		</plugins>
+		<plugin>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-release-plugin</artifactId>
+			<version>2.4</version>
+			<configuration>
+				<autoversionsubmodules>true</autoversionsubmodules>
+			</configuration>
+		</plugin>
 	</build>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+	</properties>
 
 </project>
