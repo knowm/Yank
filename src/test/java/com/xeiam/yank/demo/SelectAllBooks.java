@@ -31,7 +31,7 @@ public class SelectAllBooks {
   public static void main(String[] args) {
 
     // DB Properties
-    Properties props = PropertiesUtils.getPropertiesFromClasspath("DB.properties");
+    Properties props = PropertiesUtils.getPropertiesFromClasspath("MYSQL_DB.properties");
 
     // init DB Connection Manager
     DBConnectionManager.INSTANCE.init(props);

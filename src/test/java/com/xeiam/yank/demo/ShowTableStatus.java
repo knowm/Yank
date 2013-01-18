@@ -31,9 +31,9 @@ public class ShowTableStatus {
   public static void main(String[] args) {
 
     // DB Properties
-    Properties dbprops = PropertiesUtils.getPropertiesFromClasspath("DB.properties");
+    Properties dbprops = PropertiesUtils.getPropertiesFromClasspath("MYSQL_DB.properties");
     // SQL Statements in Properties file
-    Properties sqlprops = PropertiesUtils.getPropertiesFromClasspath("SQL.properties");
+    Properties sqlprops = PropertiesUtils.getPropertiesFromClasspath("MYSQL_SQL.properties");
 
     // init DB Connection Manager
     DBConnectionManager.INSTANCE.init(dbprops, sqlprops);

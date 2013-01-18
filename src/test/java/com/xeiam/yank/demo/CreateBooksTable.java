@@ -40,7 +40,7 @@ public class CreateBooksTable {
     dbProps.setProperty("myconnectionpoolname.maxconn", "5");
 
     // SQL Statements in Properties file
-    Properties sqlProps = PropertiesUtils.getPropertiesFromClasspath("SQL.properties");
+    Properties sqlProps = PropertiesUtils.getPropertiesFromClasspath("MYSQL_SQL.properties");
 
     // init DB Connection Manager
     DBConnectionManager.INSTANCE.init(dbProps, sqlProps);

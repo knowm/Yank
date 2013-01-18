@@ -56,7 +56,7 @@ public final class DBConnectionManager {
   }
 
   /**
-   * Init method with both DB.properties and SQL.properties file
+   * Init method with both DB properties and SQL properties file
    * 
    * @param dbProperties
    * @param sqlProperties
@@ -78,7 +78,7 @@ public final class DBConnectionManager {
   }
 
   /**
-   * Init method without a SQL.properties file
+   * Init method without a MYSQL_SQL.properties file
    * 
    * @param dbProperties
    */

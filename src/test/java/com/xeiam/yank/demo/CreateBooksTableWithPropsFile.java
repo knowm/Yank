@@ -29,14 +29,14 @@ public class CreateBooksTableWithPropsFile {
 
   public static void main(String[] args) {
 
-    // DB.properties file on classpath
-    Properties props = PropertiesUtils.getPropertiesFromClasspath("DB.properties");
+    // MYSQL_DB.properties file on classpath
+    Properties props = PropertiesUtils.getPropertiesFromClasspath("MYSQL_DB.properties");
 
-    // Alternative method: DB.properties file using path to file
-    // Properties props = PropertiesUtils.getPropertiesFromPath("/path/to/DB.properties");
+    // Alternative method: MYSQL_DB.properties file using path to file
+    // Properties props = PropertiesUtils.getPropertiesFromPath("/path/to/MYSQL_MYSQL_DB.properties");
 
     // SQL Statements in Properties file
-    Properties sqlProps = PropertiesUtils.getPropertiesFromClasspath("SQL.properties");
+    Properties sqlProps = PropertiesUtils.getPropertiesFromClasspath("MYSQL_SQL.properties");
 
     // init DB Connection Manager
     DBConnectionManager.INSTANCE.init(props, sqlProps);
