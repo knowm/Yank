@@ -16,14 +16,17 @@
 package com.xeiam.yank;
 
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.xeiam.yank.exceptions.PropertiesFileNotFoundException;
+
 /**
+ * A convenience class used to load Properties files
+ * 
  * @author timmolter
  */
 public class PropertiesUtils extends Properties {
@@ -34,7 +37,8 @@ public class PropertiesUtils extends Properties {
    * Loads a Properties file from the classpath matching the given file name
    * 
    * @param fileName
-   * @return
+   * @return The Properties file
+   * @throws PropertiesFileNotFoundException if the Properties file could not be loaded from the classpath
    */
   public static Properties getPropertiesFromClasspath(String fileName) {
 
@@ -46,10 +50,8 @@ public class PropertiesUtils extends Properties {
         logger.debug("loaded properties file with Thread.currentThread()");
       }
       props.load(is);
-    } catch (IOException e) {
-      logger.error("ERROR LOADING PROPERTIES FROM CLASSPATH!!!", e);
-    } catch (NullPointerException e) {
-      logger.error("ERROR LOADING PROPERTIES FROM CLASSPATH!!!", e);
+    } catch (Exception e) {
+      throw new PropertiesFileNotFoundException("ERROR LOADING PROPERTIES FROM CLASSPATH!!!", e);
     }
     return props;
   }
@@ -58,7 +60,8 @@ public class PropertiesUtils extends Properties {
    * Loads a Properties file from the given file name
    * 
    * @param fileName
-   * @return
+   * @return The Properties file
+   * @throws PropertiesFileNotFoundException if the Properties file could not be loaded from the given path and file name
    */
   public static Properties getPropertiesFromPath(String fileName) {
 
@@ -69,7 +72,7 @@ public class PropertiesUtils extends Properties {
       props.load(fis);
       fis.close();
     } catch (Exception e) {
-      logger.error("ERROR LOADING PROPERTIES FROM PATH!!!", e);
+      throw new PropertiesFileNotFoundException("ERROR LOADING PROPERTIES FROM PATH!!!", e);
     }
     return props;
   }
