@@ -19,24 +19,30 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.xeiam.yank.exceptions;
+package com.xeiam.yank.unit;
+
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
+
+import java.util.Properties;
+
+import org.junit.Test;
+
+import com.xeiam.yank.yank.PropertiesUtils;
 
 /**
- * An exception to indicate that a Connection pool could not be found given the Connection pool name.
- * 
  * @author timmolter
  */
-public class PropertiesFileNotFoundException extends RuntimeException {
+public class TestPropertiesUtils {
 
-  /**
-   * Constructor
-   * 
-   * @param message
-   * @param cause
-   */
-  public PropertiesFileNotFoundException(String message, Throwable cause) {
+  @Test
+  public void testLoadProperties() {
 
-    super(message, cause);
+    Properties dbProps = PropertiesUtils.getPropertiesFromClasspath("DB.properties");
+    assertThat(dbProps.get("driverclassname").toString(), equalTo("org.hsqldb.jdbcDriver"));
+
+    Properties sqlProps = PropertiesUtils.getPropertiesFromPath("./src/test/resources/SQL.properties");
+    assertThat(sqlProps.get("BOOKS_SELECT_BY_TITLE").toString(), equalTo("SELECT * FROM BOOKS WHERE TITLE = ?"));
+
   }
-
 }

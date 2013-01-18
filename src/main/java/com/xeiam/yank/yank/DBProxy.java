@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.xeiam.yank;
+package com.xeiam.yank.yank;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -26,8 +26,8 @@ import org.apache.commons.dbutils.handlers.BeanListHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.xeiam.yank.exceptions.ConnectionPoolNotFoundException;
-import com.xeiam.yank.exceptions.SQLStatementNotFoundException;
+import com.xeiam.yank.yank.exceptions.ConnectionException;
+import com.xeiam.yank.yank.exceptions.SQLStatementNotFoundException;
 
 /**
  * A wrapper for DBUtils' QueryRunner's methods: update, query, and batch. Connections are retrieved from the connection pool in DBConnectionManager.
@@ -59,7 +59,7 @@ public class DBProxy {
    * @param params The replacement parameters
    * @return The number of rows affected
    * @throws SQLStatementNotFoundException if an SQL statement could not be found for the given sqlKey String
-   * @throws ConnectionPoolNotFoundException if a Connection pool could not be found given the Connection pool name
+   * @throws ConnectionException if a Connection could not be obtained for some reason
    */
   public static int executeSQLKey(String poolName, String sqlKey, Object[] params) {
 
@@ -78,7 +78,7 @@ public class DBProxy {
    * @param sql The query to execute
    * @param params The replacement parameters
    * @return The number of rows affected
-   * @throws ConnectionPoolNotFoundException if a Connection pool could not be found given the Connection pool name
+   * @throws ConnectionException if a Connection could not be obtained for some reason
    */
   public static int executeSQL(String poolName, String sql, Object[] params) {
 
@@ -90,7 +90,7 @@ public class DBProxy {
       con = DB_CONNECTION_MANAGER.getConnection(poolName);
 
       if (con == null) {
-        throw new ConnectionPoolNotFoundException(poolName);
+        throw new ConnectionException(poolName);
       }
 
       con.setAutoCommit(false);
@@ -128,7 +128,7 @@ public class DBProxy {
    * @param type The Class of the desired return Object matching the table
    * @return The Object
    * @throws SQLStatementNotFoundException if an SQL statement could not be found for the given sqlKey String
-   * @throws ConnectionPoolNotFoundException if a Connection pool could not be found given the Connection pool name
+   * @throws ConnectionException if a Connection could not be obtained for some reason
    */
   public static <T> T querySingleObjectSQLKey(String poolName, String sqlKey, Class<T> type, Object[] params) {
 
@@ -149,7 +149,7 @@ public class DBProxy {
    * @param params The replacement parameters
    * @param type The Class of the desired return Object matching the table
    * @return The Object
-   * @throws ConnectionPoolNotFoundException if a Connection pool could not be found given the Connection pool name
+   * @throws ConnectionException if a Connection could not be obtained for some reason
    */
   public static <T> T querySingleObjectSQL(String poolName, String sql, Class<T> type, Object[] params) {
 
@@ -161,7 +161,7 @@ public class DBProxy {
       con = DB_CONNECTION_MANAGER.getConnection(poolName);
 
       if (con == null) {
-        throw new ConnectionPoolNotFoundException(poolName);
+        throw new ConnectionException(poolName);
       }
 
       con.setAutoCommit(false);
@@ -197,15 +197,15 @@ public class DBProxy {
    * @param type The Class of the desired return Objects matching the table
    * @return The List of Objects
    * @throws SQLStatementNotFoundException if an SQL statement could not be found for the given sqlKey String
-   * @throws ConnectionPoolNotFoundException if a Connection pool could not be found given the Connection pool name
+   * @throws ConnectionException if a Connection could not be obtained for some reason
    */
-  public static <T> List<T> queryObjectListSQLKey(String poolName, String sqlKey, Object[] params, Class<T> type) {
+  public static <T> List<T> queryObjectListSQLKey(String poolName, String sqlKey, Class<T> type, Object[] params) {
 
     String sql = DB_CONNECTION_MANAGER.getSqlProperties().getProperty(sqlKey);
     if (sql == null || sql.equalsIgnoreCase("")) {
       throw new SQLStatementNotFoundException();
     } else {
-      return queryObjectListSQL(poolName, sql, params, type);
+      return queryObjectListSQL(poolName, sql, type, params);
     }
   }
 
@@ -218,9 +218,9 @@ public class DBProxy {
    * @param params The replacement parameters
    * @param type The Class of the desired return Objects matching the table
    * @return The List of Objects
-   * @throws ConnectionPoolNotFoundException if a Connection pool could not be found given the Connection pool name
+   * @throws ConnectionException if a Connection could not be obtained for some reason
    */
-  public static <T> List<T> queryObjectListSQL(String poolName, String sql, Object[] params, Class<T> type) {
+  public static <T> List<T> queryObjectListSQL(String poolName, String sql, Class<T> type, Object[] params) {
 
     List<T> returnList = null;
 
@@ -230,7 +230,7 @@ public class DBProxy {
       con = DB_CONNECTION_MANAGER.getConnection(poolName);
 
       if (con == null) {
-        throw new ConnectionPoolNotFoundException(poolName);
+        throw new ConnectionException(poolName);
       }
 
       con.setAutoCommit(false);
@@ -265,7 +265,7 @@ public class DBProxy {
    * @param params The replacement parameters
    * @return The List of generic Object[]s
    * @throws SQLStatementNotFoundException if an SQL statement could not be found for the given sqlKey String
-   * @throws ConnectionPoolNotFoundException if a Connection pool could not be found given the Connection pool name
+   * @throws ConnectionException if a Connection could not be obtained for some reason
    */
   public static List<Object[]> queryGenericObjectArrayListSQLKey(String poolName, String sqlKey, Object[] params) {
 
@@ -284,7 +284,7 @@ public class DBProxy {
    * @param sql The SQL statement
    * @param params The replacement parameters
    * @return The List of generic Object[]s
-   * @throws ConnectionPoolNotFoundException if a Connection pool could not be found given the Connection pool name
+   * @throws ConnectionException if a Connection could not be obtained for some reason
    */
   public static List<Object[]> queryGenericObjectArrayListSQL(String poolName, String sql, Object[] params) {
 
@@ -296,7 +296,7 @@ public class DBProxy {
       con = DB_CONNECTION_MANAGER.getConnection(poolName);
 
       if (con == null) {
-        throw new ConnectionPoolNotFoundException(poolName);
+        throw new ConnectionException(poolName);
       }
 
       con.setAutoCommit(false);
@@ -329,7 +329,7 @@ public class DBProxy {
    * @param params An array of query replacement parameters. Each row in this array is one set of batch replacement values
    * @return The number of rows affected or each individual execution
    * @throws SQLStatementNotFoundException if an SQL statement could not be found for the given sqlKey String
-   * @throws ConnectionPoolNotFoundException if a Connection pool could not be found given the Connection pool name
+   * @throws ConnectionException if a Connection could not be obtained for some reason
    */
   public static int[] executeBatchSQLKey(String poolName, String sqlKey, Object[][] params) {
 
@@ -348,7 +348,7 @@ public class DBProxy {
    * @param sql The SQL statement
    * @param params An array of query replacement parameters. Each row in this array is one set of batch replacement values
    * @return The number of rows affected or each individual execution
-   * @throws ConnectionPoolNotFoundException if a Connection pool could not be found given the Connection pool name
+   * @throws ConnectionException if a Connection could not be obtained for some reason
    */
   public static int[] executeBatchSQL(String poolName, String sql, Object[][] params) {
 
@@ -360,7 +360,7 @@ public class DBProxy {
       con = DB_CONNECTION_MANAGER.getConnection(poolName);
 
       if (con == null) {
-        throw new ConnectionPoolNotFoundException(poolName);
+        throw new ConnectionException(poolName);
       }
 
       con.setAutoCommit(false);

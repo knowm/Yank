@@ -13,32 +13,37 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.xeiam.yank.example;
+package com.xeiam.yank.examples;
 
 import java.util.Properties;
 
-import com.xeiam.yank.DBConnectionManager;
+import com.xeiam.yank.yank.DBConnectionManager;
+import com.xeiam.yank.yank.PropertiesUtils;
 
 /**
- * Create a table called BOOKS. Demonstrates hardcoding the connection pool properties.
+ * Inserts a Book into the BOOKS table. Demonstrates fetching the connection pool properties from a file on the classpath
  * 
  * @author timmolter
  */
-public class CreateBooksTable {
+public class InsertBook {
 
   public static void main(String[] args) {
 
-    Properties props = new Properties();
-    props.setProperty("driverclassname", "com.mysql.jdbc.Driver");
-    props.setProperty("local.url", "jdbc:mysql://localhost:3306/Yank");
-    props.setProperty("local.user", "root");
-    props.setProperty("local.password", "");
-    props.setProperty("local.maxconn", "5");
+    // DB Properties
+    Properties props = PropertiesUtils.getPropertiesFromClasspath("DB.properties");
 
+    // init DB Connection Manager
     DBConnectionManager.INSTANCE.init(props);
 
-    BooksDAO.createBooksTable();
+    // query
+    Book book = new Book();
+    book.setTitle("Cryptonomicon");
+    book.setAuthor("Neal Stephenson");
+    book.setPrice(23.99);
+    int i = BooksDAO.insertBook(book);
+    System.out.println(i);
 
+    // shutodwn DB Connection Manager
     DBConnectionManager.INSTANCE.release();
 
   }

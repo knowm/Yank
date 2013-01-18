@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.xeiam.yank;
+package com.xeiam.yank.yank;
 
 import java.sql.Connection;
 import java.sql.Driver;
@@ -90,7 +90,7 @@ public final class DBConnectionManager {
       logger.error("DB PROPS NULL!!!");
     }
 
-    sqlProperties = new Properties(); // create an empty properites file
+    sqlProperties = new Properties(); // create an empty properties file
 
     loadDriver(dbProperties);
     createPools(dbProperties);

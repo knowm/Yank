@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.xeiam.yank.example;
+package com.xeiam.yank.examples;
 
 import java.util.List;
 import java.util.Properties;
 
-import com.xeiam.yank.DBConnectionManager;
-import com.xeiam.yank.PropertiesUtils;
+import com.xeiam.yank.yank.DBConnectionManager;
+import com.xeiam.yank.yank.PropertiesUtils;
 
 /**
  * Gets table status from the YANK database. Demonstrates fetching a List of Object[]s from the DB. You need not return lists of Objects!
@@ -30,11 +30,15 @@ public class ShowTableStatus {
 
   public static void main(String[] args) {
 
+    // DB Properties
     Properties dbprops = PropertiesUtils.getPropertiesFromClasspath("DB.properties");
+    // SQL Statements in Properties file
     Properties sqlprops = PropertiesUtils.getPropertiesFromClasspath("SQL.properties");
 
+    // init DB Connection Manager
     DBConnectionManager.INSTANCE.init(dbprops, sqlprops);
 
+    // query
     List<Object[]> matrix = BooksDAO.getTableStatus();
     for (Object[] objects : matrix) {
       for (Object object : objects) {
@@ -42,6 +46,7 @@ public class ShowTableStatus {
       }
     }
 
+    // shutodwn DB Connection Manager
     DBConnectionManager.INSTANCE.release();
 
   }
