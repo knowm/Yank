@@ -19,21 +19,24 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.xeiam.yank.yank.exceptions;
+package com.xeiam.yank.exceptions;
 
 /**
- * An exception to indicate that a Connection could not be obtained for some reason
+ * An exception to indicate that a Connection pool could not be found given the Connection pool name.
  * 
  * @author timmolter
  */
-public class ConnectionException extends RuntimeException {
+public class PropertiesFileNotFoundException extends RuntimeException {
 
   /**
    * Constructor
+   * 
+   * @param message
+   * @param cause
    */
-  public ConnectionException(String poolName) {
+  public PropertiesFileNotFoundException(String message, Throwable cause) {
 
-    super("Connection was null! There is a Connection problem associated with the connection pool: " + poolName);
+    super(message, cause);
   }
 
 }

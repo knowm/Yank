@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.xeiam.yank.examples;
+package com.xeiam.yank.demo;
 
 import java.util.List;
 
-import com.xeiam.yank.yank.DBProxy;
+import com.xeiam.yank.DBProxy;
 
 /**
  * DAO (Data Access Object) Class for BOOKS table. <br>

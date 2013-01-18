@@ -32,10 +32,10 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.xeiam.yank.examples.Book;
-import com.xeiam.yank.examples.BooksDAO;
-import com.xeiam.yank.yank.DBConnectionManager;
-import com.xeiam.yank.yank.PropertiesUtils;
+import com.xeiam.yank.DBConnectionManager;
+import com.xeiam.yank.PropertiesUtils;
+import com.xeiam.yank.demo.Book;
+import com.xeiam.yank.demo.BooksDAO;
 
 /**
  * @author timmolter
@@ -45,8 +45,8 @@ public class TestBooksTable {
   @BeforeClass
   public static void setUpDB() {
 
-    Properties dbProps = PropertiesUtils.getPropertiesFromClasspath("DB.properties");
-    Properties sqlProps = PropertiesUtils.getPropertiesFromClasspath("SQL.properties");
+    Properties dbProps = PropertiesUtils.getPropertiesFromClasspath("HSQL_DB.properties");
+    Properties sqlProps = PropertiesUtils.getPropertiesFromClasspath("HSQL_SQL.properties");
 
     DBConnectionManager.INSTANCE.init(dbProps, sqlProps);
   }

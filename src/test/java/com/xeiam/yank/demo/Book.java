@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.xeiam.yank.examples;
+package com.xeiam.yank.demo;
 
 /**
  * A class used to represent rows in the BOOKS table <br>

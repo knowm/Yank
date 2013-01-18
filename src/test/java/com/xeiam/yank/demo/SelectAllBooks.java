@@ -13,36 +13,34 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.xeiam.yank.examples;
+package com.xeiam.yank.demo;
 
+import java.util.List;
 import java.util.Properties;
 
-import com.xeiam.yank.yank.DBConnectionManager;
-import com.xeiam.yank.yank.PropertiesUtils;
+import com.xeiam.yank.DBConnectionManager;
+import com.xeiam.yank.PropertiesUtils;
 
 /**
- * Create a table called BOOKS. Demonstrates getting the connection pool properties from a *.properties file.
+ * Selects all Book Objects from the BOOKS table. Demonstrates fetching the connection pool properties from a file on the classpath
  * 
  * @author timmolter
  */
-public class CreateBooksTableWithPropsFile {
+public class SelectAllBooks {
 
   public static void main(String[] args) {
 
-    // DB.properties file on classpath
+    // DB Properties
     Properties props = PropertiesUtils.getPropertiesFromClasspath("DB.properties");
 
-    // Alternative method: DB.properties file using path to file
-    // Properties props = PropertiesUtils.getPropertiesFromPath("/path/to/DB.properties");
-
-    // SQL Statements in Properties file
-    Properties sqlProps = PropertiesUtils.getPropertiesFromClasspath("SQL.properties");
-
     // init DB Connection Manager
-    DBConnectionManager.INSTANCE.init(props, sqlProps);
+    DBConnectionManager.INSTANCE.init(props);
 
     // query
-    BooksDAO.createBooksTable();
+    List<Book> allBooks = BooksDAO.selectAllBooks();
+    for (Book book : allBooks) {
+      System.out.println(book.getTitle());
+    }
 
     // shutodwn DB Connection Manager
     DBConnectionManager.INSTANCE.release();

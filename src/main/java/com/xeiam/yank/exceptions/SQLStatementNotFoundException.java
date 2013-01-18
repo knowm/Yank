@@ -19,24 +19,21 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.xeiam.yank.yank.exceptions;
+package com.xeiam.yank.exceptions;
 
 /**
- * An exception to indicate that a Connection pool could not be found given the Connection pool name.
+ * An exception to indicate that an SQL statement could not be found for the given key String
  * 
  * @author timmolter
  */
-public class PropertiesFileNotFoundException extends RuntimeException {
+public class SQLStatementNotFoundException extends RuntimeException {
 
   /**
    * Constructor
-   * 
-   * @param message
-   * @param cause
    */
-  public PropertiesFileNotFoundException(String message, Throwable cause) {
+  public SQLStatementNotFoundException() {
 
-    super(message, cause);
+    super("The SQL statement could not be found for the given key String. Make sure you have a file called SQL.properties on the classpath with valid key vale pairs!");
   }
 
 }

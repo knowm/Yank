@@ -28,7 +28,7 @@ import java.util.Properties;
 
 import org.junit.Test;
 
-import com.xeiam.yank.yank.PropertiesUtils;
+import com.xeiam.yank.PropertiesUtils;
 
 /**
  * @author timmolter

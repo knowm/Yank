@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.xeiam.yank.yank;
+package com.xeiam.yank;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -22,7 +22,7 @@ import java.util.Properties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.xeiam.yank.yank.exceptions.PropertiesFileNotFoundException;
+import com.xeiam.yank.exceptions.PropertiesFileNotFoundException;
 
 /**
  * A convenience class used to load Properties files

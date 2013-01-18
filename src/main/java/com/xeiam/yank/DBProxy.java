@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.xeiam.yank.yank;
+package com.xeiam.yank;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -26,8 +26,8 @@ import org.apache.commons.dbutils.handlers.BeanListHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.xeiam.yank.yank.exceptions.ConnectionException;
-import com.xeiam.yank.yank.exceptions.SQLStatementNotFoundException;
+import com.xeiam.yank.exceptions.ConnectionException;
+import com.xeiam.yank.exceptions.SQLStatementNotFoundException;
 
 /**
  * A wrapper for DBUtils' QueryRunner's methods: update, query, and batch. Connections are retrieved from the connection pool in DBConnectionManager.

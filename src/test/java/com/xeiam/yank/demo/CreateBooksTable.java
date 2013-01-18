@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.xeiam.yank.examples;
+package com.xeiam.yank.demo;
 
 import java.util.Properties;
 
-import com.xeiam.yank.yank.DBConnectionManager;
-import com.xeiam.yank.yank.PropertiesUtils;
+import com.xeiam.yank.DBConnectionManager;
+import com.xeiam.yank.PropertiesUtils;
 
 /**
  * Create a table called BOOKS. <br>
