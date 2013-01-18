@@ -22,7 +22,7 @@ import com.xeiam.yank.DBConnectionManager;
 import com.xeiam.yank.PropertiesUtils;
 
 /**
- * Gets table status from the YANK database. Demonstrates fetching Object arrays from the DB. You need not return lists of Beans!
+ * Gets table status from the YANK database. Demonstrates fetching a List of Object[]s from the DB. You need not return lists of Objects!
  * 
  * @author timmolter
  */

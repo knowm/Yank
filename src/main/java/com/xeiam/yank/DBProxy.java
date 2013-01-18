@@ -196,7 +196,7 @@ public class DBProxy {
    * @return The List of Objects
    * @throws ConnectionPoolNotFoundException if a Connection pool could not be found given the Connection pool name
    */
-  public static List<? extends Object> queryObjectListSQL(String poolName, String sql, Object[] params, Class<? extends Object> beanClass) {
+  public static List<? extends Object> queryObjectListSQL(String poolName, String sql, Object[] params, Class<? extends Object> type) {
 
     List<Object> returnList = null;
 
@@ -211,7 +211,7 @@ public class DBProxy {
 
       con.setAutoCommit(false);
 
-      ResultSetHandler rsh = new BeanListHandler(beanClass);
+      ResultSetHandler rsh = new BeanListHandler(type);
 
       returnList = (List<Object>) new QueryRunner().query(con, sql, rsh, params);
 

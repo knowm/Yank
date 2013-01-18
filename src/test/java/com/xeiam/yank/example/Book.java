@@ -16,7 +16,7 @@
 package com.xeiam.yank.example;
 
 /**
- * A Bean used to represent rows in the BOOKS table
+ * A class used to represent rows in the BOOKS table
  * 
  * @author timmolter
  */
