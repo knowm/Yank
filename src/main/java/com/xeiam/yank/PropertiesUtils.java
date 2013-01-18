@@ -34,6 +34,13 @@ public class PropertiesUtils extends Properties {
   static Logger logger = LoggerFactory.getLogger(PropertiesUtils.class);
 
   /**
+   * private Constructor to prevent instantiation
+   */
+  private PropertiesUtils() {
+
+  }
+
+  /**
    * Loads a Properties file from the classpath matching the given file name
    * 
    * @param fileName
