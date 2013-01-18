@@ -36,7 +36,7 @@ public class BooksDAO {
   public static List<Book> selectAllBooks() {
 
     String SQL = "SELECT * FROM BOOKS";
-    return (List<Book>) DBProxy.queryObjectListSQL("local", SQL, null, Book.class);
+    return DBProxy.queryObjectListSQL("local", SQL, null, Book.class);
   }
 
   public static int[] insertBatch(List<Book> pBooks) {
@@ -61,7 +61,7 @@ public class BooksDAO {
   public static Book selectBook(String pTitle) {
 
     Object[] params = new Object[] { pTitle };
-    return (Book) DBProxy.querySingleObjectSQLKey("local", "BOOKS_SELECT_BY_TITLE", params, Book.class);
+    return DBProxy.querySingleObjectSQLKey("local", "BOOKS_SELECT_BY_TITLE", Book.class, params);
   }
 
   public static List<Object[]> getTableStatus() {
