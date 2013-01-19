@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.xeiam.yank.example;
+package com.xeiam.yank.demo;
 
 import java.util.Properties;
 
@@ -21,7 +21,7 @@ import com.xeiam.yank.DBConnectionManager;
 import com.xeiam.yank.PropertiesUtils;
 
 /**
- * Selects a single Book from the BOOKS table. Demonstrates using a SQL Key in SQL.properties
+ * Selects a single Book from the BOOKS table. Demonstrates using a SQL Key in MYSQL_SQL.properties
  * 
  * @author timmolter
  */
@@ -29,14 +29,19 @@ public class SelectBook {
 
   public static void main(String[] args) {
 
-    Properties dbprops = PropertiesUtils.getPropertiesFromClasspath("DB.properties");
-    Properties sqlprops = PropertiesUtils.getPropertiesFromClasspath("SQL.properties");
+    // DB Properties
+    Properties dbprops = PropertiesUtils.getPropertiesFromClasspath("MYSQL_DB.properties");
+    // SQL Statements in Properties file
+    Properties sqlprops = PropertiesUtils.getPropertiesFromClasspath("MYSQL_SQL.properties");
 
+    // init DB Connection Manager
     DBConnectionManager.INSTANCE.init(dbprops, sqlprops);
 
+    // query
     Book book = BooksDAO.selectBook("Cryptonomicon");
     System.out.println(book.toString());
 
+    // shutodwn DB Connection Manager
     DBConnectionManager.INSTANCE.release();
 
   }

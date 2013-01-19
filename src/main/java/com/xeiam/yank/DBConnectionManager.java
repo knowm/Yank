@@ -30,8 +30,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * This class is a Singleton that provides access to one or many connection pools defined in a Property file. A client gets access to the single instance and can then check-out and check-in connections from a pool. When the client shuts down it
- * should call the release() method to close all open connections and do other clean up.
+ * This class is a Singleton that provides access to one or many connection pools defined in a Property file. A client gets access to the single instance and can then check-out and check-in
+ * connections from a pool. When the client shuts down it should call the release() method to close all open connections and do other clean up.
  * 
  * @author timmolter
  */
@@ -56,44 +56,44 @@ public final class DBConnectionManager {
   }
 
   /**
-   * Init method with both DB.properties and SQL.properties file
+   * Init method with both DB properties and SQL properties file
    * 
-   * @param pDBProps
-   * @param pSQLProps
+   * @param dbProperties
+   * @param sqlProperties
    */
-  public void init(Properties pDBProps, Properties pSQLProps) {
+  public void init(Properties dbProperties, Properties sqlProperties) {
 
     logger.info("Initializing DBConnectionManager...");
 
-    if (pDBProps == null) {
+    if (dbProperties == null) {
       logger.error("DB PROPS NULL!!!");
     }
-    if (pSQLProps == null) {
+    if (sqlProperties == null) {
       logger.warn("SQL PROPS NULL!!!");
     }
-    sqlProperties = pSQLProps;
+    this.sqlProperties = sqlProperties;
 
-    loadDriver(pDBProps);
-    createPools(pDBProps);
+    loadDriver(dbProperties);
+    createPools(dbProperties);
   }
 
   /**
-   * Init method without a SQL.properties file
+   * Init method without a MYSQL_SQL.properties file
    * 
-   * @param pDBProps
+   * @param dbProperties
    */
-  public void init(Properties pDBProps) {
+  public void init(Properties dbProperties) {
 
     logger.info("Initializing DBConnectionManager...");
 
-    if (pDBProps == null) {
+    if (dbProperties == null) {
       logger.error("DB PROPS NULL!!!");
     }
 
-    sqlProperties = new Properties(); // create an empty properites file
+    sqlProperties = new Properties(); // create an empty properties file
 
-    loadDriver(pDBProps);
-    createPools(pDBProps);
+    loadDriver(dbProperties);
+    createPools(dbProperties);
   }
 
   private boolean loadDriver(Properties dbProperties) {

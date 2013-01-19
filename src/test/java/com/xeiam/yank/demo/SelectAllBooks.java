@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.xeiam.yank.example;
+package com.xeiam.yank.demo;
 
 import java.util.List;
 import java.util.Properties;
@@ -22,26 +22,27 @@ import com.xeiam.yank.DBConnectionManager;
 import com.xeiam.yank.PropertiesUtils;
 
 /**
- * Gets table status from the YANK database. Demonstrates fetching Object arrays from the DB. You need not return lists of Beans!
+ * Selects all Book Objects from the BOOKS table. Demonstrates fetching the connection pool properties from a file on the classpath
  * 
  * @author timmolter
  */
-public class ShowTableStatus {
+public class SelectAllBooks {
 
   public static void main(String[] args) {
 
-    Properties dbprops = PropertiesUtils.getPropertiesFromClasspath("DB.properties");
-    Properties sqlprops = PropertiesUtils.getPropertiesFromClasspath("SQL.properties");
+    // DB Properties
+    Properties props = PropertiesUtils.getPropertiesFromClasspath("MYSQL_DB.properties");
 
-    DBConnectionManager.INSTANCE.init(dbprops, sqlprops);
+    // init DB Connection Manager
+    DBConnectionManager.INSTANCE.init(props);
 
-    List<Object[]> matrix = BooksDAO.getTableStatus();
-    for (Object[] objects : matrix) {
-      for (Object object : objects) {
-        System.out.println(object == null ? "null" : object.toString());
-      }
+    // query
+    List<Book> allBooks = BooksDAO.selectAllBooks();
+    for (Book book : allBooks) {
+      System.out.println(book.getTitle());
     }
 
+    // shutodwn DB Connection Manager
     DBConnectionManager.INSTANCE.release();
 
   }

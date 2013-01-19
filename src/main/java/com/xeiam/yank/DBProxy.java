@@ -20,26 +20,32 @@ import java.sql.SQLException;
 import java.util.List;
 
 import org.apache.commons.dbutils.QueryRunner;
-import org.apache.commons.dbutils.ResultSetHandler;
 import org.apache.commons.dbutils.handlers.ArrayListHandler;
+import org.apache.commons.dbutils.handlers.BeanHandler;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.xeiam.yank.exceptions.ConnectionException;
+import com.xeiam.yank.exceptions.SQLStatementNotFoundException;
 
 /**
  * A wrapper for DBUtils' QueryRunner's methods: update, query, and batch. Connections are retrieved from the connection pool in DBConnectionManager.
  * 
  * @author timmolter
  */
-public class DBProxy {
+public final class DBProxy {
 
   private static final DBConnectionManager DB_CONNECTION_MANAGER = DBConnectionManager.INSTANCE;
 
   /** slf4J logger wrapper */
   private static Logger logger = LoggerFactory.getLogger(DBProxy.class);
 
+  private static final String ROLLBACK_EXCEPTION_MESSAGE = "Exception caught while rolling back transaction";
+  private static final String QUERY_EXCEPTION_MESSAGE = "Error in SQL query!!!";
+
   /**
-   * Prevent class instantiation.
+   * Prevent class instantiation with private constructor
    */
   private DBProxy() {
 
@@ -48,35 +54,38 @@ public class DBProxy {
   // ////// INSERT, UPDATE, DELETE, or UPSERT //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   /**
-   * Executes the given INSERT, UPDATE, DELETE, REPLACE or UPSERT SQL statement with params. Returns the number of rows affected
+   * Executes the given INSERT, UPDATE, DELETE, REPLACE or UPSERT SQL statement matching the sqlKey String in a properties file passed to DBConnectionManager via the init method. Returns the number of
+   * rows affected.
    * 
-   * @param sqlKey
-   * @param params
-   * @return int - -1 means something went wrong
-   * @throws Exception
+   * @param poolName The connection pool name
+   * @param sqlKey The SQL Key found in a properties file corresponding to the desired SQL statement value
+   * @param params The replacement parameters
+   * @return The number of rows affected
+   * @throws SQLStatementNotFoundException if an SQL statement could not be found for the given sqlKey String
+   * @throws ConnectionException if a Connection could not be obtained for some reason
    */
-  public static int executeIUDSQLKey(String poolName, String sqlKey, Object[] params) {
+  public static int executeSQLKey(String poolName, String sqlKey, Object[] params) {
 
     String sql = DB_CONNECTION_MANAGER.getSqlProperties().getProperty(sqlKey);
     if (sql == null || sql.equalsIgnoreCase("")) {
-      logger.warn("NO SQL statement found with key: '" + sqlKey + "' in SQL properties file");
-
-      return -1;
+      throw new SQLStatementNotFoundException();
+    } else {
+      return executeSQL(poolName, sql, params);
     }
-    return executeIUDSQL(poolName, sql, params);
   }
 
   /**
-   * Execute a UID - Update, Insert, Delete statement using an SQL String
+   * Executes the given INSERT, UPDATE, DELETE, REPLACE or UPSERT SQL prepared statement. Returns the number of rows affected.
    * 
-   * @param poolName
-   * @param sql
-   * @param params
-   * @return
+   * @param poolName The connection pool name
+   * @param sql The query to execute
+   * @param params The replacement parameters
+   * @return The number of rows affected
+   * @throws ConnectionException if a Connection could not be obtained for some reason
    */
-  public static int executeIUDSQL(String poolName, String sql, Object[] params) {
+  public static int executeSQL(String poolName, String sql, Object[] params) {
 
-    int returnInt = -1;
+    int returnInt = 0;
 
     Connection con = null;
 
@@ -84,7 +93,7 @@ public class DBProxy {
       con = DB_CONNECTION_MANAGER.getConnection(poolName);
 
       if (con == null) {
-        throw new IllegalArgumentException("Connection was null! There is no connection pool assocuiated with the given name: " + poolName);
+        throw new ConnectionException(poolName);
       }
 
       con.setAutoCommit(false);
@@ -94,16 +103,14 @@ public class DBProxy {
       con.commit();
 
     } catch (Exception e) {
+      logger.error(QUERY_EXCEPTION_MESSAGE, e);
       if (con != null) {
         try {
           con.rollback();
         } catch (SQLException e1) {
-          logger.error("Exception caught while rolling back transaction", e1);
+          logger.error(ROLLBACK_EXCEPTION_MESSAGE, e1);
         }
       }
-
-      logger.error("Error in SQL query!!!", e);
-
     } finally {
       DB_CONNECTION_MANAGER.freeConnection(poolName, con);
     }
@@ -112,83 +119,44 @@ public class DBProxy {
 
   }
 
-  // ////// BEAN QUERY //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // ////// Single Object QUERY //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   /**
-   * Convenience method to return just one Bean given a SQL Key
+   * Return just one Object given a SQL Key using an SQL statement matching the sqlKey String in a properties file passed to DBConnectionManager via the init method. If more than one row match the
+   * query, only the first row is returned.
    * 
-   * @param poolName
-   * @param sqlKey
-   * @param params
-   * @param beanClass
-   * @return Bean - null if returned list is not equal to one
+   * @param poolName The connection pool name
+   * @param sqlKey The SQL Key found in a properties file corresponding to the desired SQL statement value
+   * @param params The replacement parameters
+   * @param type The Class of the desired return Object matching the table
+   * @return The Object
+   * @throws SQLStatementNotFoundException if an SQL statement could not be found for the given sqlKey String
+   * @throws ConnectionException if a Connection could not be obtained for some reason
    */
-  public static Object querySingleBeanSQLKey(String poolName, String sqlKey, Object[] params, Class<? extends Object> beanClass) {
-
-    List<? extends Object> list = queryBeanListSQLKey(poolName, sqlKey, params, beanClass);
-
-    if (list != null && list.size() == 1) {
-      return list.get(0);
-    }
-
-    return null;
-  }
-
-  /**
-   * Convenience method to return just one Bean given an SQL statement
-   * 
-   * @param poolName
-   * @param sql
-   * @param params
-   * @param beanClass
-   * @return Bean - null if returned list is not equal to one
-   */
-  public static Object querySingleBeanSQL(String poolName, String sql, Object[] params, Class<? extends Object> beanClass) {
-
-    List<? extends Object> list = queryBeanListSQL(poolName, sql, params, beanClass);
-
-    if (list != null && list.size() == 1) {
-      return list.get(0);
-    }
-
-    return null;
-  }
-
-  /**
-   * Convenience method to return a List of Beans given an SQL Key with params
-   * 
-   * @param poolName
-   * @param sqlKey
-   * @param params
-   * @param beanClass
-   * @return
-   */
-  public static List<? extends Object> queryBeanListSQLKey(String poolName, String sqlKey, Object[] params, Class<? extends Object> beanClass) {
-
-    List<Object> returnList = null;
+  public static <T> T querySingleObjectSQLKey(String poolName, String sqlKey, Class<T> type, Object[] params) {
 
     String sql = DB_CONNECTION_MANAGER.getSqlProperties().getProperty(sqlKey);
     if (sql == null || sql.equalsIgnoreCase("")) {
-      logger.warn("NO SQL statement found with key: '" + sqlKey + "' in SQL properties file");
-      return returnList;
+      throw new SQLStatementNotFoundException();
+    } else {
+      return querySingleObjectSQL(poolName, sql, type, params);
     }
 
-    return queryBeanListSQL(poolName, sql, params, beanClass);
   }
 
   /**
-   * Returns a List of Beans given an SQL Statement with params
+   * Return just one Object given an SQL statement. If more than one row match the query, only the first row is returned.
    * 
-   * @param poolName
-   * @param sql
-   * @param params
-   * @param beanClass
-   * @return
+   * @param poolName The connection pool name
+   * @param sql The SQL statement
+   * @param params The replacement parameters
+   * @param type The Class of the desired return Object matching the table
+   * @return The Object
+   * @throws ConnectionException if a Connection could not be obtained for some reason
    */
-  @SuppressWarnings("unchecked")
-  public static List<? extends Object> queryBeanListSQL(String poolName, String sql, Object[] params, Class<? extends Object> beanClass) {
+  public static <T> T querySingleObjectSQL(String poolName, String sql, Class<T> type, Object[] params) {
 
-    List<Object> returnList = null;
+    T returnObject = null;
 
     Connection con = null;
 
@@ -196,23 +164,92 @@ public class DBProxy {
       con = DB_CONNECTION_MANAGER.getConnection(poolName);
 
       if (con == null) {
-        throw new IllegalArgumentException("Connection was null! There is no connection pool assocuiated with the given name: " + poolName);
+        throw new ConnectionException(poolName);
       }
 
       con.setAutoCommit(false);
 
-      ResultSetHandler rsh = new BeanListHandler(beanClass);
+      BeanHandler<T> resultSetHandler = new BeanHandler<T>(type);
 
-      returnList = (List<Object>) new QueryRunner().query(con, sql, rsh, params);
+      returnObject = new QueryRunner().query(con, sql, resultSetHandler, params);
 
       con.commit();
 
     } catch (Exception e) {
-      logger.error("ERROR QUERYING!!!", e);
+      logger.error(QUERY_EXCEPTION_MESSAGE, e);
       try {
         con.rollback();
       } catch (SQLException e2) {
-        logger.error("Exception caught while rolling back transaction", e2);
+        logger.error(ROLLBACK_EXCEPTION_MESSAGE, e2);
+      }
+    } finally {
+      DB_CONNECTION_MANAGER.freeConnection(poolName, con);
+    }
+
+    return returnObject;
+  }
+
+  // ////// Object List QUERY //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+  /**
+   * Return a List of Objects given a SQL Key using an SQL statement matching the sqlKey String in a properties file passed to DBConnectionManager via the init method.
+   * 
+   * @param poolName The connection pool name
+   * @param sqlKey The SQL Key found in a properties file corresponding to the desired SQL statement value
+   * @param params The replacement parameters
+   * @param type The Class of the desired return Objects matching the table
+   * @return The List of Objects
+   * @throws SQLStatementNotFoundException if an SQL statement could not be found for the given sqlKey String
+   * @throws ConnectionException if a Connection could not be obtained for some reason
+   */
+  public static <T> List<T> queryObjectListSQLKey(String poolName, String sqlKey, Class<T> type, Object[] params) {
+
+    String sql = DB_CONNECTION_MANAGER.getSqlProperties().getProperty(sqlKey);
+    if (sql == null || sql.equalsIgnoreCase("")) {
+      throw new SQLStatementNotFoundException();
+    } else {
+      return queryObjectListSQL(poolName, sql, type, params);
+    }
+  }
+
+  /**
+   * Return a List of Objects given an SQL statement
+   * 
+   * @param <T>
+   * @param poolName The connection pool name
+   * @param sql The SQL statement
+   * @param params The replacement parameters
+   * @param type The Class of the desired return Objects matching the table
+   * @return The List of Objects
+   * @throws ConnectionException if a Connection could not be obtained for some reason
+   */
+  public static <T> List<T> queryObjectListSQL(String poolName, String sql, Class<T> type, Object[] params) {
+
+    List<T> returnList = null;
+
+    Connection con = null;
+
+    try {
+      con = DB_CONNECTION_MANAGER.getConnection(poolName);
+
+      if (con == null) {
+        throw new ConnectionException(poolName);
+      }
+
+      con.setAutoCommit(false);
+
+      BeanListHandler<T> resultSetHandler = new BeanListHandler<T>(type);
+
+      returnList = new QueryRunner().query(con, sql, resultSetHandler, params);
+
+      con.commit();
+
+    } catch (Exception e) {
+      logger.error(QUERY_EXCEPTION_MESSAGE, e);
+      try {
+        con.rollback();
+      } catch (SQLException e2) {
+        logger.error(ROLLBACK_EXCEPTION_MESSAGE, e2);
       }
     } finally {
       DB_CONNECTION_MANAGER.freeConnection(poolName, con);
@@ -221,39 +258,38 @@ public class DBProxy {
     return returnList;
   }
 
-  // ////// OBJECT QUERY //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // ////// OBJECT[] LIST QUERY //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   /**
-   * Returns a List of Objects given an SQL Key with params
+   * Return a List of generic Object[]s given a SQL Key using an SQL statement matching the sqlKey String in a properties file passed to DBConnectionManager via the init method.
    * 
-   * @param poolName
-   * @param sqlKey
-   * @param params
-   * @return
+   * @param poolName The connection pool name
+   * @param sqlKey The SQL Key found in a properties file corresponding to the desired SQL statement value
+   * @param params The replacement parameters
+   * @return The List of generic Object[]s
+   * @throws SQLStatementNotFoundException if an SQL statement could not be found for the given sqlKey String
+   * @throws ConnectionException if a Connection could not be obtained for some reason
    */
-  public static List<Object[]> queryObjectListSQLKey(String poolName, String sqlKey, Object[] params) {
-
-    List<Object[]> returnList = null;
+  public static List<Object[]> queryGenericObjectArrayListSQLKey(String poolName, String sqlKey, Object[] params) {
 
     String sql = DB_CONNECTION_MANAGER.getSqlProperties().getProperty(sqlKey);
     if (sql == null || sql.equalsIgnoreCase("")) {
-      logger.warn("NO SQL statement found with key: '" + sqlKey + "' in SQL properties file");
-      return returnList;
+      throw new SQLStatementNotFoundException();
+    } else {
+      return queryGenericObjectArrayListSQL(poolName, sql, params);
     }
-
-    return queryObjectListSQL(poolName, sql, params);
   }
 
   /**
-   * Returns a List of Objects given an SQL String with params
+   * Return a List of generic Object[]s given an SQL statement
    * 
-   * @param poolName
-   * @param sql
-   * @param params
-   * @return
+   * @param poolName The connection pool name
+   * @param sql The SQL statement
+   * @param params The replacement parameters
+   * @return The List of generic Object[]s
+   * @throws ConnectionException if a Connection could not be obtained for some reason
    */
-  @SuppressWarnings("unchecked")
-  public static List<Object[]> queryObjectListSQL(String poolName, String sql, Object[] params) {
+  public static List<Object[]> queryGenericObjectArrayListSQL(String poolName, String sql, Object[] params) {
 
     List<Object[]> returnList = null;
 
@@ -263,20 +299,21 @@ public class DBProxy {
       con = DB_CONNECTION_MANAGER.getConnection(poolName);
 
       if (con == null) {
-        throw new IllegalArgumentException("Connection was null! There is no connection pool assocuiated with the given name: " + poolName);
+        throw new ConnectionException(poolName);
       }
 
       con.setAutoCommit(false);
 
-      ResultSetHandler rsh = new ArrayListHandler();
-      returnList = (List<Object[]>) new QueryRunner().query(con, sql, rsh, params);
+      ArrayListHandler resultSetHandler = new ArrayListHandler();
+      returnList = new QueryRunner().query(con, sql, resultSetHandler, params);
 
       con.commit();
     } catch (Exception e) {
+      logger.error(QUERY_EXCEPTION_MESSAGE, e);
       try {
         con.rollback();
       } catch (SQLException e1) {
-        logger.error("Exception caught while rolling back transaction", e1);
+        logger.error(ROLLBACK_EXCEPTION_MESSAGE, e1);
       }
     } finally {
       DB_CONNECTION_MANAGER.freeConnection(poolName, con);
@@ -288,28 +325,35 @@ public class DBProxy {
   // ////// BATCH //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   /**
-   * @param poolName
-   * @param sqlKey
-   * @param params
-   * @return
+   * Batch executes the given INSERT, UPDATE, DELETE, REPLACE or UPSERT SQL statement matching the sqlKey String in a properties file passed to DBConnectionManager via the init method
+   * 
+   * @param poolName The connection pool name
+   * @param sqlKey The SQL Key found in a properties file corresponding to the desired SQL statement value
+   * @param params An array of query replacement parameters. Each row in this array is one set of batch replacement values
+   * @return The number of rows affected or each individual execution
+   * @throws SQLStatementNotFoundException if an SQL statement could not be found for the given sqlKey String
+   * @throws ConnectionException if a Connection could not be obtained for some reason
    */
-  public static int[] executeBatchIUDSQLKey(String poolName, String sqlKey, Object[][] params) {
+  public static int[] executeBatchSQLKey(String poolName, String sqlKey, Object[][] params) {
 
     String sql = DB_CONNECTION_MANAGER.getSqlProperties().getProperty(sqlKey);
     if (sql == null || sql.equalsIgnoreCase("")) {
-      logger.warn("NO SQL statement found with key: '" + sqlKey + "' in SQL properties file");
+      throw new SQLStatementNotFoundException();
+    } else {
+      return executeBatchSQL(poolName, sql, params);
     }
-
-    return executeBatchIUDSQL(poolName, sql, params);
   }
 
   /**
-   * @param poolName
-   * @param sql
-   * @param params
-   * @return
+   * Batch executes the given INSERT, UPDATE, DELETE, REPLACE or UPSERT SQL statement
+   * 
+   * @param poolName The connection pool name
+   * @param sql The SQL statement
+   * @param params An array of query replacement parameters. Each row in this array is one set of batch replacement values
+   * @return The number of rows affected or each individual execution
+   * @throws ConnectionException if a Connection could not be obtained for some reason
    */
-  public static int[] executeBatchIUDSQL(String poolName, String sql, Object[][] params) {
+  public static int[] executeBatchSQL(String poolName, String sql, Object[][] params) {
 
     int[] returnIntArray = null;
 
@@ -319,7 +363,7 @@ public class DBProxy {
       con = DB_CONNECTION_MANAGER.getConnection(poolName);
 
       if (con == null) {
-        throw new IllegalArgumentException("Connection was null! There is no connection pool assocuiated with the given name: " + poolName);
+        throw new ConnectionException(poolName);
       }
 
       con.setAutoCommit(false);
@@ -328,10 +372,11 @@ public class DBProxy {
 
       con.commit();
     } catch (Exception e) {
+      logger.error(QUERY_EXCEPTION_MESSAGE, e);
       try {
         con.rollback();
       } catch (SQLException e1) {
-        logger.error("Exception caught while rolling back transaction", e1);
+        logger.error(ROLLBACK_EXCEPTION_MESSAGE, e1);
       }
     } finally {
       DB_CONNECTION_MANAGER.freeConnection(poolName, con);

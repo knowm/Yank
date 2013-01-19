@@ -1,13 +1,12 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-    <name>Yank</name>
+	<name>Yank</name>
 	<groupId>com.xeiam</groupId>
 	<artifactId>yank</artifactId>
-	<version>1.1.1</version>
+	<version>2.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
-	<description>A Very Easy-to-Use Yet Flexible Java Persistence Layer for JDBC Databases </description>
+	<description>Ultra-Light JDBC Persistance Layer</description>
 	<url>http://xeiam.com/yank.jsp</url>
 	<inceptionYear>2011</inceptionYear>
 
@@ -20,40 +19,32 @@
 		<developer>
 			<name>Tim Molter</name>
 		</developer>
-		<developer>
-			<name>Alex Nugent</name>
-		</developer>
 	</developers>
+
 	<licenses>
 		<license>
-			<name>Apache 2</name>
-			<url>http://www.apache.org/licenses/LICENSE-2.0</url>
+			<name>The Apache Software License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
 			<distribution>repo</distribution>
 			<comments>A business-friendly OSS license</comments>
 		</license>
 	</licenses>
+
 	<issueManagement>
 		<system>GitHub</system>
 		<url>https://github.com/timmolter/Yank/issues</url>
 	</issueManagement>
+
 	<scm>
-		<url>https://github.com/timmolter/Yank</url>
-	</scm>
+		<connection>scm:git:git@github.com:timmolter/Yank.git</connection>
+		<developerConnection>scm:git:git@github.com:timmolter/Yank.git</developerConnection>
+		<url>git@github.com:timmolter/Yank.git</url>
+	  <tag>HEAD</tag>
+  </scm>
+
 	<ciManagement>
 		<url>http://ci.xeiam.com/</url>
 	</ciManagement>
-	<distributionManagement>
-		<snapshotRepository>
-			<id>xeiam_oss.snapshots</id>
-			<name>Nexus Snapshots Repo</name>
-			<url>http://nexus.xeiam.com/content/repositories/snapshots/</url>
-		</snapshotRepository>
-		<repository>
-			<id>xeiam_oss.releases</id>
-			<name>Nexus Release Repo</name>
-			<url>http://nexus.xeiam.com/content/repositories/releases/</url>
-		</repository>
-	</distributionManagement>
 
 	<dependencies>
 		<dependency>
@@ -62,56 +53,95 @@
 			<version>1.5</version>
 		</dependency>
 		<dependency>
-			<groupId>ch.qos.logback</groupId>
-			<artifactId>logback-classic</artifactId>
-			<version>1.0.6</version>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.7.2</version>
 		</dependency>
 		<!-- test -->
 		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>1.0.9</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
-			<version>5.1.13</version>
+			<version>5.1.22</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.hamcrest</groupId>
-			<artifactId>hamcrest-library</artifactId>
-			<version>1.3</version>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.11</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>junit</groupId>
-			<!-- dep leaves out hamcrest classes -->
-			<artifactId>junit-dep</artifactId>
-			<version>4.10</version>
+			<groupId>hsqldb</groupId>
+			<artifactId>hsqldb</artifactId>
 			<scope>test</scope>
-			<exclusions>
-				<exclusion>
-					<groupId>org.hamcrest</groupId>
-					<artifactId>hamcrest-core</artifactId>
-				</exclusion>
-			</exclusions>
+			<version>1.8.0.10</version>
 		</dependency>
 	</dependencies>
 
+	<distributionManagement>
+		<snapshotRepository>
+			<id>xeiam_oss.sonatype-nexus-snapshots</id>
+			<name>Sonatype Nexus Snapshots</name>
+			<url>http://oss.sonatype.org/content/repositories/snapshots</url>
+		</snapshotRepository>
+		<repository>
+			<id>xeiam_oss.sonatype-nexus-staging</id>
+			<name>Nexus Release Repository</name>
+			<url>http://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+		</repository>
+		<downloadUrl>https://oss.sonatype.org/content/groups/public/com/xeiam/yank</downloadUrl>
+	</distributionManagement>
+
+	<profiles>
+		<profile>
+			<id>release-sign-artifacts</id>
+			<activation>
+				<property>
+					<name>performRelease</name>
+					<value>true</value>
+				</property>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-gpg-plugin</artifactId>
+						<version>1.4</version>
+						<executions>
+							<execution>
+								<id>sign-artifacts</id>
+								<phase>verify</phase>
+								<goals>
+									<goal>sign</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+
 	<build>
-		<pluginManagement>
-			<plugins>
-				<!-- Ensure compilation is done under Java 6 in all environments -->
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-compiler-plugin</artifactId>
-					<version>2.5.1</version>
-					<configuration>
-						<source>1.6</source>
-						<target>1.6</target>
-						<showDeprecation>true</showDeprecation>
-						<showWarnings>true</showWarnings>
-					</configuration>
-				</plugin>
-			</plugins>
-		</pluginManagement>
 		<plugins>
+			<!-- Ensure compilation is done under Java 5 in all environments -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.5.1</version>
+				<configuration>
+					<source>1.6</source>
+					<target>1.6</target>
+					<showDeprecation>true</showDeprecation>
+					<showWarnings>true</showWarnings>
+				</configuration>
+			</plugin>
 			<!-- Generates a source code JAR during package -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -140,7 +170,20 @@
 					</execution>
 				</executions>
 			</plugin>
+		<plugin>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-release-plugin</artifactId>
+			<version>2.4</version>
+			<configuration>
+				<autoversionsubmodules>true</autoversionsubmodules>
+			</configuration>
+		</plugin>
 		</plugins>
 	</build>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+	</properties>
 
 </project>

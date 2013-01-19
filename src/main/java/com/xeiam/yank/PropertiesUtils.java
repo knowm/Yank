@@ -16,32 +16,49 @@
 package com.xeiam.yank;
 
 import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.InputStream;
 import java.util.Properties;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.xeiam.yank.exceptions.PropertiesFileNotFoundException;
+
 /**
+ * A convenience class used to load Properties files
+ * 
  * @author timmolter
  */
 public class PropertiesUtils extends Properties {
 
-  static Logger logger = LoggerFactory.getLogger(PropertiesUtils.class);
+  private static Logger logger = LoggerFactory.getLogger(PropertiesUtils.class);
+
+  /**
+   * private Constructor to prevent instantiation
+   */
+  private PropertiesUtils() {
+
+  }
 
   /**
    * Loads a Properties file from the classpath matching the given file name
    * 
-   * @param pFileName
-   * @return
+   * @param fileName
+   * @return The Properties file
+   * @throws PropertiesFileNotFoundException if the Properties file could not be loaded from the classpath
    */
-  public static Properties getPropertiesFromClasspath(String pFileName) {
+  public static Properties getPropertiesFromClasspath(String fileName) {
 
     Properties props = new Properties();
     try {
-      props.load(ClassLoader.getSystemResourceAsStream(pFileName));
-    } catch (IOException e) {
-      logger.error("ERROR LOADING PROPERTIES FROM CLASSPATH!!!", e);
+      InputStream is = ClassLoader.getSystemResourceAsStream(fileName);
+      if (is == null) { // try this instead
+        is = Thread.currentThread().getContextClassLoader().getResourceAsStream(fileName);
+        logger.debug("loaded properties file with Thread.currentThread()");
+      }
+      props.load(is);
+    } catch (Exception e) {
+      throw new PropertiesFileNotFoundException("ERROR LOADING PROPERTIES FROM CLASSPATH!!!", e);
     }
     return props;
   }
@@ -49,19 +66,20 @@ public class PropertiesUtils extends Properties {
   /**
    * Loads a Properties file from the given file name
    * 
-   * @param pFileName
-   * @return
+   * @param fileName
+   * @return The Properties file
+   * @throws PropertiesFileNotFoundException if the Properties file could not be loaded from the given path and file name
    */
-  public static Properties getPropertiesFromPath(String pFileName) {
+  public static Properties getPropertiesFromPath(String fileName) {
 
     Properties props = new Properties();
     FileInputStream fis;
     try {
-      fis = new FileInputStream(pFileName);
+      fis = new FileInputStream(fileName);
       props.load(fis);
       fis.close();
     } catch (Exception e) {
-      logger.error("ERROR LOADING PROPERTIES FROM PATH!!!", e);
+      throw new PropertiesFileNotFoundException("ERROR LOADING PROPERTIES FROM PATH!!!", e);
     }
     return props;
   }

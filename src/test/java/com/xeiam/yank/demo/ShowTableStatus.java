@@ -13,9 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.xeiam.yank.example;
+package com.xeiam.yank.demo;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
@@ -23,40 +22,31 @@ import com.xeiam.yank.DBConnectionManager;
 import com.xeiam.yank.PropertiesUtils;
 
 /**
- * Inserts a Batch of Book Objects into the BOOKS table.
+ * Gets table status from the YANK database. Demonstrates fetching a List of Object[]s from the DB. You need not return lists of Objects!
  * 
  * @author timmolter
  */
-public class InsertBatch {
+public class ShowTableStatus {
 
   public static void main(String[] args) {
 
-    Properties props = PropertiesUtils.getPropertiesFromClasspath("DB.properties");
+    // DB Properties
+    Properties dbprops = PropertiesUtils.getPropertiesFromClasspath("MYSQL_DB.properties");
+    // SQL Statements in Properties file
+    Properties sqlprops = PropertiesUtils.getPropertiesFromClasspath("MYSQL_SQL.properties");
 
-    DBConnectionManager.INSTANCE.init(props);
+    // init DB Connection Manager
+    DBConnectionManager.INSTANCE.init(dbprops, sqlprops);
 
-    List<Book> books = new ArrayList<Book>();
+    // query
+    List<Object[]> matrix = BooksDAO.getTableStatus();
+    for (Object[] objects : matrix) {
+      for (Object object : objects) {
+        System.out.println(object == null ? "null" : object.toString());
+      }
+    }
 
-    Book book = new Book();
-    book.setTitle("Cryptonomicon");
-    book.setAuthor("Neal Stephenson");
-    book.setPrice(23.99);
-    books.add(book);
-
-    book = new Book();
-    book.setTitle("Harry Potter");
-    book.setAuthor("Joanne K. Rowling");
-    book.setPrice(11.99);
-    books.add(book);
-
-    book = new Book();
-    book.setTitle("Don Quijote");
-    book.setAuthor("Cervantes");
-    book.setPrice(21.99);
-    books.add(book);
-
-    BooksDAO.insertBatch(books);
-
+    // shutodwn DB Connection Manager
     DBConnectionManager.INSTANCE.release();
 
   }
