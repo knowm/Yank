@@ -35,7 +35,7 @@ Usage is very simple: define DB connectivity properties, create a DAO and POJO c
 Now go ahead and [study some more examples](http://xeiam.com/yank_examplecode.jsp), [download the thing](http://xeiam.com/yank_changelog.jsp) and [provide feedback](https://github.com/timmolter/Yank/issues).
 
 ## Features
-* depends on light-weight and robust DBUtils library
+* Depends on light-weight and robust DBUtils library
 * ~13KB Jar
 * Apache 2.0 license
 * Batch execute
@@ -46,7 +46,7 @@ Now go ahead and [study some more examples](http://xeiam.com/yank_examplecode.js
 
 ## Getting Started
 ### Non-Maven
-Download Jar: http://xeiam.com/xchart.jsp
+Download Jar: http://xeiam.com/yank_changelog.jsp
 #### Dependencies
 * commons-dbutils.dbutils-1.5.0
 * org.slf4j.slf4j-api-1.6.5
