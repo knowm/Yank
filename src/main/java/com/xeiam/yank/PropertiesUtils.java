@@ -31,7 +31,7 @@ import com.xeiam.yank.exceptions.PropertiesFileNotFoundException;
  */
 public class PropertiesUtils extends Properties {
 
-  static Logger logger = LoggerFactory.getLogger(PropertiesUtils.class);
+  private static Logger logger = LoggerFactory.getLogger(PropertiesUtils.class);
 
   /**
    * private Constructor to prevent instantiation

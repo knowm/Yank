@@ -34,12 +34,15 @@ import com.xeiam.yank.exceptions.SQLStatementNotFoundException;
  * 
  * @author timmolter
  */
-public class DBProxy {
+public final class DBProxy {
 
   private static final DBConnectionManager DB_CONNECTION_MANAGER = DBConnectionManager.INSTANCE;
 
   /** slf4J logger wrapper */
   private static Logger logger = LoggerFactory.getLogger(DBProxy.class);
+
+  private static final String ROLLBACK_EXCEPTION_MESSAGE = "Exception caught while rolling back transaction";
+  private static final String QUERY_EXCEPTION_MESSAGE = "Error in SQL query!!!";
 
   /**
    * Prevent class instantiation with private constructor
@@ -99,13 +102,13 @@ public class DBProxy {
 
       con.commit();
 
-    } catch (SQLException e) {
-      logger.error("Error in SQL query!!!", e);
+    } catch (Exception e) {
+      logger.error(QUERY_EXCEPTION_MESSAGE, e);
       if (con != null) {
         try {
           con.rollback();
         } catch (SQLException e1) {
-          logger.error("Exception caught while rolling back transaction", e1);
+          logger.error(ROLLBACK_EXCEPTION_MESSAGE, e1);
         }
       }
     } finally {
@@ -173,11 +176,11 @@ public class DBProxy {
       con.commit();
 
     } catch (Exception e) {
-      logger.error("ERROR QUERYING!!!", e);
+      logger.error(QUERY_EXCEPTION_MESSAGE, e);
       try {
         con.rollback();
       } catch (SQLException e2) {
-        logger.error("Exception caught while rolling back transaction", e2);
+        logger.error(ROLLBACK_EXCEPTION_MESSAGE, e2);
       }
     } finally {
       DB_CONNECTION_MANAGER.freeConnection(poolName, con);
@@ -242,11 +245,11 @@ public class DBProxy {
       con.commit();
 
     } catch (Exception e) {
-      logger.error("ERROR QUERYING!!!", e);
+      logger.error(QUERY_EXCEPTION_MESSAGE, e);
       try {
         con.rollback();
       } catch (SQLException e2) {
-        logger.error("Exception caught while rolling back transaction", e2);
+        logger.error(ROLLBACK_EXCEPTION_MESSAGE, e2);
       }
     } finally {
       DB_CONNECTION_MANAGER.freeConnection(poolName, con);
@@ -306,11 +309,11 @@ public class DBProxy {
 
       con.commit();
     } catch (Exception e) {
-      logger.error("ERROR QUERYING!!!", e);
+      logger.error(QUERY_EXCEPTION_MESSAGE, e);
       try {
         con.rollback();
       } catch (SQLException e1) {
-        logger.error("Exception caught while rolling back transaction", e1);
+        logger.error(ROLLBACK_EXCEPTION_MESSAGE, e1);
       }
     } finally {
       DB_CONNECTION_MANAGER.freeConnection(poolName, con);
@@ -369,11 +372,11 @@ public class DBProxy {
 
       con.commit();
     } catch (Exception e) {
-      logger.error("ERROR QUERYING!!!", e);
+      logger.error(QUERY_EXCEPTION_MESSAGE, e);
       try {
         con.rollback();
       } catch (SQLException e1) {
-        logger.error("Exception caught while rolling back transaction", e1);
+        logger.error(ROLLBACK_EXCEPTION_MESSAGE, e1);
       }
     } finally {
       DB_CONNECTION_MANAGER.freeConnection(poolName, con);
