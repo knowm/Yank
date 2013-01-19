@@ -7,7 +7,7 @@
 	<artifactId>yank</artifactId>
 	<version>2.0.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
-	<description>A Very Easy-to-Use Yet Flexible Java Persistence Layer for JDBC Databases </description>
+	<description>Ultra-Light JDBC Persistance Layer</description>
 	<url>http://xeiam.com/yank.jsp</url>
 	<inceptionYear>2011</inceptionYear>
 
