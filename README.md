@@ -1,5 +1,5 @@
 ## Yank
-Ultra-Lightweight JDBC Persistance Layer
+Ultra-Light JDBC Persistance Layer
 
 ## Description
 Yank is a very easy-to-use yet flexible Java persistence layer for 
@@ -43,6 +43,7 @@ Now go ahead and [study some more examples](http://xeiam.com/yank_examplecode.js
 * Works with any JDBC-compliant database
 * Write your own SQL statements
 * Optionally store SQL statements in a Properties file
+* Built-in Connection pool
 
 ## Getting Started
 ### Non-Maven
