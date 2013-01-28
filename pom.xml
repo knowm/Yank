@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<name>Yank</name>
@@ -39,8 +40,8 @@
 		<connection>scm:git:git@github.com:timmolter/Yank.git</connection>
 		<developerConnection>scm:git:git@github.com:timmolter/Yank.git</developerConnection>
 		<url>git@github.com:timmolter/Yank.git</url>
-	  <tag>HEAD</tag>
-  </scm>
+		<tag>HEAD</tag>
+	</scm>
 
 	<ciManagement>
 		<url>http://ci.xeiam.com/</url>
@@ -170,14 +171,14 @@
 					</execution>
 				</executions>
 			</plugin>
-		<plugin>
-			<groupId>org.apache.maven.plugins</groupId>
-			<artifactId>maven-release-plugin</artifactId>
-			<version>2.4</version>
-			<configuration>
-				<autoversionsubmodules>true</autoversionsubmodules>
-			</configuration>
-		</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-release-plugin</artifactId>
+				<version>2.4</version>
+				<configuration>
+					<autoversionsubmodules>true</autoversionsubmodules>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 
