@@ -98,13 +98,13 @@ public final class DBConnectionManager {
 
   private boolean loadDriver(Properties dbProperties) {
 
-    String jdbcDriverClassName = dbProperties.getProperty("driverclassname");
+    String jdbcDriverClassName = dbProperties.getProperty("driverclassname").trim();
     try {
       jdbcDriver = (Driver) Class.forName(jdbcDriverClassName).newInstance();
       DriverManager.registerDriver(jdbcDriver);
-      logger.info("Registered JDBC driver " + jdbcDriverClassName);
+      logger.info("Registered JDBC driver with name: >" + jdbcDriverClassName + "<.");
     } catch (Exception e) {
-      logger.error("Can't register JDBC driver: " + jdbcDriverClassName + ". Make sure a vendor-specific JDBC driver is on the classpath!", e);
+      logger.error("Can't register JDBC driver with name: >" + jdbcDriverClassName + "<. Make sure a vendor-specific JDBC driver is on the classpath!", e);
       return false;
     }
     return true;
@@ -129,14 +129,14 @@ public final class DBConnectionManager {
       String name = (String) propNames.nextElement();
       if (name.endsWith(".url")) {
         String poolName = name.substring(0, name.lastIndexOf('.'));
-        String url = dbProperties.getProperty(poolName + ".url");
+        String url = dbProperties.getProperty(poolName + ".url").trim();
         if (url == null) {
           logger.warn("No URL specified for " + poolName);
           continue;
         }
-        String user = dbProperties.getProperty(poolName + ".user");
-        String password = dbProperties.getProperty(poolName + ".password");
-        String maxconn = dbProperties.getProperty(poolName + ".maxconn", "0");
+        String user = dbProperties.getProperty(poolName + ".user").trim();
+        String password = dbProperties.getProperty(poolName + ".password").trim();
+        String maxconn = dbProperties.getProperty(poolName + ".maxconn").trim();
         int max;
         try {
           max = Integer.valueOf(maxconn).intValue();
