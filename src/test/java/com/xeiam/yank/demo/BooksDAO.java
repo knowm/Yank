@@ -58,6 +58,20 @@ public class BooksDAO {
   /**
    * This method demonstrates:
    * <ul>
+   * <li>querying a table for a list of Strings, in this case Book titles, using DBProxy.queryObjectListSQL</li>
+   * <li>using a non-prepared statement with null params</li>
+   * </ul>
+   */
+  public static List<String> selectAllBookTitles() {
+
+    String SQL = "SELECT TITLE FROM BOOKS";
+    String columnName = "title";
+    return DBProxy.queryColumnListSQL("myconnectionpoolname", SQL, columnName, String.class, null);
+  }
+
+  /**
+   * This method demonstrates:
+   * <ul>
    * <li>executing a batch insert statement using DBProxy.executeBatchSQL</li>
    * <li>using a prepared statement with corresponding params</li>
    * </ul>

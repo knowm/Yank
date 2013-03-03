@@ -95,6 +95,9 @@ public class TestBooksTable {
     List<Book> allBooks = BooksDAO.selectAllBooks();
     assertThat(allBooks.size(), equalTo(4));
 
+    List<String> allBookTitles = BooksDAO.selectAllBookTitles();
+    assertThat(allBookTitles.size(), equalTo(4));
+
     book = BooksDAO.selectBook("Cryptonomicon");
     assertThat(book.getPrice(), equalTo(23.99));
 
