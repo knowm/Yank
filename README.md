@@ -85,7 +85,7 @@ mvn javadoc:javadoc
 ## Bugs
 Please report any bugs or submit feature requests to [Yank's Github issue tracker](https://github.com/timmolter/Yank/issues).  
 
-## Continuous Integration Status
+## Continuous Integration
 [![Build Status](https://travis-ci.org/timmolter/Yank.png?branch=develop)](https://travis-ci.org/timmolter/Yank.png)  
 [Build History](https://travis-ci.org/timmolter/Yank/builds)   
 
