@@ -90,4 +90,4 @@ Please report any bugs or submit feature requests to [Yank's Github issue tracke
 [Build History](https://travis-ci.org/timmolter/Yank/builds)   
 
 ## Donations
-17dQktcAmU4urXz7tGk2sbuiCqykm3WLs6  
+15MvtM8e3bzepmZ5vTe8cHvrEZg6eDzw2w  
