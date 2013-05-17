@@ -1,5 +1,5 @@
 /**
- * Copyright 2011 Xeiam LLC.
+ * Copyright 2011 - 2013 Xeiam LLC.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -163,7 +163,8 @@ public final class DBConnectionManager {
     DBConnectionPool pool = pools.get(poolName);
     if (pool != null) {
       return pool.getConnection();
-    } else {
+    }
+    else {
       logger.error("No connection pool defined with name: " + poolName);
     }
     return null;

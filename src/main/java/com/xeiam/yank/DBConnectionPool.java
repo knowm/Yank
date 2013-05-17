@@ -1,5 +1,5 @@
 /**
- * Copyright 2011 Xeiam LLC.
+ * Copyright 2011 - 2013 Xeiam LLC.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -71,7 +71,8 @@ public class DBConnectionPool {
   }
 
   /**
-   * Checks out a connection from the pool. If no free connection is available, a new connection is created unless the max number of connections has been reached. If a free connection has been closed by the database, it's removed from the pool and
+   * Checks out a connection from the pool. If no free connection is available, a new connection is created unless the max number of connections has been reached. If a free connection has been closed
+   * by the database, it's removed from the pool and
    * this method is called again recursively.
    */
   public synchronized Connection getConnection() {
@@ -93,7 +94,8 @@ public class DBConnectionPool {
         // Try again recursively
         con = getConnection();
       }
-    } else if (maxConn == 0 || checkedOut < maxConn) {
+    }
+    else if (maxConn == 0 || checkedOut < maxConn) {
       con = newConnection();
     }
     if (con != null) {
@@ -134,7 +136,8 @@ public class DBConnectionPool {
     try {
       if (user == null) {
         con = DriverManager.getConnection(url);
-      } else {
+      }
+      else {
         con = DriverManager.getConnection(url, user, password);
       }
       logger.debug("Created a new connection in pool.");

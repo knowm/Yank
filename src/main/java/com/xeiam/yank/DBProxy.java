@@ -1,5 +1,5 @@
 /**
- * Copyright 2011 Xeiam LLC.
+ * Copyright 2011 - 2013 Xeiam LLC.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -70,7 +70,8 @@ public final class DBProxy {
     String sql = DB_CONNECTION_MANAGER.getSqlProperties().getProperty(sqlKey);
     if (sql == null || sql.equalsIgnoreCase("")) {
       throw new SQLStatementNotFoundException();
-    } else {
+    }
+    else {
       return executeSQL(poolName, sql, params);
     }
   }
@@ -139,7 +140,8 @@ public final class DBProxy {
     String sql = DB_CONNECTION_MANAGER.getSqlProperties().getProperty(sqlKey);
     if (sql == null || sql.equalsIgnoreCase("")) {
       throw new SQLStatementNotFoundException();
-    } else {
+    }
+    else {
       return querySingleObjectSQL(poolName, sql, type, params);
     }
 
@@ -208,7 +210,8 @@ public final class DBProxy {
     String sql = DB_CONNECTION_MANAGER.getSqlProperties().getProperty(sqlKey);
     if (sql == null || sql.equalsIgnoreCase("")) {
       throw new SQLStatementNotFoundException();
-    } else {
+    }
+    else {
       return queryObjectListSQL(poolName, sql, type, params);
     }
   }
@@ -277,7 +280,8 @@ public final class DBProxy {
     String sql = DB_CONNECTION_MANAGER.getSqlProperties().getProperty(sqlKey);
     if (sql == null || sql.equalsIgnoreCase("")) {
       throw new SQLStatementNotFoundException();
-    } else {
+    }
+    else {
       return queryObjectListSQL(poolName, sql, type, params);
     }
   }
@@ -345,7 +349,8 @@ public final class DBProxy {
     String sql = DB_CONNECTION_MANAGER.getSqlProperties().getProperty(sqlKey);
     if (sql == null || sql.equalsIgnoreCase("")) {
       throw new SQLStatementNotFoundException();
-    } else {
+    }
+    else {
       return queryGenericObjectArrayListSQL(poolName, sql, params);
     }
   }
@@ -409,7 +414,8 @@ public final class DBProxy {
     String sql = DB_CONNECTION_MANAGER.getSqlProperties().getProperty(sqlKey);
     if (sql == null || sql.equalsIgnoreCase("")) {
       throw new SQLStatementNotFoundException();
-    } else {
+    }
+    else {
       return executeBatchSQL(poolName, sql, params);
     }
   }
