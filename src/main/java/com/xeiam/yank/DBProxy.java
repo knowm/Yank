@@ -1,5 +1,5 @@
 /**
- * Copyright 2011 Xeiam LLC.
+ * Copyright 2011 - 2013 Xeiam LLC.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,6 +23,7 @@ import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.ArrayListHandler;
 import org.apache.commons.dbutils.handlers.BeanHandler;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
+import org.apache.commons.dbutils.handlers.ColumnListHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -69,7 +70,8 @@ public final class DBProxy {
     String sql = DB_CONNECTION_MANAGER.getSqlProperties().getProperty(sqlKey);
     if (sql == null || sql.equalsIgnoreCase("")) {
       throw new SQLStatementNotFoundException();
-    } else {
+    }
+    else {
       return executeSQL(poolName, sql, params);
     }
   }
@@ -138,7 +140,8 @@ public final class DBProxy {
     String sql = DB_CONNECTION_MANAGER.getSqlProperties().getProperty(sqlKey);
     if (sql == null || sql.equalsIgnoreCase("")) {
       throw new SQLStatementNotFoundException();
-    } else {
+    }
+    else {
       return querySingleObjectSQL(poolName, sql, type, params);
     }
 
@@ -207,7 +210,8 @@ public final class DBProxy {
     String sql = DB_CONNECTION_MANAGER.getSqlProperties().getProperty(sqlKey);
     if (sql == null || sql.equalsIgnoreCase("")) {
       throw new SQLStatementNotFoundException();
-    } else {
+    }
+    else {
       return queryObjectListSQL(poolName, sql, type, params);
     }
   }
@@ -258,6 +262,76 @@ public final class DBProxy {
     return returnList;
   }
 
+  // ////// Column List QUERY //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+  /**
+   * Return a List of Objects from a single table column given a SQL Key using an SQL statement matching the sqlKey String in a properties file passed to DBConnectionManager via the init method.
+   * 
+   * @param poolName The connection pool name
+   * @param sqlKey The SQL Key found in a properties file corresponding to the desired SQL statement value
+   * @param params The replacement parameters
+   * @param type The Class of the desired return Objects matching the table
+   * @return The List of Objects
+   * @throws SQLStatementNotFoundException if an SQL statement could not be found for the given sqlKey String
+   * @throws ConnectionException if a Connection could not be obtained for some reason
+   */
+  public static <T> List<T> queryColumnListSQLKey(String poolName, String sqlKey, String columnName, Class<T> type, Object[] params) {
+
+    String sql = DB_CONNECTION_MANAGER.getSqlProperties().getProperty(sqlKey);
+    if (sql == null || sql.equalsIgnoreCase("")) {
+      throw new SQLStatementNotFoundException();
+    }
+    else {
+      return queryObjectListSQL(poolName, sql, type, params);
+    }
+  }
+
+  /**
+   * Return a List of Objects from a single table column given an SQL statement
+   * 
+   * @param <T>
+   * @param poolName The connection pool name
+   * @param sql The SQL statement
+   * @param params The replacement parameters
+   * @param type The Class of the desired return Objects matching the table
+   * @return The List of Objects
+   * @throws ConnectionException if a Connection could not be obtained for some reason
+   */
+  public static <T> List<T> queryColumnListSQL(String poolName, String sql, String columnName, Class<T> type, Object[] params) {
+
+    List<T> returnList = null;
+
+    Connection con = null;
+
+    try {
+      con = DB_CONNECTION_MANAGER.getConnection(poolName);
+
+      if (con == null) {
+        throw new ConnectionException(poolName);
+      }
+
+      con.setAutoCommit(false);
+
+      ColumnListHandler<T> resultSetHandler = new ColumnListHandler<T>(columnName);
+
+      returnList = new QueryRunner().query(con, sql, resultSetHandler, params);
+
+      con.commit();
+
+    } catch (Exception e) {
+      logger.error(QUERY_EXCEPTION_MESSAGE, e);
+      try {
+        con.rollback();
+      } catch (SQLException e2) {
+        logger.error(ROLLBACK_EXCEPTION_MESSAGE, e2);
+      }
+    } finally {
+      DB_CONNECTION_MANAGER.freeConnection(poolName, con);
+    }
+
+    return returnList;
+  }
+
   // ////// OBJECT[] LIST QUERY //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   /**
@@ -275,7 +349,8 @@ public final class DBProxy {
     String sql = DB_CONNECTION_MANAGER.getSqlProperties().getProperty(sqlKey);
     if (sql == null || sql.equalsIgnoreCase("")) {
       throw new SQLStatementNotFoundException();
-    } else {
+    }
+    else {
       return queryGenericObjectArrayListSQL(poolName, sql, params);
     }
   }
@@ -339,7 +414,8 @@ public final class DBProxy {
     String sql = DB_CONNECTION_MANAGER.getSqlProperties().getProperty(sqlKey);
     if (sql == null || sql.equalsIgnoreCase("")) {
       throw new SQLStatementNotFoundException();
-    } else {
+    }
+    else {
       return executeBatchSQL(poolName, sql, params);
     }
   }

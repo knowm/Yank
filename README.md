@@ -61,13 +61,13 @@ Add the Yank library as a dependency to your pom.xml file:
     <dependency>
         <groupId>com.xeiam</groupId>
         <artifactId>yank</artifactId>
-        <version>2.0.0</version>
+        <version>2.1.0</version>
     </dependency>
 
 For snapshots, add the following to your pom.xml file:
 
     <repository>
-      <id>yank-snapshot</id>
+      <id>sonatype-oss-snapshot</id>
       <snapshots/>
       <url>https://oss.sonatype.org/content/repositories/snapshots</url>
     </repository>
@@ -75,7 +75,7 @@ For snapshots, add the following to your pom.xml file:
     <dependency>
         <groupId>com.xeiam</groupId>
         <artifactId>yank</artifactId>
-        <version>2.0.1-SNAPSHOT</version>
+        <version>2.1.1-SNAPSHOT</version>
     </dependency>
 
 ## Building
@@ -85,9 +85,9 @@ mvn javadoc:javadoc
 ## Bugs
 Please report any bugs or submit feature requests to [Yank's Github issue tracker](https://github.com/timmolter/Yank/issues).  
 
-## More Info
-Sonar Code Quality: http://sonar.xeiam.com/  
-Jenkins CI: http://ci.xeiam.com/  
+## Continuous Integration
+[![Build Status](https://travis-ci.org/timmolter/Yank.png?branch=develop)](https://travis-ci.org/timmolter/Yank.png)  
+[Build History](https://travis-ci.org/timmolter/Yank/builds)   
 
 ## Donations
-17dQktcAmU4urXz7tGk2sbuiCqykm3WLs6  
+15MvtM8e3bzepmZ5vTe8cHvrEZg6eDzw2w  

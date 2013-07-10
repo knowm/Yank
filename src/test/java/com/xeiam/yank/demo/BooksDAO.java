@@ -1,5 +1,5 @@
 /**
- * Copyright 2011 Xeiam LLC.
+ * Copyright 2011 - 2013 Xeiam LLC.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -53,6 +53,20 @@ public class BooksDAO {
 
     String SQL = "SELECT * FROM BOOKS";
     return DBProxy.queryObjectListSQL("myconnectionpoolname", SQL, Book.class, null);
+  }
+
+  /**
+   * This method demonstrates:
+   * <ul>
+   * <li>querying a table for a list of Strings, in this case Book titles, using DBProxy.queryObjectListSQL</li>
+   * <li>using a non-prepared statement with null params</li>
+   * </ul>
+   */
+  public static List<String> selectAllBookTitles() {
+
+    String SQL = "SELECT TITLE FROM BOOKS";
+    String columnName = "title";
+    return DBProxy.queryColumnListSQL("myconnectionpoolname", SQL, columnName, String.class, null);
   }
 
   /**
