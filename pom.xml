@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<name>Yank</name>
@@ -43,7 +44,7 @@
 	</scm>
 
 	<ciManagement>
-		<url>http://ci.xeiam.com/</url>
+		<url>https://travis-ci.org/timmolter/Yank</url>
 	</ciManagement>
 
 	<dependencies>
@@ -176,6 +177,19 @@
 				<version>2.4</version>
 				<configuration>
 					<autoversionsubmodules>true</autoversionsubmodules>
+				</configuration>
+			</plugin>
+			<!-- for header in all .java files -->
+			<plugin>
+				<groupId>com.mycila.maven-license-plugin</groupId>
+				<artifactId>maven-license-plugin</artifactId>
+				<version>1.10.b1</version>
+				<configuration>
+					<header>etc/header.txt</header>
+					<aggregate>true</aggregate>
+					<includes>
+						<include>**/*.java</include>
+					</includes>
 				</configuration>
 			</plugin>
 		</plugins>

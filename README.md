@@ -79,8 +79,17 @@ For snapshots, add the following to your pom.xml file:
     </dependency>
 
 ## Building
-mvn clean package  
-mvn javadoc:javadoc  
+
+#### general
+
+    mvn clean package  
+    mvn javadoc:javadoc  
+
+#### maven-license-plugin
+
+    mvn license:check
+    mvn license:format
+    mvn license:remove
 
 ## Bugs
 Please report any bugs or submit feature requests to [Yank's Github issue tracker](https://github.com/timmolter/Yank/issues).  
