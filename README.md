@@ -75,7 +75,7 @@ For snapshots, add the following to your pom.xml file:
     <dependency>
         <groupId>com.xeiam</groupId>
         <artifactId>yank</artifactId>
-        <version>2.1.1-SNAPSHOT</version>
+        <version>2.2.0-SNAPSHOT</version>
     </dependency>
 
 ## Building
