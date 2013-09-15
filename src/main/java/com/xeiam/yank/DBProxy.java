@@ -24,6 +24,7 @@ import org.apache.commons.dbutils.handlers.ArrayListHandler;
 import org.apache.commons.dbutils.handlers.BeanHandler;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
 import org.apache.commons.dbutils.handlers.ColumnListHandler;
+import org.apache.commons.dbutils.handlers.ScalarHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -119,6 +120,77 @@ public final class DBProxy {
 
     return returnInt;
 
+  }
+
+  // ////// Single Scalar QUERY //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+  /**
+   * Return just one scalar given a SQL Key using an SQL statement matching the sqlKey String in a properties file passed to DBConnectionManager via the init method. If more than one row match the
+   * query, only the first row is returned.
+   * 
+   * @param poolName The connection pool name
+   * @param sqlKey The SQL Key found in a properties file corresponding to the desired SQL statement value
+   * @param type The Class of the desired return scalar matching the table
+   * @param params The replacement parameters
+   * @return The Object
+   * @throws SQLStatementNotFoundException if an SQL statement could not be found for the given sqlKey String
+   * @throws ConnectionException if a Connection could not be obtained for some reason
+   */
+  public static <T> T querySingleScalarSQLKey(String poolName, String sqlKey, Class<T> type, Object[] params) {
+
+    String sql = DB_CONNECTION_MANAGER.getSqlProperties().getProperty(sqlKey);
+    if (sql == null || sql.equalsIgnoreCase("")) {
+      throw new SQLStatementNotFoundException();
+    }
+    else {
+      return querySingleObjectSQL(poolName, sql, type, params);
+    }
+
+  }
+
+  /**
+   * Return just one scalar given a an SQL statement
+   * 
+   * @param poolName The connection pool name
+   * @param type The Class of the desired return scalar matching the table
+   * @param params The replacement parameters
+   * @return The scalar Object
+   * @throws SQLStatementNotFoundException if an SQL statement could not be found for the given sqlKey String
+   * @throws ConnectionException if a Connection could not be obtained for some reason
+   */
+  public static <T> T querySingleScalarSQL(String poolName, String sql, Class<T> type, Object[] params) {
+
+    T returnObject = null;
+
+    Connection con = null;
+
+    try {
+      con = DB_CONNECTION_MANAGER.getConnection(poolName);
+
+      if (con == null) {
+        throw new ConnectionException(poolName);
+      }
+
+      con.setAutoCommit(false);
+
+      ScalarHandler<T> resultSetHandler = new ScalarHandler<T>();
+
+      returnObject = new QueryRunner().query(con, sql, resultSetHandler, params);
+
+      con.commit();
+
+    } catch (Exception e) {
+      logger.error(QUERY_EXCEPTION_MESSAGE, e);
+      try {
+        con.rollback();
+      } catch (SQLException e2) {
+        logger.error(ROLLBACK_EXCEPTION_MESSAGE, e2);
+      }
+    } finally {
+      DB_CONNECTION_MANAGER.freeConnection(poolName, con);
+    }
+
+    return returnObject;
   }
 
   // ////// Single Object QUERY //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

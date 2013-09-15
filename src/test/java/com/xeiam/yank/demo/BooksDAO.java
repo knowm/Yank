@@ -131,4 +131,17 @@ public class BooksDAO {
     return DBProxy.queryGenericObjectArrayListSQLKey("myconnectionpoolname", sqlKey, null);
   }
 
+  /**
+   * This method demonstrates:
+   * <ul>
+   * <li>using a non-prepared statement with null params</li>
+   * <li>querying for a Scalar value the row count of a table</li>
+   * </ul>
+   */
+  public static long getNumBooks() {
+
+    String SQL = "SELECT COUNT(*) FROM BOOKS";
+    return DBProxy.querySingleScalarSQL("myconnectionpoolname", SQL, Long.class, null);
+  }
+
 }
