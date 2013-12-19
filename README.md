@@ -1,3 +1,5 @@
+[![Yank](http://xeiam.com/images/Yank_64_64.png)](http://xeiam.com/yank.jsp)
+
 ## Yank
 Ultra-Light JDBC Persistance Layer
 
