@@ -21,7 +21,7 @@ package com.xeiam.yank.demo;
  * Note: DBUtils uses reflection to match column names to class member names. <br>
  * Class members are matched to columns based on several factors:
  * <ul>
- * <li>set* methods that match the table's cloumn names (i.e. title <--> setTitle()). The name comparison is case insensitive.</li>
+ * <li>set* methods that match the table's column names (i.e. title <--> setTitle()). The name comparison is case insensitive.</li>
  * <li>The columns are matched to the object's class members</li>
  * <li>If the conversion fails (i.e. the property was an int and the column was a Timestamp) an SQLException is thrown.</li>
  * </ul>
