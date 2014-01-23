@@ -76,12 +76,12 @@ public class BooksDAO {
    * <li>using a prepared statement with corresponding params</li>
    * </ul>
    */
-  public static int[] insertBatch(List<Book> pBooks) {
+  public static int[] insertBatch(List<Book> books) {
 
-    Object[][] params = new Object[pBooks.size()][];
+    Object[][] params = new Object[books.size()][];
 
-    for (int i = 0; i < pBooks.size(); i++) {
-      Book book = pBooks.get(i);
+    for (int i = 0; i < books.size(); i++) {
+      Book book = books.get(i);
       params[i] = new Object[] { book.getTitle(), book.getAuthor(), book.getPrice() };
     }
 
@@ -109,9 +109,9 @@ public class BooksDAO {
    * <li>using a prepared statement with corresponding params</li>
    * </ul>
    */
-  public static Book selectBook(String pTitle) {
+  public static Book selectBook(String title) {
 
-    Object[] params = new Object[] { pTitle };
+    Object[] params = new Object[] { title };
 
     String sqlKey = "BOOKS_SELECT_BY_TITLE";
     return DBProxy.querySingleObjectSQLKey("myconnectionpoolname", sqlKey, Book.class, params);
@@ -129,6 +129,19 @@ public class BooksDAO {
 
     String sqlKey = "BOOKS_SELECT_TABLE_STATUS";
     return DBProxy.queryGenericObjectArrayListSQLKey("myconnectionpoolname", sqlKey, null);
+  }
+
+  /**
+   * This method demonstrates:
+   * <ul>
+   * <li>using a non-prepared statement with null params</li>
+   * <li>querying for a Scalar value the row count of a table</li>
+   * </ul>
+   */
+  public static long getNumBooks() {
+
+    String SQL = "SELECT COUNT(*) FROM BOOKS";
+    return DBProxy.querySingleScalarSQL("myconnectionpoolname", SQL, Long.class, null);
   }
 
 }

@@ -95,5 +95,8 @@ public class TestBooksTable {
     book = BooksDAO.selectBook("Cryptonomicon");
     assertThat(book.getPrice(), equalTo(23.99));
 
+    long numBooks = BooksDAO.getNumBooks();
+    assertThat(numBooks, equalTo(4L));
+
   }
 }
