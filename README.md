@@ -14,7 +14,7 @@ Usage is very simple: define DB connectivity properties, create a DAO and POJO c
 ## Example
 
     Properties dbProps = PropertiesUtils.getPropertiesFromClasspath("HSQL_DB.properties");
-    Properties sqlProps = PropertiesUtils.getPropertiesFromClasspath("HSQL_SQL.properties");
+    Properties sqlProps = PropertiesUtils.getPropertiesFromClasspath("HSQL_SQL.properties"); // optional
 
     DBConnectionManager.INSTANCE.init(dbProps, sqlProps);
     
@@ -61,7 +61,7 @@ Add the Yank library as a dependency to your pom.xml file:
     <dependency>
         <groupId>com.xeiam</groupId>
         <artifactId>yank</artifactId>
-        <version>2.1.0</version>
+        <version>2.2.0</version>
     </dependency>
 
 For snapshots, add the following to your pom.xml file:
@@ -75,7 +75,7 @@ For snapshots, add the following to your pom.xml file:
     <dependency>
         <groupId>com.xeiam</groupId>
         <artifactId>yank</artifactId>
-        <version>2.2.0-SNAPSHOT</version>
+        <version>2.3.0-SNAPSHOT</version>
     </dependency>
 
 ## Building
