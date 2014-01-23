@@ -21,9 +21,7 @@ import com.xeiam.yank.DBConnectionManager;
 import com.xeiam.yank.PropertiesUtils;
 
 /**
- * Selects all Book Objects from the BOOKS table. Demonstrates fetching the connection pool properties from a file on the classpath
- * 
- * @author timmolter
+ * Selects Book count from the BOOKS table.
  */
 public class SelectBookCount {
 
