@@ -34,12 +34,12 @@ public class DBConnectionPool {
   /** slf4J logger wrapper */
   private static Logger logger = LoggerFactory.getLogger(DBConnectionPool.class);
 
-  private int checkedOut;
-  private Vector<Connection> freeConnections = new Vector<Connection>();
-  private int maxConn;
-  private String password;
-  private String url;
-  private String user;
+  private int checkedOut = 0;
+  private Vector<Connection> pool = new Vector<Connection>();
+  private final int maxConn;
+  private final String password;
+  private final String url;
+  private final String user;
 
   /**
    * Creates new connection pool.
@@ -64,45 +64,51 @@ public class DBConnectionPool {
    */
   public synchronized void freeConnection(Connection con) {
 
-    // Put the connection at the end of the Vector
-    freeConnections.addElement(con);
-    checkedOut--;
-    notifyAll();
+    if (con != null) {
+      // Put the connection at the end of the Vector
+      pool.addElement(con);
+      checkedOut--;
+      notifyAll();
+    }
   }
 
   /**
-   * Checks out a connection from the pool. If no free connection is available, a new connection is created unless the max number of connections has been reached. If a free connection has been closed
-   * by the database, it's removed from the pool and
+   * * Checks out a connection from the pool. If no free connection is available,
+   * a new connection is created unless the max number of
+   * connections has been reached. If a free connection has been closed
+   * by the database, it is removed from the pool and
    * this method is called again recursively.
+   * 
+   * @return a Connection, null if pool size has been exceeded
    */
   public synchronized Connection getConnection() {
 
-    Connection con = null;
-    if (freeConnections.size() > 0) {
+    Connection connection = null;
+    if (pool.size() > 0) {
       // Pick the first Connection in the Vector
       // to get round-robin usage
-      con = freeConnections.firstElement();
-      freeConnections.removeElementAt(0);
+      connection = pool.firstElement();
+      pool.removeElementAt(0);
       try {
-        if (con.isClosed()) {
-          logger.debug("Removed bad connection from pool");
+        if (connection.isClosed()) {
+          logger.debug("Removed closed connection from pool");
           // Try again recursively
-          con = getConnection();
+          connection = getConnection();
         }
       } catch (SQLException e) {
         logger.debug("Removed bad connection from pool", e);
         // Try again recursively
-        con = getConnection();
+        connection = getConnection();
       }
     }
     else if (maxConn == 0 || checkedOut < maxConn) {
-      con = newConnection();
+      connection = newConnection();
     }
-    if (con != null) {
+    if (connection != null) {
       checkedOut++;
     }
     logger.trace("Number of Connections in connection pool = " + checkedOut);
-    return con;
+    return connection;
   }
 
   /**
@@ -110,7 +116,7 @@ public class DBConnectionPool {
    */
   public synchronized void release() {
 
-    Enumeration<Connection> allConnections = freeConnections.elements();
+    Enumeration<Connection> allConnections = pool.elements();
     while (allConnections.hasMoreElements()) {
       logger.debug("Closing connection...");
 
@@ -124,7 +130,8 @@ public class DBConnectionPool {
         logger.error("Couldn't close connection for pool.", e);
       }
     }
-    freeConnections.removeAllElements();
+    pool.removeAllElements();
+    checkedOut = 0;
   }
 
   /**
@@ -146,5 +153,15 @@ public class DBConnectionPool {
       return null;
     }
     return con;
+  }
+
+  /**
+   * For unit testing. Clients should never need this method.
+   * 
+   * @return
+   */
+  int getCheckedOut() {
+
+    return checkedOut;
   }
 }
