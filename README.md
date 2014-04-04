@@ -1,11 +1,11 @@
-## [![Yank](http://xeiam.com/images/Yank_64_64.png)](http://xeiam.com/yank) Yank
+## [![Yank](http://xeiam.com/static/xeiamweb/images/Yank_64_64.png)](http://xeiam.com/yank) Yank
 Ultra-Light JDBC Persistance Layer
 
 ## Description
 Yank is a very easy-to-use yet flexible SQL-centric persistence layer for 
 JDBC-compatible databases build on top of org.apache.DBUtils. Yank is a different approach to the over-ORMing of Java persistence. 
 Rather than try to abstract away the SQL underneath, Yank assumes you want low level control over the SQL 
-queries you execute and provides a nice framework to keep you persistence layer organized. Yank wraps DBUtils, 
+queries you execute and provides a nice framework to keep your persistence layer organized. Yank wraps DBUtils, 
 hiding the nitty-gritty Connection and ResultSet
 handling behind a straight-forward proxy class: DBProxy. "Query" methods
 execute SELECT statements and return POJOs or a List of POJOs. "Execute" 
