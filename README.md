@@ -1,4 +1,4 @@
-## [![Yank](http://xeiam.com/static/xeiamweb/images/Yank_64_64.png)](http://xeiam.com/yank) Yank
+## [![Yank](http://www.xeiam.com/images/Yank_64_64.png)](http://xeiam.com/yank) Yank
 Ultra-Light JDBC Persistance Layer
 
 ## Description
