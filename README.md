@@ -1,4 +1,4 @@
-## [![Yank](http://www.xeiam.com/images/Yank_64_64.png)](http://xeiam.com/yank) Yank
+## [![Yank](http://www.xeiam.com/images/Yank_64_64.png)](http://www.www.xeiam.com/yank) Yank
 Ultra-Light JDBC Persistance Layer
 
 ## Description
@@ -35,7 +35,7 @@ Usage is very simple: define DB connectivity properties, create a DAO and POJO c
     
     DBConnectionManager.INSTANCE.release();
 
-Now go ahead and [study some more examples](http://xeiam.com/yank_examplecode.jsp), [download the thing](http://xeiam.com/yank_changelog.jsp) and [provide feedback](https://github.com/timmolter/Yank/issues).
+Now go ahead and [study some more examples](http://www.xeiam.com/yank_examplecode.jsp), [download the thing](http://www.xeiam.com/yank_changelog.jsp) and [provide feedback](https://github.com/timmolter/Yank/issues).
 
 ## Features
 * Depends on light-weight and robust DBUtils library
@@ -50,7 +50,7 @@ Now go ahead and [study some more examples](http://xeiam.com/yank_examplecode.js
 
 ## Getting Started
 ### Non-Maven
-Download Jar: http://xeiam.com/yank_changelog.jsp
+Download Jar: http://www.xeiam.com/yank_changelog.jsp
 #### Dependencies
 * commons-dbutils.dbutils-1.5.0
 * org.slf4j.slf4j-api-1.6.5
