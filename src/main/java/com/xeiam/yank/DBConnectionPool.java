@@ -18,7 +18,7 @@ package com.xeiam.yank;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.Enumeration;
+import java.util.List;
 import java.util.Vector;
 
 import org.slf4j.Logger;
@@ -35,7 +35,7 @@ public class DBConnectionPool {
   private static Logger logger = LoggerFactory.getLogger(DBConnectionPool.class);
 
   private int checkedOut = 0;
-  private Vector<Connection> pool = new Vector<Connection>();
+  private List<Connection> pool = new Vector<Connection>();
   private final int maxConn;
   private final String password;
   private final String url;
@@ -71,7 +71,7 @@ public class DBConnectionPool {
         logger.debug("exception while rolling back connection", e);
       }
       // Put the connection at the end of the Vector
-      pool.addElement(con);
+      pool.add(con);
       checkedOut--;
       notifyAll();
     }
@@ -89,12 +89,11 @@ public class DBConnectionPool {
   public synchronized Connection getConnection() {
 
     Connection connection = null;
-    if (pool.size() > 0) {
+    if (pool.size() > 0) { // if there are some in the pool...
       // Pick the first Connection in the Vector
       // to get round-robin usage
-      connection = pool.firstElement();
-      pool.removeElementAt(0);
-      try {
+      connection = pool.remove(0);
+      try { // but first see if it's clean
         if (connection.isClosed()) {
           logger.debug("Removed closed connection from pool");
           // Try again recursively
@@ -106,10 +105,10 @@ public class DBConnectionPool {
         connection = getConnection();
       }
     }
-    else if (maxConn == 0 || checkedOut < maxConn) {
+    else if (maxConn == 0 || checkedOut < maxConn) { // otherwise the pool was empty
       connection = newConnection();
     }
-    if (connection != null) {
+    if (connection != null) { // keep track of how many are checked out
       checkedOut++;
     }
     logger.trace("Number of Connections in connection pool = " + checkedOut);
@@ -121,11 +120,10 @@ public class DBConnectionPool {
    */
   public synchronized void release() {
 
-    Enumeration<Connection> allConnections = pool.elements();
-    while (allConnections.hasMoreElements()) {
+    for (Connection con : pool) {
+
       logger.debug("Closing connection...");
 
-      Connection con = allConnections.nextElement();
       try {
         con.close();
         logger.debug("Closed a connection in pool.");
@@ -135,7 +133,7 @@ public class DBConnectionPool {
         logger.error("Couldn't close connection for pool.", e);
       }
     }
-    pool.removeAllElements();
+    pool.clear();
     checkedOut = 0;
   }
 
