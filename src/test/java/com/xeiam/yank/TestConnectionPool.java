@@ -18,71 +18,70 @@ package com.xeiam.yank;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 
 import org.junit.Test;
 
-import com.xeiam.yank.DBConnectionPool;
-
 /**
  * @author timmolter
  */
 public class TestConnectionPool {
 
-  // @Test
-  // public void testReleaseAndMaxConnections() {
-  //
-  // DBConnectionPool pool = new DBConnectionPool("jdbc:hsqldb:mem:aname;shutdown=true", "root", "", 3);
-  // assertNotNull(pool.getConnection());
-  // assertEquals(pool.getCheckedOut(), 1);
-  // assertNotNull(pool.getConnection());
-  // assertNotNull(pool.getConnection());
-  // assertNull(pool.getConnection());
-  // pool.release();
-  // assertNotNull(pool.getConnection());
-  // }
-  //
-  // @Test
-  // public void testGetCheckedOutConnections() {
-  //
-  // DBConnectionPool pool = new DBConnectionPool("jdbc:hsqldb:mem:aname;shutdown=true", "root", "", 3);
-  //
-  // // get
-  // Connection con1 = pool.getConnection();
-  // assertNotNull(con1);
-  // assertEquals(1, pool.getCheckedOut());
-  // Connection con2 = pool.getConnection();
-  // assertNotNull(con2);
-  // assertEquals(2, pool.getCheckedOut());
-  // Connection con3 = pool.getConnection();
-  // assertNotNull(con3);
-  // assertEquals(3, pool.getCheckedOut());
-  // Connection con4 = pool.getConnection(); // will be null since pool is full
-  // assertNull(con4);
-  // assertEquals(3, pool.getCheckedOut());
-  //
-  // // free to pool
-  // pool.freeConnection(con1);
-  // assertEquals(2, pool.getCheckedOut());
-  // pool.freeConnection(con2);
-  // assertEquals(1, pool.getCheckedOut());
-  // pool.freeConnection(con3);
-  // assertEquals(0, pool.getCheckedOut());
-  // pool.freeConnection(con4);
-  // assertEquals(0, pool.getCheckedOut());
-  // pool.freeConnection(null);
-  // assertEquals(0, pool.getCheckedOut());
-  //
-  // // get
-  // con1 = pool.getConnection();
-  // assertNotNull(con1);
-  // assertEquals(1, pool.getCheckedOut());
-  //
-  // pool.release();
-  // assertEquals(0, pool.getCheckedOut());
-  // }
+  @Test
+  public void testReleaseAndMaxConnections() {
+
+    DBConnectionPool pool = new DBConnectionPool("jdbc:hsqldb:mem:aname;shutdown=true", "root", "", 3);
+    assertNotNull(pool.getConnection());
+    assertEquals(pool.getCheckedOut(), 1);
+    assertNotNull(pool.getConnection());
+    assertNotNull(pool.getConnection());
+    assertNull(pool.getConnection());
+    pool.release();
+    assertNotNull(pool.getConnection());
+  }
+
+  @Test
+  public void testGetCheckedOutConnections() {
+
+    DBConnectionPool pool = new DBConnectionPool("jdbc:hsqldb:mem:aname;shutdown=true", "root", "", 3);
+
+    // get
+    Connection con1 = pool.getConnection();
+    assertNotNull(con1);
+    assertEquals(1, pool.getCheckedOut());
+    Connection con2 = pool.getConnection();
+    assertNotNull(con2);
+    assertEquals(2, pool.getCheckedOut());
+    Connection con3 = pool.getConnection();
+    assertNotNull(con3);
+    assertEquals(3, pool.getCheckedOut());
+    Connection con4 = pool.getConnection(); // will be null since pool is full
+    assertNull(con4);
+    assertEquals(3, pool.getCheckedOut());
+
+    // free to pool
+    pool.freeConnection(con1);
+    assertEquals(2, pool.getCheckedOut());
+    pool.freeConnection(con2);
+    assertEquals(1, pool.getCheckedOut());
+    pool.freeConnection(con3);
+    assertEquals(0, pool.getCheckedOut());
+    pool.freeConnection(con4);
+    assertEquals(0, pool.getCheckedOut());
+    pool.freeConnection(null);
+    assertEquals(0, pool.getCheckedOut());
+
+    // get
+    con1 = pool.getConnection();
+    assertNotNull(con1);
+    assertEquals(1, pool.getCheckedOut());
+
+    pool.release();
+    assertEquals(0, pool.getCheckedOut());
+  }
 
   @Test
   public void testGetCheckedOutConnections2() throws SQLException {
