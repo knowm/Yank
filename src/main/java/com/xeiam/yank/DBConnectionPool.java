@@ -26,7 +26,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * This class represents a connection pool. It creates new connections on demand, up to a max number if specified. It also makes sure a connection is still open before it is returned to a client.
- * 
+ *
  * @author timmolter
  */
 public class DBConnectionPool {
@@ -43,7 +43,7 @@ public class DBConnectionPool {
 
   /**
    * Creates new connection pool.
-   * 
+   *
    * @param url The JDBC URL for the database
    * @param user The database user, or null
    * @param password The database user password, or null
@@ -59,12 +59,17 @@ public class DBConnectionPool {
 
   /**
    * Checks in a connection to the pool. Notify other Threads that may be waiting for a connection.
-   * 
+   *
    * @param con The connection to check in
    */
   public synchronized void freeConnection(Connection con) {
 
     if (con != null) {
+      try {
+        con.rollback();
+      } catch (SQLException e) {
+        logger.debug("exception while rolling back connection", e);
+      }
       // Put the connection at the end of the Vector
       pool.addElement(con);
       checkedOut--;
@@ -73,12 +78,12 @@ public class DBConnectionPool {
   }
 
   /**
-   * * Checks out a connection from the pool. If no free connection is available,
+   * Checks out a connection from the pool. If no free connection is available,
    * a new connection is created unless the max number of
    * connections has been reached. If a free connection has been closed
    * by the database, it is removed from the pool and
    * this method is called again recursively.
-   * 
+   *
    * @return a Connection, null if pool size has been exceeded
    */
   public synchronized Connection getConnection() {
@@ -157,7 +162,7 @@ public class DBConnectionPool {
 
   /**
    * For unit testing. Clients should never need this method.
-   * 
+   *
    * @return
    */
   int getCheckedOut() {
