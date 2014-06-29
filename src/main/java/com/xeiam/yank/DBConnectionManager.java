@@ -29,7 +29,7 @@ import org.slf4j.LoggerFactory;
 /**
  * This class is a Singleton that provides access to one or many connection pools defined in a Property file. A client gets access to the single instance and can then check-out and check-in
  * connections from a pool. When the client shuts down it should call the release() method to close all open connections and do other clean up.
- * 
+ *
  * @author timmolter
  */
 public final class DBConnectionManager {
@@ -52,7 +52,7 @@ public final class DBConnectionManager {
 
   /**
    * Init method with both DB properties and SQL properties file
-   * 
+   *
    * @param dbProperties
    * @param sqlProperties
    */
@@ -73,7 +73,7 @@ public final class DBConnectionManager {
 
   /**
    * Init method without a MYSQL_SQL.properties file
-   * 
+   *
    * @param dbProperties
    */
   public void init(Properties dbProperties) {
@@ -91,14 +91,14 @@ public final class DBConnectionManager {
 
   /**
    * Creates instances of DBConnectionPool objects based on the properties. A DBConnectionPool can be defined with the following properties:
-   * 
+   *
    * <pre>
    * poolname.url         The JDBC URL for the database
    * poolname.user        A database user (optional)
    * poolname.password    A database user password (if user specified)
    * poolname.maxconn     The maximal number of connections (optional)
    * </pre>
-   * 
+   *
    * @param props The connection pool properties
    */
   private void createPools(Properties dbProperties) {
@@ -133,7 +133,7 @@ public final class DBConnectionManager {
 
   /**
    * Returns an open connection. If no one is available, and the max number of connections has not been reached, a new connection is created.
-   * 
+   *
    * @param poolName The pool name as defined in the properties file
    * @return Connection, the connection or null if the number of connections in use exceeds the max allowed connections
    */
@@ -151,11 +151,11 @@ public final class DBConnectionManager {
 
   /**
    * Returns a connection to the named pool.
-   * 
+   *
    * @param poolName The pool name as defined in the properties file
    * @param con The Connection
    */
-  public void freeConnection(String poolName, Connection con) {
+  protected void freeConnection(String poolName, Connection con) {
 
     DBConnectionPool pool = pools.get(poolName);
     if (pool != null) {
