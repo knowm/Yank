@@ -53,7 +53,7 @@ Now go ahead and [study some more examples](http://www.xeiam.com/yank_examplecod
 Download Jar: http://www.xeiam.com/yank_changelog.jsp
 #### Dependencies
 * commons-dbutils.dbutils-1.5.0
-* org.slf4j.slf4j-api-1.6.5
+* org.slf4j.slf4j-api-1.7.7
 * a JDBC-compliant Connector jar
 
 ### Maven
@@ -64,7 +64,7 @@ Add the Yank library as a dependency to your pom.xml file:
     <dependency>
         <groupId>com.xeiam</groupId>
         <artifactId>yank</artifactId>
-        <version>2.2.0</version>
+        <version>2.3.0</version>
     </dependency>
 
 For snapshots, add the following to your pom.xml file:
@@ -78,7 +78,7 @@ For snapshots, add the following to your pom.xml file:
     <dependency>
         <groupId>com.xeiam</groupId>
         <artifactId>yank</artifactId>
-        <version>2.3.0-SNAPSHOT</version>
+        <version>2.3.1-SNAPSHOT</version>
     </dependency>
 
 ## Building
