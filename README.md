@@ -1,13 +1,16 @@
-## [![Yank](http://xeiam.com/images/Yank_64_64.png)](http://xeiam.com/yank) Yank
+## [![Yank](http://www.xeiam.com/images/Yank_64_64.png)](http://www.xeiam.com/yank) Yank
 Ultra-Light JDBC Persistance Layer
 
 ## Description
-Yank is a very easy-to-use yet flexible Java persistence layer for 
-JDBC-compatible databases build on top of org.apache.DBUtils 
-(http://commons.apache.org/dbutils/). Yank wraps DBUtils, hiding the nitty-gritty Connection and ResultSet
-details behind a straight-forward proxy class: DBProxy. "Query" methods
-execute SELECT statements and return a List of POJOs. "Execute" 
-methods execute INSERT, UPDATE, and DELETE (and more) statements.  
+Yank is a very easy-to-use yet flexible SQL-centric persistence layer for 
+JDBC-compatible databases build on top of org.apache.DBUtils. Yank is a different approach to the over-ORMing of Java persistence. 
+Rather than try to abstract away the SQL underneath, Yank assumes you want low level control over the SQL 
+queries you execute and provides a nice framework to keep your persistence layer organized. Yank wraps DBUtils, 
+hiding the nitty-gritty Connection and ResultSet
+handling behind a straight-forward proxy class: DBProxy. "Query" methods
+execute SELECT statements and return POJOs or a List of POJOs. "Execute" 
+methods execute INSERT, UPDATE, and DELETE (and other) statements. Recently, 
+batch executing, column querying and scalar querying has been added.
 
 Usage is very simple: define DB connectivity properties, create a DAO and POJO class, and execute queries.
 
@@ -32,7 +35,7 @@ Usage is very simple: define DB connectivity properties, create a DAO and POJO c
     
     DBConnectionManager.INSTANCE.release();
 
-Now go ahead and [study some more examples](http://xeiam.com/yank_examplecode.jsp), [download the thing](http://xeiam.com/yank_changelog.jsp) and [provide feedback](https://github.com/timmolter/Yank/issues).
+Now go ahead and [study some more examples](http://www.xeiam.com/yank_examplecode.jsp), [download the thing](http://www.xeiam.com/yank_changelog.jsp) and [provide feedback](https://github.com/timmolter/Yank/issues).
 
 ## Features
 * Depends on light-weight and robust DBUtils library
@@ -47,10 +50,10 @@ Now go ahead and [study some more examples](http://xeiam.com/yank_examplecode.js
 
 ## Getting Started
 ### Non-Maven
-Download Jar: http://xeiam.com/yank_changelog.jsp
+Download Jar: http://www.xeiam.com/yank_changelog.jsp
 #### Dependencies
 * commons-dbutils.dbutils-1.5.0
-* org.slf4j.slf4j-api-1.6.5
+* org.slf4j.slf4j-api-1.7.7
 * a JDBC-compliant Connector jar
 
 ### Maven
@@ -61,7 +64,7 @@ Add the Yank library as a dependency to your pom.xml file:
     <dependency>
         <groupId>com.xeiam</groupId>
         <artifactId>yank</artifactId>
-        <version>2.2.0</version>
+        <version>2.3.0</version>
     </dependency>
 
 For snapshots, add the following to your pom.xml file:
@@ -75,7 +78,7 @@ For snapshots, add the following to your pom.xml file:
     <dependency>
         <groupId>com.xeiam</groupId>
         <artifactId>yank</artifactId>
-        <version>2.3.0-SNAPSHOT</version>
+        <version>2.3.1-SNAPSHOT</version>
     </dependency>
 
 ## Building

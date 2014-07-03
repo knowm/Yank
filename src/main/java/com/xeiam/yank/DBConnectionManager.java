@@ -1,5 +1,5 @@
 /**
- * Copyright 2011 - 2013 Xeiam LLC.
+ * Copyright 2011 - 2014 Xeiam LLC.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,9 +16,6 @@
 package com.xeiam.yank;
 
 import java.sql.Connection;
-import java.sql.Driver;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -32,7 +29,7 @@ import org.slf4j.LoggerFactory;
 /**
  * This class is a Singleton that provides access to one or many connection pools defined in a Property file. A client gets access to the single instance and can then check-out and check-in
  * connections from a pool. When the client shuts down it should call the release() method to close all open connections and do other clean up.
- * 
+ *
  * @author timmolter
  */
 public final class DBConnectionManager {
@@ -40,8 +37,6 @@ public final class DBConnectionManager {
   private final Logger logger = LoggerFactory.getLogger(DBConnectionManager.class);
 
   private final Map<String, DBConnectionPool> pools = new HashMap<String, DBConnectionPool>();
-
-  private Driver jdbcDriver;
 
   private Properties sqlProperties;
 
@@ -57,7 +52,7 @@ public final class DBConnectionManager {
 
   /**
    * Init method with both DB properties and SQL properties file
-   * 
+   *
    * @param dbProperties
    * @param sqlProperties
    */
@@ -73,13 +68,12 @@ public final class DBConnectionManager {
     }
     this.sqlProperties = sqlProperties;
 
-    loadDriver(dbProperties);
     createPools(dbProperties);
   }
 
   /**
    * Init method without a MYSQL_SQL.properties file
-   * 
+   *
    * @param dbProperties
    */
   public void init(Properties dbProperties) {
@@ -90,36 +84,21 @@ public final class DBConnectionManager {
       logger.error("DB PROPS NULL!!!");
     }
 
-    sqlProperties = new Properties(); // create an empty properties file
+    this.sqlProperties = new Properties(); // create an empty properties file
 
-    loadDriver(dbProperties);
     createPools(dbProperties);
-  }
-
-  private boolean loadDriver(Properties dbProperties) {
-
-    String jdbcDriverClassName = dbProperties.getProperty("driverclassname").trim();
-    try {
-      jdbcDriver = (Driver) Class.forName(jdbcDriverClassName).newInstance();
-      DriverManager.registerDriver(jdbcDriver);
-      logger.info("Registered JDBC driver with name: >" + jdbcDriverClassName + "<.");
-    } catch (Exception e) {
-      logger.error("Can't register JDBC driver with name: >" + jdbcDriverClassName + "<. Make sure a vendor-specific JDBC driver is on the classpath!", e);
-      return false;
-    }
-    return true;
   }
 
   /**
    * Creates instances of DBConnectionPool objects based on the properties. A DBConnectionPool can be defined with the following properties:
-   * 
-   * <PRE>
+   *
+   * <pre>
    * poolname.url         The JDBC URL for the database
    * poolname.user        A database user (optional)
    * poolname.password    A database user password (if user specified)
    * poolname.maxconn     The maximal number of connections (optional)
-   * </PRE>
-   * 
+   * </pre>
+   *
    * @param props The connection pool properties
    */
   private void createPools(Properties dbProperties) {
@@ -154,9 +133,9 @@ public final class DBConnectionManager {
 
   /**
    * Returns an open connection. If no one is available, and the max number of connections has not been reached, a new connection is created.
-   * 
+   *
    * @param poolName The pool name as defined in the properties file
-   * @return Connection, the connection or null
+   * @return Connection, the connection or null if the number of connections in use exceeds the max allowed connections
    */
   public Connection getConnection(String poolName) {
 
@@ -166,17 +145,17 @@ public final class DBConnectionManager {
     }
     else {
       logger.error("No connection pool defined with name: " + poolName);
+      return null;
     }
-    return null;
   }
 
   /**
    * Returns a connection to the named pool.
-   * 
+   *
    * @param poolName The pool name as defined in the properties file
    * @param con The Connection
    */
-  public void freeConnection(String poolName, Connection con) {
+  protected void freeConnection(String poolName, Connection con) {
 
     DBConnectionPool pool = pools.get(poolName);
     if (pool != null) {
@@ -185,7 +164,7 @@ public final class DBConnectionManager {
   }
 
   /**
-   * Closes all open connections and deregisters all drivers.
+   * Closes all open connections
    */
   public synchronized void release() {
 
@@ -201,13 +180,6 @@ public final class DBConnectionManager {
       pools.get(poolName).release();
     }
 
-    try {
-      DriverManager.deregisterDriver(jdbcDriver);
-    } catch (SQLException e) {
-      logger.error("ExceptionDeregistered JDBC driver " + jdbcDriver.getClass().getName(), e);
-
-    }
-    logger.info("Deregistered JDBC driver " + jdbcDriver.getClass().getName());
   }
 
   /**

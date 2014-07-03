@@ -1,6 +1,19 @@
 language: java
+before_install: "git clone -b travis `git config --get remote.origin.url` target/travis"
+script: "
+if [ ${TRAVIS_PULL_REQUEST} = 'false' ];
+then 
+    mvn -Dmaven.test.skip=true clean deploy --settings target/travis/settings.xml; 
+else 
+    mvn clean verify --settings target/travis/settings.xml;
+fi"
 
 # whitelist
 branches:
   only:
     - develop
+
+env:
+  global:
+    - secure: "gAztGSjbCgPCKF3BaFMQ+BQ9t4DBT78jI8Cnei2QJ2eiJQKEVqO26Zts/+y/\n/yXK2pT9hY+jwhyh6O9zyyHd64EQQo6Cs2etzp0vKPqRqfkt/zG7FL5Eyp5Y\nAyj76b21s5ZnRZ8Dx1xpLrrYHWwZjqF1IBRbNv+2Evm92BSsgDI="
+    - secure: "N5VPrMuG+pWV2Fec14WdxAYhCMfmhzIt90slUxVwcG2GSQPuw6lclN0xuAtQ\nfZgUadXuWh2g1EZtf8VSO+4FQ+qTzmmtZ9QDuKU2OGp0mysil7nIm2ofBWmE\nDA2YVtGHlBpPSHwCnEeVYUvjaPdIhxe6AFl5CCJ9hVXBc7rmD3U="

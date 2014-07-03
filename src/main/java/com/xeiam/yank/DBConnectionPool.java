@@ -1,5 +1,5 @@
 /**
- * Copyright 2011 - 2013 Xeiam LLC.
+ * Copyright 2011 - 2014 Xeiam LLC.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@ package com.xeiam.yank;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.Enumeration;
+import java.util.List;
 import java.util.Vector;
 
 import org.slf4j.Logger;
@@ -26,7 +26,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * This class represents a connection pool. It creates new connections on demand, up to a max number if specified. It also makes sure a connection is still open before it is returned to a client.
- * 
+ *
  * @author timmolter
  */
 public class DBConnectionPool {
@@ -34,16 +34,16 @@ public class DBConnectionPool {
   /** slf4J logger wrapper */
   private static Logger logger = LoggerFactory.getLogger(DBConnectionPool.class);
 
-  private int checkedOut;
-  private Vector<Connection> freeConnections = new Vector<Connection>();
-  private int maxConn;
-  private String password;
-  private String url;
-  private String user;
+  private int checkedOut = 0;
+  private List<Connection> pool = new Vector<Connection>();
+  private final int maxConn;
+  private final String password;
+  private final String url;
+  private final String user;
 
   /**
    * Creates new connection pool.
-   * 
+   *
    * @param url The JDBC URL for the database
    * @param user The database user, or null
    * @param password The database user password, or null
@@ -59,50 +59,60 @@ public class DBConnectionPool {
 
   /**
    * Checks in a connection to the pool. Notify other Threads that may be waiting for a connection.
-   * 
+   *
    * @param con The connection to check in
    */
   public synchronized void freeConnection(Connection con) {
 
-    // Put the connection at the end of the Vector
-    freeConnections.addElement(con);
-    checkedOut--;
-    notifyAll();
+    if (con != null) {
+      try {
+        con.rollback();
+      } catch (SQLException e) {
+        logger.debug("exception while rolling back connection", e);
+      }
+      // Put the connection at the end of the Vector
+      pool.add(con);
+      checkedOut--;
+      notifyAll();
+    }
   }
 
   /**
-   * Checks out a connection from the pool. If no free connection is available, a new connection is created unless the max number of connections has been reached. If a free connection has been closed
-   * by the database, it's removed from the pool and
+   * Checks out a connection from the pool. If no free connection is available,
+   * a new connection is created unless the max number of
+   * connections has been reached. If a free connection has been closed
+   * by the database, it is removed from the pool and
    * this method is called again recursively.
+   *
+   * @return a Connection, null if pool size has been exceeded
    */
   public synchronized Connection getConnection() {
 
-    Connection con = null;
-    if (freeConnections.size() > 0) {
+    Connection connection = null;
+    if (pool.size() > 0) { // if there are some in the pool...
       // Pick the first Connection in the Vector
       // to get round-robin usage
-      con = freeConnections.firstElement();
-      freeConnections.removeElementAt(0);
-      try {
-        if (con.isClosed()) {
-          logger.debug("Removed bad connection from pool");
+      connection = pool.remove(0);
+      try { // but first see if it's clean
+        if (connection.isClosed()) {
+          logger.debug("Removed closed connection from pool");
           // Try again recursively
-          con = getConnection();
+          connection = getConnection();
         }
       } catch (SQLException e) {
         logger.debug("Removed bad connection from pool", e);
         // Try again recursively
-        con = getConnection();
+        connection = getConnection();
       }
     }
-    else if (maxConn == 0 || checkedOut < maxConn) {
-      con = newConnection();
+    else if (maxConn == 0 || checkedOut < maxConn) { // otherwise the pool was empty
+      connection = newConnection();
     }
-    if (con != null) {
+    if (connection != null) { // keep track of how many are checked out
       checkedOut++;
     }
     logger.trace("Number of Connections in connection pool = " + checkedOut);
-    return con;
+    return connection;
   }
 
   /**
@@ -110,11 +120,10 @@ public class DBConnectionPool {
    */
   public synchronized void release() {
 
-    Enumeration<Connection> allConnections = freeConnections.elements();
-    while (allConnections.hasMoreElements()) {
+    for (Connection con : pool) {
+
       logger.debug("Closing connection...");
 
-      Connection con = allConnections.nextElement();
       try {
         con.close();
         logger.debug("Closed a connection in pool.");
@@ -124,7 +133,8 @@ public class DBConnectionPool {
         logger.error("Couldn't close connection for pool.", e);
       }
     }
-    freeConnections.removeAllElements();
+    pool.clear();
+    checkedOut = 0;
   }
 
   /**
@@ -146,5 +156,15 @@ public class DBConnectionPool {
       return null;
     }
     return con;
+  }
+
+  /**
+   * For unit testing. Clients should never need this method.
+   *
+   * @return
+   */
+  int getCheckedOut() {
+
+    return checkedOut;
   }
 }
