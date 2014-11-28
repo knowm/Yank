@@ -18,8 +18,8 @@ package com.xeiam.yank.demo;
 import java.util.List;
 import java.util.Properties;
 
-import com.xeiam.yank.YankPoolManager;
 import com.xeiam.yank.PropertiesUtils;
+import com.xeiam.yank.YankPoolManager;
 
 /**
  * Selects all Book Objects from the BOOKS table. Demonstrates fetching the connection pool properties from a file on the classpath
@@ -33,7 +33,7 @@ public class SelectAllBooks {
     // DB Properties
     Properties props = PropertiesUtils.getPropertiesFromClasspath("MYSQL_DB.properties");
 
-    // init DB Connection Manager
+    // init YankPoolManager
     YankPoolManager.INSTANCE.init(props);
 
     // query
@@ -42,7 +42,7 @@ public class SelectAllBooks {
       System.out.println(book.getTitle());
     }
 
-    // shutdown DB Connection Manager
+    // shutdown YankPoolManager
     YankPoolManager.INSTANCE.release();
 
   }

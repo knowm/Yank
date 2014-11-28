@@ -139,6 +139,12 @@ public final class YankPoolManager {
     }
   }
 
+  /**
+   * Get the DataSource corresponding to the provided poolName
+   *
+   * @param poolName
+   * @return
+   */
   public DataSource getDataSource(String poolName) {
 
     return pools.get(poolName);
