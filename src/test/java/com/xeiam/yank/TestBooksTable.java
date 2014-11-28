@@ -26,7 +26,7 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.xeiam.yank.DBConnectionManager;
+import com.xeiam.yank.YankPoolManager;
 import com.xeiam.yank.PropertiesUtils;
 import com.xeiam.yank.demo.Book;
 import com.xeiam.yank.demo.BooksDAO;
@@ -42,13 +42,13 @@ public class TestBooksTable {
     Properties dbProps = PropertiesUtils.getPropertiesFromClasspath("HSQL_DB.properties");
     Properties sqlProps = PropertiesUtils.getPropertiesFromClasspath("HSQL_SQL.properties");
 
-    DBConnectionManager.INSTANCE.init(dbProps, sqlProps);
+    YankPoolManager.INSTANCE.init(dbProps, sqlProps);
   }
 
   @AfterClass
   public static void tearDownDB() {
 
-    DBConnectionManager.INSTANCE.release();
+    YankPoolManager.INSTANCE.release();
   }
 
   @Test

@@ -18,7 +18,7 @@ package com.xeiam.yank.demo;
 import java.util.List;
 import java.util.Properties;
 
-import com.xeiam.yank.DBConnectionManager;
+import com.xeiam.yank.YankPoolManager;
 import com.xeiam.yank.PropertiesUtils;
 
 /**
@@ -34,7 +34,7 @@ public class SelectAllBooks {
     Properties props = PropertiesUtils.getPropertiesFromClasspath("MYSQL_DB.properties");
 
     // init DB Connection Manager
-    DBConnectionManager.INSTANCE.init(props);
+    YankPoolManager.INSTANCE.init(props);
 
     // query
     List<Book> allBooks = BooksDAO.selectAllBooks();
@@ -43,7 +43,7 @@ public class SelectAllBooks {
     }
 
     // shutdown DB Connection Manager
-    DBConnectionManager.INSTANCE.release();
+    YankPoolManager.INSTANCE.release();
 
   }
 }

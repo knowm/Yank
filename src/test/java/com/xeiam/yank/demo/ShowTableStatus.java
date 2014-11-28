@@ -18,7 +18,7 @@ package com.xeiam.yank.demo;
 import java.util.List;
 import java.util.Properties;
 
-import com.xeiam.yank.DBConnectionManager;
+import com.xeiam.yank.YankPoolManager;
 import com.xeiam.yank.PropertiesUtils;
 
 /**
@@ -36,7 +36,7 @@ public class ShowTableStatus {
     Properties sqlprops = PropertiesUtils.getPropertiesFromClasspath("MYSQL_SQL.properties");
 
     // init DB Connection Manager
-    DBConnectionManager.INSTANCE.init(dbprops, sqlprops);
+    YankPoolManager.INSTANCE.init(dbprops, sqlprops);
 
     // query
     List<Object[]> matrix = BooksDAO.getTableStatus();
@@ -47,7 +47,7 @@ public class ShowTableStatus {
     }
 
     // shutodwn DB Connection Manager
-    DBConnectionManager.INSTANCE.release();
+    YankPoolManager.INSTANCE.release();
 
   }
 }

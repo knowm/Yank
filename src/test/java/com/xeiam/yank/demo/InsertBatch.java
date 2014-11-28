@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-import com.xeiam.yank.DBConnectionManager;
+import com.xeiam.yank.YankPoolManager;
 import com.xeiam.yank.PropertiesUtils;
 
 /**
@@ -35,7 +35,7 @@ public class InsertBatch {
     Properties props = PropertiesUtils.getPropertiesFromClasspath("MYSQL_DB.properties");
 
     // init DB Connection Manager
-    DBConnectionManager.INSTANCE.init(props);
+    YankPoolManager.INSTANCE.init(props);
 
     // query
     List<Book> books = new ArrayList<Book>();
@@ -61,7 +61,7 @@ public class InsertBatch {
     BooksDAO.insertBatch(books);
 
     // shutodwn DB Connection Manager
-    DBConnectionManager.INSTANCE.release();
+    YankPoolManager.INSTANCE.release();
 
   }
 }

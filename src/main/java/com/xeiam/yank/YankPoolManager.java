@@ -15,8 +15,6 @@
  */
 package com.xeiam.yank;
 
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -37,21 +35,21 @@ import com.zaxxer.hikari.HikariDataSource;
  *
  * @author timmolter
  */
-public final class DBConnectionManager {
+public final class YankPoolManager {
 
-  private final Logger logger = LoggerFactory.getLogger(DBConnectionManager.class);
+  private final Logger logger = LoggerFactory.getLogger(YankPoolManager.class);
 
   private final Map<String, HikariDataSource> pools = new HashMap<String, HikariDataSource>();
 
   private Properties sqlProperties;
 
   /** The singleton instance */
-  public static final DBConnectionManager INSTANCE = new DBConnectionManager();
+  public static final YankPoolManager INSTANCE = new YankPoolManager();
 
   /**
    * A private constructor since this is a Singleton
    */
-  private DBConnectionManager() {
+  private YankPoolManager() {
 
   }
 
@@ -141,40 +139,9 @@ public final class DBConnectionManager {
     }
   }
 
-  /**
-   * Returns an open connection. If no one is available, and the max number of connections has not been reached, a new connection is created.
-   *
-   * @param poolName The pool name as defined in the properties file
-   * @return Connection, the connection or null if the number of connections in use exceeds the max allowed connections
-   * @throws SQLException
-   */
-  public Connection getConnection(String poolName) throws SQLException {
+  public DataSource getDataSource(String poolName) {
 
-    DataSource pool = pools.get(poolName);
-    if (pool != null) {
-      return pool.getConnection();
-    }
-    else {
-      logger.error("No connection pool defined with name: " + poolName);
-      return null;
-    }
-  }
-
-  /**
-   * Returns a connection to the named pool.
-   *
-   * @param poolName The pool name as defined in the properties file
-   * @param con The Connection
-   */
-  protected void freeConnection(Connection con) {
-
-    if (con != null) {
-      try {
-        con.close();
-      } catch (SQLException e) {
-        logger.debug("exception while closing connection", e);
-      }
-    }
+    return pools.get(poolName);
   }
 
   /**

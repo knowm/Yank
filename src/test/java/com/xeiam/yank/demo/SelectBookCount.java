@@ -17,7 +17,7 @@ package com.xeiam.yank.demo;
 
 import java.util.Properties;
 
-import com.xeiam.yank.DBConnectionManager;
+import com.xeiam.yank.YankPoolManager;
 import com.xeiam.yank.PropertiesUtils;
 
 /**
@@ -31,14 +31,14 @@ public class SelectBookCount {
     Properties props = PropertiesUtils.getPropertiesFromClasspath("MYSQL_DB.properties");
 
     // init DB Connection Manager
-    DBConnectionManager.INSTANCE.init(props);
+    YankPoolManager.INSTANCE.init(props);
 
     // query
     long numBooks = BooksDAO.getNumBooks();
     System.out.println("The number of books in the table are: " + numBooks);
 
     // shutodwn DB Connection Manager
-    DBConnectionManager.INSTANCE.release();
+    YankPoolManager.INSTANCE.release();
 
   }
 }

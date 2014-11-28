@@ -17,7 +17,7 @@ package com.xeiam.yank.demo;
 
 import java.util.Properties;
 
-import com.xeiam.yank.DBConnectionManager;
+import com.xeiam.yank.YankPoolManager;
 import com.xeiam.yank.PropertiesUtils;
 
 /**
@@ -39,13 +39,13 @@ public class CreateBooksTableWithPropsFile {
     Properties sqlProps = PropertiesUtils.getPropertiesFromClasspath("MYSQL_SQL.properties");
 
     // init DB Connection Manager
-    DBConnectionManager.INSTANCE.init(props, sqlProps);
+    YankPoolManager.INSTANCE.init(props, sqlProps);
 
     // query
     BooksDAO.createBooksTable();
 
     // shutodwn DB Connection Manager
-    DBConnectionManager.INSTANCE.release();
+    YankPoolManager.INSTANCE.release();
 
   }
 }

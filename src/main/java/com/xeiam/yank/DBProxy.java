@@ -15,8 +15,6 @@
  */
 package com.xeiam.yank;
 
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.List;
 
 import org.apache.commons.dbutils.QueryRunner;
@@ -38,12 +36,11 @@ import com.xeiam.yank.exceptions.SQLStatementNotFoundException;
  */
 public final class DBProxy {
 
-  private static final DBConnectionManager DB_CONNECTION_MANAGER = DBConnectionManager.INSTANCE;
+  private static final YankPoolManager DB_CONNECTION_MANAGER = YankPoolManager.INSTANCE;
 
   /** slf4J logger wrapper */
   private static Logger logger = LoggerFactory.getLogger(DBProxy.class);
 
-  private static final String ROLLBACK_EXCEPTION_MESSAGE = "Exception caught while rolling back transaction";
   private static final String QUERY_EXCEPTION_MESSAGE = "Error in SQL query!!!";
 
   /**
@@ -90,32 +87,12 @@ public final class DBProxy {
 
     int returnInt = 0;
 
-    Connection con = null;
-
     try {
-      con = DB_CONNECTION_MANAGER.getConnection(poolName);
 
-      if (con == null) {
-        throw new ConnectionException(poolName);
-      }
-
-      con.setAutoCommit(false);
-
-      returnInt = new QueryRunner().update(con, sql, params);
-
-      con.commit();
+      returnInt = new QueryRunner(DB_CONNECTION_MANAGER.getDataSource(poolName)).update(sql, params);
 
     } catch (Exception e) {
       logger.error(QUERY_EXCEPTION_MESSAGE, e);
-      if (con != null) {
-        try {
-          con.rollback();
-        } catch (SQLException e1) {
-          logger.error(ROLLBACK_EXCEPTION_MESSAGE, e1);
-        }
-      }
-    } finally {
-      DB_CONNECTION_MANAGER.freeConnection(con);
     }
 
     return returnInt;
@@ -162,32 +139,14 @@ public final class DBProxy {
 
     T returnObject = null;
 
-    Connection con = null;
-
     try {
-      con = DB_CONNECTION_MANAGER.getConnection(poolName);
-
-      if (con == null) {
-        throw new ConnectionException(poolName);
-      }
-
-      con.setAutoCommit(false);
 
       ScalarHandler<T> resultSetHandler = new ScalarHandler<T>();
 
-      returnObject = new QueryRunner().query(con, sql, resultSetHandler, params);
-
-      con.commit();
+      returnObject = new QueryRunner(DB_CONNECTION_MANAGER.getDataSource(poolName)).query(sql, resultSetHandler, params);
 
     } catch (Exception e) {
       logger.error(QUERY_EXCEPTION_MESSAGE, e);
-      try {
-        con.rollback();
-      } catch (SQLException e2) {
-        logger.error(ROLLBACK_EXCEPTION_MESSAGE, e2);
-      }
-    } finally {
-      DB_CONNECTION_MANAGER.freeConnection(con);
     }
 
     return returnObject;
@@ -233,32 +192,14 @@ public final class DBProxy {
 
     T returnObject = null;
 
-    Connection con = null;
-
     try {
-      con = DB_CONNECTION_MANAGER.getConnection(poolName);
-
-      if (con == null) {
-        throw new ConnectionException(poolName);
-      }
-
-      con.setAutoCommit(false);
 
       BeanHandler<T> resultSetHandler = new BeanHandler<T>(type);
 
-      returnObject = new QueryRunner().query(con, sql, resultSetHandler, params);
-
-      con.commit();
+      returnObject = new QueryRunner(DB_CONNECTION_MANAGER.getDataSource(poolName)).query(sql, resultSetHandler, params);
 
     } catch (Exception e) {
       logger.error(QUERY_EXCEPTION_MESSAGE, e);
-      try {
-        con.rollback();
-      } catch (SQLException e2) {
-        logger.error(ROLLBACK_EXCEPTION_MESSAGE, e2);
-      }
-    } finally {
-      DB_CONNECTION_MANAGER.freeConnection(con);
     }
 
     return returnObject;
@@ -303,32 +244,14 @@ public final class DBProxy {
 
     List<T> returnList = null;
 
-    Connection con = null;
-
     try {
-      con = DB_CONNECTION_MANAGER.getConnection(poolName);
-
-      if (con == null) {
-        throw new ConnectionException(poolName);
-      }
-
-      con.setAutoCommit(false);
 
       BeanListHandler<T> resultSetHandler = new BeanListHandler<T>(type);
 
-      returnList = new QueryRunner().query(con, sql, resultSetHandler, params);
-
-      con.commit();
+      returnList = new QueryRunner(DB_CONNECTION_MANAGER.getDataSource(poolName)).query(sql, resultSetHandler, params);
 
     } catch (Exception e) {
       logger.error(QUERY_EXCEPTION_MESSAGE, e);
-      try {
-        con.rollback();
-      } catch (SQLException e2) {
-        logger.error(ROLLBACK_EXCEPTION_MESSAGE, e2);
-      }
-    } finally {
-      DB_CONNECTION_MANAGER.freeConnection(con);
     }
 
     return returnList;
@@ -373,32 +296,14 @@ public final class DBProxy {
 
     List<T> returnList = null;
 
-    Connection con = null;
-
     try {
-      con = DB_CONNECTION_MANAGER.getConnection(poolName);
-
-      if (con == null) {
-        throw new ConnectionException(poolName);
-      }
-
-      con.setAutoCommit(false);
 
       ColumnListHandler<T> resultSetHandler = new ColumnListHandler<T>(columnName);
 
-      returnList = new QueryRunner().query(con, sql, resultSetHandler, params);
-
-      con.commit();
+      returnList = new QueryRunner(DB_CONNECTION_MANAGER.getDataSource(poolName)).query(sql, resultSetHandler, params);
 
     } catch (Exception e) {
       logger.error(QUERY_EXCEPTION_MESSAGE, e);
-      try {
-        con.rollback();
-      } catch (SQLException e2) {
-        logger.error(ROLLBACK_EXCEPTION_MESSAGE, e2);
-      }
-    } finally {
-      DB_CONNECTION_MANAGER.freeConnection(con);
     }
 
     return returnList;
@@ -440,30 +345,14 @@ public final class DBProxy {
 
     List<Object[]> returnList = null;
 
-    Connection con = null;
-
     try {
-      con = DB_CONNECTION_MANAGER.getConnection(poolName);
-
-      if (con == null) {
-        throw new ConnectionException(poolName);
-      }
-
-      con.setAutoCommit(false);
 
       ArrayListHandler resultSetHandler = new ArrayListHandler();
-      returnList = new QueryRunner().query(con, sql, resultSetHandler, params);
+      // returnList = new QueryRunner().query(con, sql, resultSetHandler, params);
+      returnList = new QueryRunner(DB_CONNECTION_MANAGER.getDataSource(poolName)).query(sql, resultSetHandler, params);
 
-      con.commit();
     } catch (Exception e) {
       logger.error(QUERY_EXCEPTION_MESSAGE, e);
-      try {
-        con.rollback();
-      } catch (SQLException e1) {
-        logger.error(ROLLBACK_EXCEPTION_MESSAGE, e1);
-      }
-    } finally {
-      DB_CONNECTION_MANAGER.freeConnection(con);
     }
 
     return returnList;
@@ -505,29 +394,12 @@ public final class DBProxy {
 
     int[] returnIntArray = null;
 
-    Connection con = null;
-
     try {
-      con = DB_CONNECTION_MANAGER.getConnection(poolName);
 
-      if (con == null) {
-        throw new ConnectionException(poolName);
-      }
+      returnIntArray = new QueryRunner(DB_CONNECTION_MANAGER.getDataSource(poolName)).batch(sql, params);
 
-      con.setAutoCommit(false);
-
-      returnIntArray = new QueryRunner().batch(con, sql, params);
-
-      con.commit();
     } catch (Exception e) {
       logger.error(QUERY_EXCEPTION_MESSAGE, e);
-      try {
-        con.rollback();
-      } catch (SQLException e1) {
-        logger.error(ROLLBACK_EXCEPTION_MESSAGE, e1);
-      }
-    } finally {
-      DB_CONNECTION_MANAGER.freeConnection(con);
     }
 
     return returnIntArray;
