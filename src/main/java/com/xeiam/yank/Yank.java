@@ -26,7 +26,6 @@ import org.apache.commons.dbutils.handlers.ScalarHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.xeiam.yank.exceptions.ConnectionException;
 import com.xeiam.yank.exceptions.SQLStatementNotFoundException;
 
 /**
@@ -34,19 +33,19 @@ import com.xeiam.yank.exceptions.SQLStatementNotFoundException;
  *
  * @author timmolter
  */
-public final class DBProxy {
+public final class Yank {
 
-  private static final YankPoolManager DB_CONNECTION_MANAGER = YankPoolManager.INSTANCE;
+  private static final YankPoolManager YANK_POOL_MANAGER = YankPoolManager.INSTANCE;
 
   /** slf4J logger wrapper */
-  private static Logger logger = LoggerFactory.getLogger(DBProxy.class);
+  private static Logger logger = LoggerFactory.getLogger(Yank.class);
 
   private static final String QUERY_EXCEPTION_MESSAGE = "Error in SQL query!!!";
 
   /**
    * Prevent class instantiation with private constructor
    */
-  private DBProxy() {
+  private Yank() {
 
   }
 
@@ -65,7 +64,7 @@ public final class DBProxy {
    */
   public static int executeSQLKey(String poolName, String sqlKey, Object[] params) {
 
-    String sql = DB_CONNECTION_MANAGER.getSqlProperties().getProperty(sqlKey);
+    String sql = YANK_POOL_MANAGER.getSqlProperties().getProperty(sqlKey);
     if (sql == null || sql.equalsIgnoreCase("")) {
       throw new SQLStatementNotFoundException();
     }
@@ -89,7 +88,7 @@ public final class DBProxy {
 
     try {
 
-      returnInt = new QueryRunner(DB_CONNECTION_MANAGER.getDataSource(poolName)).update(sql, params);
+      returnInt = new QueryRunner(YANK_POOL_MANAGER.getDataSource(poolName)).update(sql, params);
 
     } catch (Exception e) {
       logger.error(QUERY_EXCEPTION_MESSAGE, e);
@@ -115,7 +114,7 @@ public final class DBProxy {
    */
   public static <T> T querySingleScalarSQLKey(String poolName, String sqlKey, Class<T> type, Object[] params) {
 
-    String sql = DB_CONNECTION_MANAGER.getSqlProperties().getProperty(sqlKey);
+    String sql = YANK_POOL_MANAGER.getSqlProperties().getProperty(sqlKey);
     if (sql == null || sql.equalsIgnoreCase("")) {
       throw new SQLStatementNotFoundException();
     }
@@ -143,7 +142,7 @@ public final class DBProxy {
 
       ScalarHandler<T> resultSetHandler = new ScalarHandler<T>();
 
-      returnObject = new QueryRunner(DB_CONNECTION_MANAGER.getDataSource(poolName)).query(sql, resultSetHandler, params);
+      returnObject = new QueryRunner(YANK_POOL_MANAGER.getDataSource(poolName)).query(sql, resultSetHandler, params);
 
     } catch (Exception e) {
       logger.error(QUERY_EXCEPTION_MESSAGE, e);
@@ -168,7 +167,7 @@ public final class DBProxy {
    */
   public static <T> T querySingleObjectSQLKey(String poolName, String sqlKey, Class<T> type, Object[] params) {
 
-    String sql = DB_CONNECTION_MANAGER.getSqlProperties().getProperty(sqlKey);
+    String sql = YANK_POOL_MANAGER.getSqlProperties().getProperty(sqlKey);
     if (sql == null || sql.equalsIgnoreCase("")) {
       throw new SQLStatementNotFoundException();
     }
@@ -196,7 +195,7 @@ public final class DBProxy {
 
       BeanHandler<T> resultSetHandler = new BeanHandler<T>(type);
 
-      returnObject = new QueryRunner(DB_CONNECTION_MANAGER.getDataSource(poolName)).query(sql, resultSetHandler, params);
+      returnObject = new QueryRunner(YANK_POOL_MANAGER.getDataSource(poolName)).query(sql, resultSetHandler, params);
 
     } catch (Exception e) {
       logger.error(QUERY_EXCEPTION_MESSAGE, e);
@@ -220,7 +219,7 @@ public final class DBProxy {
    */
   public static <T> List<T> queryObjectListSQLKey(String poolName, String sqlKey, Class<T> type, Object[] params) {
 
-    String sql = DB_CONNECTION_MANAGER.getSqlProperties().getProperty(sqlKey);
+    String sql = YANK_POOL_MANAGER.getSqlProperties().getProperty(sqlKey);
     if (sql == null || sql.equalsIgnoreCase("")) {
       throw new SQLStatementNotFoundException();
     }
@@ -248,7 +247,7 @@ public final class DBProxy {
 
       BeanListHandler<T> resultSetHandler = new BeanListHandler<T>(type);
 
-      returnList = new QueryRunner(DB_CONNECTION_MANAGER.getDataSource(poolName)).query(sql, resultSetHandler, params);
+      returnList = new QueryRunner(YANK_POOL_MANAGER.getDataSource(poolName)).query(sql, resultSetHandler, params);
 
     } catch (Exception e) {
       logger.error(QUERY_EXCEPTION_MESSAGE, e);
@@ -272,7 +271,7 @@ public final class DBProxy {
    */
   public static <T> List<T> queryColumnListSQLKey(String poolName, String sqlKey, String columnName, Class<T> type, Object[] params) {
 
-    String sql = DB_CONNECTION_MANAGER.getSqlProperties().getProperty(sqlKey);
+    String sql = YANK_POOL_MANAGER.getSqlProperties().getProperty(sqlKey);
     if (sql == null || sql.equalsIgnoreCase("")) {
       throw new SQLStatementNotFoundException();
     }
@@ -300,7 +299,7 @@ public final class DBProxy {
 
       ColumnListHandler<T> resultSetHandler = new ColumnListHandler<T>(columnName);
 
-      returnList = new QueryRunner(DB_CONNECTION_MANAGER.getDataSource(poolName)).query(sql, resultSetHandler, params);
+      returnList = new QueryRunner(YANK_POOL_MANAGER.getDataSource(poolName)).query(sql, resultSetHandler, params);
 
     } catch (Exception e) {
       logger.error(QUERY_EXCEPTION_MESSAGE, e);
@@ -323,7 +322,7 @@ public final class DBProxy {
    */
   public static List<Object[]> queryGenericObjectArrayListSQLKey(String poolName, String sqlKey, Object[] params) {
 
-    String sql = DB_CONNECTION_MANAGER.getSqlProperties().getProperty(sqlKey);
+    String sql = YANK_POOL_MANAGER.getSqlProperties().getProperty(sqlKey);
     if (sql == null || sql.equalsIgnoreCase("")) {
       throw new SQLStatementNotFoundException();
     }
@@ -349,7 +348,7 @@ public final class DBProxy {
 
       ArrayListHandler resultSetHandler = new ArrayListHandler();
       // returnList = new QueryRunner().query(con, sql, resultSetHandler, params);
-      returnList = new QueryRunner(DB_CONNECTION_MANAGER.getDataSource(poolName)).query(sql, resultSetHandler, params);
+      returnList = new QueryRunner(YANK_POOL_MANAGER.getDataSource(poolName)).query(sql, resultSetHandler, params);
 
     } catch (Exception e) {
       logger.error(QUERY_EXCEPTION_MESSAGE, e);
@@ -372,7 +371,7 @@ public final class DBProxy {
    */
   public static int[] executeBatchSQLKey(String poolName, String sqlKey, Object[][] params) {
 
-    String sql = DB_CONNECTION_MANAGER.getSqlProperties().getProperty(sqlKey);
+    String sql = YANK_POOL_MANAGER.getSqlProperties().getProperty(sqlKey);
     if (sql == null || sql.equalsIgnoreCase("")) {
       throw new SQLStatementNotFoundException();
     }
@@ -396,7 +395,7 @@ public final class DBProxy {
 
     try {
 
-      returnIntArray = new QueryRunner(DB_CONNECTION_MANAGER.getDataSource(poolName)).batch(sql, params);
+      returnIntArray = new QueryRunner(YANK_POOL_MANAGER.getDataSource(poolName)).batch(sql, params);
 
     } catch (Exception e) {
       logger.error(QUERY_EXCEPTION_MESSAGE, e);

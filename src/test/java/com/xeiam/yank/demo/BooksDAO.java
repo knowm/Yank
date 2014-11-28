@@ -17,7 +17,7 @@ package com.xeiam.yank.demo;
 
 import java.util.List;
 
-import com.xeiam.yank.DBProxy;
+import com.xeiam.yank.Yank;
 
 /**
  * DAO (Data Access Object) Class for BOOKS table. <br>
@@ -39,7 +39,7 @@ public class BooksDAO {
 
     Object[] params = new Object[] { book.getTitle(), book.getAuthor(), book.getPrice() };
     String SQL = "INSERT INTO BOOKS  (TITLE, AUTHOR, PRICE) VALUES (?, ?, ?)";
-    return DBProxy.executeSQL("myconnectionpoolname", SQL, params);
+    return Yank.executeSQL("myconnectionpoolname", SQL, params);
   }
 
   /**
@@ -52,7 +52,7 @@ public class BooksDAO {
   public static List<Book> selectAllBooks() {
 
     String SQL = "SELECT * FROM BOOKS";
-    return DBProxy.queryObjectListSQL("myconnectionpoolname", SQL, Book.class, null);
+    return Yank.queryObjectListSQL("myconnectionpoolname", SQL, Book.class, null);
   }
 
   /**
@@ -66,7 +66,7 @@ public class BooksDAO {
 
     String SQL = "SELECT TITLE FROM BOOKS";
     String columnName = "title";
-    return DBProxy.queryColumnListSQL("myconnectionpoolname", SQL, columnName, String.class, null);
+    return Yank.queryColumnListSQL("myconnectionpoolname", SQL, columnName, String.class, null);
   }
 
   /**
@@ -86,7 +86,7 @@ public class BooksDAO {
     }
 
     String SQL = "INSERT INTO BOOKS  (TITLE, AUTHOR, PRICE) VALUES (?, ?, ?)";
-    return DBProxy.executeBatchSQL("myconnectionpoolname", SQL, params);
+    return Yank.executeBatchSQL("myconnectionpoolname", SQL, params);
   }
 
   /**
@@ -99,7 +99,7 @@ public class BooksDAO {
   public static int createBooksTable() {
 
     String sqlKey = "BOOKS_CREATE_TABLE";
-    return DBProxy.executeSQLKey("myconnectionpoolname", sqlKey, null);
+    return Yank.executeSQLKey("myconnectionpoolname", sqlKey, null);
   }
 
   /**
@@ -114,7 +114,7 @@ public class BooksDAO {
     Object[] params = new Object[] { title };
 
     String sqlKey = "BOOKS_SELECT_BY_TITLE";
-    return DBProxy.querySingleObjectSQLKey("myconnectionpoolname", sqlKey, Book.class, params);
+    return Yank.querySingleObjectSQLKey("myconnectionpoolname", sqlKey, Book.class, params);
   }
 
   /**
@@ -128,7 +128,7 @@ public class BooksDAO {
   public static List<Object[]> getTableStatus() {
 
     String sqlKey = "BOOKS_SELECT_TABLE_STATUS";
-    return DBProxy.queryGenericObjectArrayListSQLKey("myconnectionpoolname", sqlKey, null);
+    return Yank.queryGenericObjectArrayListSQLKey("myconnectionpoolname", sqlKey, null);
   }
 
   /**
@@ -141,7 +141,7 @@ public class BooksDAO {
   public static long getNumBooks() {
 
     String SQL = "SELECT COUNT(*) FROM BOOKS";
-    return DBProxy.querySingleScalarSQL("myconnectionpoolname", SQL, Long.class, null);
+    return Yank.querySingleScalarSQL("myconnectionpoolname", SQL, Long.class, null);
   }
 
 }
