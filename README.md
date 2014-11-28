@@ -2,15 +2,10 @@
 Ultra-Light JDBC Persistance Layer
 
 ## Description
-Yank is a very easy-to-use yet flexible SQL-centric persistence layer for 
-JDBC-compatible databases build on top of org.apache.DBUtils. Yank is a different approach to the over-ORMing of Java persistence. 
-Rather than try to abstract away the SQL underneath, Yank assumes you want low level control over the SQL 
-queries you execute and provides a nice framework to keep your persistence layer organized. Yank wraps DBUtils, 
-hiding the nitty-gritty Connection and ResultSet
-handling behind a straight-forward proxy class: DBProxy. "Query" methods
-execute SELECT statements and return POJOs or a List of POJOs. "Execute" 
-methods execute INSERT, UPDATE, and DELETE (and other) statements. Recently, 
-batch executing, column querying and scalar querying has been added.
+Yank is a very easy-to-use yet flexible SQL-centric persistence layer for JDBC-compatible databases build on top of org.apache.DBUtils. Yank is a different approach to the over-ORMing of Java persistence. 
+Rather than try to abstract away the SQL underneath, Yank assumes you want low level control over the SQL queries you execute and provides a nice framework to keep your persistence layer organized. Yank wraps DBUtils, 
+hiding the nitty-gritty Connection and ResultSet handling behind a straight-forward proxy class: DBProxy. "Query" methods execute SELECT statements and return POJOs or a List of POJOs. "Execute" 
+methods execute INSERT, UPDATE, and DELETE (and other) statements. Recently, batch executing, column list querying and scalar querying has been added.
 
 Usage is very simple: define DB connectivity properties, create a DAO and POJO class, and execute queries.
 
@@ -47,6 +42,14 @@ Now go ahead and [study some more examples](http://xeiam.com/yank-example-code),
 * Write your own SQL statements
 * Optionally store SQL statements in a Properties file
 * Built-in Connection pool
+* Java 5 and up
+
+## Missing Features
+* Transactions
+* Table column to POJO property mapping
+* SQLExceptions (SQL Exceptions are internally caught and logged.)
+
+The above missing features were deliberately excluded to keep the library as simple as possible. For many cases, they are not necessary. If you need those features, check out these projects similar to Yank: [sql2o](http://www.sql2o.org/) and [JDBI](http://jdbi.org/).
 
 ## Getting Started
 ### Non-Maven
