@@ -16,6 +16,7 @@
 package com.xeiam.yank;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -23,8 +24,12 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
+import javax.sql.DataSource;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.zaxxer.hikari.HikariDataSource;
 
 /**
  * This class is a Singleton that provides access to one or many connection pools defined in a Property file. A client gets access to the single instance and can then check-out and check-in
@@ -36,7 +41,7 @@ public final class DBConnectionManager {
 
   private final Logger logger = LoggerFactory.getLogger(DBConnectionManager.class);
 
-  private final Map<String, DBConnectionPool> pools = new HashMap<String, DBConnectionPool>();
+  private final Map<String, HikariDataSource> pools = new HashMap<String, HikariDataSource>();
 
   private Properties sqlProperties;
 
@@ -124,8 +129,13 @@ public final class DBConnectionManager {
           max = 0;
         }
 
-        DBConnectionPool pool = new DBConnectionPool(url, user, password, max);
-        pools.put(poolName, pool);
+        HikariDataSource ds = new HikariDataSource();
+        ds.setJdbcUrl(url);
+        ds.setUsername(user);
+        ds.setPassword(password);
+        ds.setMaximumPoolSize(max);
+
+        pools.put(poolName, ds);
         logger.info("Initialized pool '" + poolName + "'");
       }
     }
@@ -136,10 +146,11 @@ public final class DBConnectionManager {
    *
    * @param poolName The pool name as defined in the properties file
    * @return Connection, the connection or null if the number of connections in use exceeds the max allowed connections
+   * @throws SQLException
    */
-  public Connection getConnection(String poolName) {
+  public Connection getConnection(String poolName) throws SQLException {
 
-    DBConnectionPool pool = pools.get(poolName);
+    DataSource pool = pools.get(poolName);
     if (pool != null) {
       return pool.getConnection();
     }
@@ -155,11 +166,14 @@ public final class DBConnectionManager {
    * @param poolName The pool name as defined in the properties file
    * @param con The Connection
    */
-  protected void freeConnection(String poolName, Connection con) {
+  protected void freeConnection(Connection con) {
 
-    DBConnectionPool pool = pools.get(poolName);
-    if (pool != null) {
-      pool.freeConnection(con);
+    if (con != null) {
+      try {
+        con.close();
+      } catch (SQLException e) {
+        logger.debug("exception while closing connection", e);
+      }
     }
   }
 
@@ -177,7 +191,7 @@ public final class DBConnectionManager {
       String poolName = iterator.next();
       logger.debug("Releasing pool: " + poolName + "...");
 
-      pools.get(poolName).release();
+      pools.get(poolName).shutdown();
     }
 
   }

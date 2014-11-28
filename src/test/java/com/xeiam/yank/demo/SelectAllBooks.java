@@ -23,7 +23,7 @@ import com.xeiam.yank.PropertiesUtils;
 
 /**
  * Selects all Book Objects from the BOOKS table. Demonstrates fetching the connection pool properties from a file on the classpath
- * 
+ *
  * @author timmolter
  */
 public class SelectAllBooks {
@@ -42,7 +42,7 @@ public class SelectAllBooks {
       System.out.println(book.getTitle());
     }
 
-    // shutodwn DB Connection Manager
+    // shutdown DB Connection Manager
     DBConnectionManager.INSTANCE.release();
 
   }

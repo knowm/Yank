@@ -33,7 +33,7 @@ import com.xeiam.yank.exceptions.SQLStatementNotFoundException;
 
 /**
  * A wrapper for DBUtils' QueryRunner's methods: update, query, and batch. Connections are retrieved from the connection pool in DBConnectionManager.
- * 
+ *
  * @author timmolter
  */
 public final class DBProxy {
@@ -58,7 +58,7 @@ public final class DBProxy {
   /**
    * Executes the given INSERT, UPDATE, DELETE, REPLACE or UPSERT SQL statement matching the sqlKey String in a properties file passed to DBConnectionManager via the init method. Returns the number of
    * rows affected.
-   * 
+   *
    * @param poolName The connection pool name
    * @param sqlKey The SQL Key found in a properties file corresponding to the desired SQL statement value
    * @param params The replacement parameters
@@ -79,7 +79,7 @@ public final class DBProxy {
 
   /**
    * Executes the given INSERT, UPDATE, DELETE, REPLACE or UPSERT SQL prepared statement. Returns the number of rows affected.
-   * 
+   *
    * @param poolName The connection pool name
    * @param sql The query to execute
    * @param params The replacement parameters
@@ -115,7 +115,7 @@ public final class DBProxy {
         }
       }
     } finally {
-      DB_CONNECTION_MANAGER.freeConnection(poolName, con);
+      DB_CONNECTION_MANAGER.freeConnection(con);
     }
 
     return returnInt;
@@ -127,7 +127,7 @@ public final class DBProxy {
   /**
    * Return just one scalar given a SQL Key using an SQL statement matching the sqlKey String in a properties file passed to DBConnectionManager via the init method. If more than one row match the
    * query, only the first row is returned.
-   * 
+   *
    * @param poolName The connection pool name
    * @param sqlKey The SQL Key found in a properties file corresponding to the desired SQL statement value
    * @param type The Class of the desired return scalar matching the table
@@ -150,7 +150,7 @@ public final class DBProxy {
 
   /**
    * Return just one scalar given a an SQL statement
-   * 
+   *
    * @param poolName The connection pool name
    * @param type The Class of the desired return scalar matching the table
    * @param params The replacement parameters
@@ -187,7 +187,7 @@ public final class DBProxy {
         logger.error(ROLLBACK_EXCEPTION_MESSAGE, e2);
       }
     } finally {
-      DB_CONNECTION_MANAGER.freeConnection(poolName, con);
+      DB_CONNECTION_MANAGER.freeConnection(con);
     }
 
     return returnObject;
@@ -198,7 +198,7 @@ public final class DBProxy {
   /**
    * Return just one Object given a SQL Key using an SQL statement matching the sqlKey String in a properties file passed to DBConnectionManager via the init method. If more than one row match the
    * query, only the first row is returned.
-   * 
+   *
    * @param poolName The connection pool name
    * @param sqlKey The SQL Key found in a properties file corresponding to the desired SQL statement value
    * @param params The replacement parameters
@@ -221,7 +221,7 @@ public final class DBProxy {
 
   /**
    * Return just one Object given an SQL statement. If more than one row match the query, only the first row is returned.
-   * 
+   *
    * @param poolName The connection pool name
    * @param sql The SQL statement
    * @param params The replacement parameters
@@ -258,7 +258,7 @@ public final class DBProxy {
         logger.error(ROLLBACK_EXCEPTION_MESSAGE, e2);
       }
     } finally {
-      DB_CONNECTION_MANAGER.freeConnection(poolName, con);
+      DB_CONNECTION_MANAGER.freeConnection(con);
     }
 
     return returnObject;
@@ -268,7 +268,7 @@ public final class DBProxy {
 
   /**
    * Return a List of Objects given a SQL Key using an SQL statement matching the sqlKey String in a properties file passed to DBConnectionManager via the init method.
-   * 
+   *
    * @param poolName The connection pool name
    * @param sqlKey The SQL Key found in a properties file corresponding to the desired SQL statement value
    * @param params The replacement parameters
@@ -290,7 +290,7 @@ public final class DBProxy {
 
   /**
    * Return a List of Objects given an SQL statement
-   * 
+   *
    * @param <T>
    * @param poolName The connection pool name
    * @param sql The SQL statement
@@ -328,7 +328,7 @@ public final class DBProxy {
         logger.error(ROLLBACK_EXCEPTION_MESSAGE, e2);
       }
     } finally {
-      DB_CONNECTION_MANAGER.freeConnection(poolName, con);
+      DB_CONNECTION_MANAGER.freeConnection(con);
     }
 
     return returnList;
@@ -338,7 +338,7 @@ public final class DBProxy {
 
   /**
    * Return a List of Objects from a single table column given a SQL Key using an SQL statement matching the sqlKey String in a properties file passed to DBConnectionManager via the init method.
-   * 
+   *
    * @param poolName The connection pool name
    * @param sqlKey The SQL Key found in a properties file corresponding to the desired SQL statement value
    * @param params The replacement parameters
@@ -360,7 +360,7 @@ public final class DBProxy {
 
   /**
    * Return a List of Objects from a single table column given an SQL statement
-   * 
+   *
    * @param <T>
    * @param poolName The connection pool name
    * @param sql The SQL statement
@@ -398,7 +398,7 @@ public final class DBProxy {
         logger.error(ROLLBACK_EXCEPTION_MESSAGE, e2);
       }
     } finally {
-      DB_CONNECTION_MANAGER.freeConnection(poolName, con);
+      DB_CONNECTION_MANAGER.freeConnection(con);
     }
 
     return returnList;
@@ -408,7 +408,7 @@ public final class DBProxy {
 
   /**
    * Return a List of generic Object[]s given a SQL Key using an SQL statement matching the sqlKey String in a properties file passed to DBConnectionManager via the init method.
-   * 
+   *
    * @param poolName The connection pool name
    * @param sqlKey The SQL Key found in a properties file corresponding to the desired SQL statement value
    * @param params The replacement parameters
@@ -429,7 +429,7 @@ public final class DBProxy {
 
   /**
    * Return a List of generic Object[]s given an SQL statement
-   * 
+   *
    * @param poolName The connection pool name
    * @param sql The SQL statement
    * @param params The replacement parameters
@@ -463,7 +463,7 @@ public final class DBProxy {
         logger.error(ROLLBACK_EXCEPTION_MESSAGE, e1);
       }
     } finally {
-      DB_CONNECTION_MANAGER.freeConnection(poolName, con);
+      DB_CONNECTION_MANAGER.freeConnection(con);
     }
 
     return returnList;
@@ -473,7 +473,7 @@ public final class DBProxy {
 
   /**
    * Batch executes the given INSERT, UPDATE, DELETE, REPLACE or UPSERT SQL statement matching the sqlKey String in a properties file passed to DBConnectionManager via the init method
-   * 
+   *
    * @param poolName The connection pool name
    * @param sqlKey The SQL Key found in a properties file corresponding to the desired SQL statement value
    * @param params An array of query replacement parameters. Each row in this array is one set of batch replacement values
@@ -494,7 +494,7 @@ public final class DBProxy {
 
   /**
    * Batch executes the given INSERT, UPDATE, DELETE, REPLACE or UPSERT SQL statement
-   * 
+   *
    * @param poolName The connection pool name
    * @param sql The SQL statement
    * @param params An array of query replacement parameters. Each row in this array is one set of batch replacement values
@@ -527,7 +527,7 @@ public final class DBProxy {
         logger.error(ROLLBACK_EXCEPTION_MESSAGE, e1);
       }
     } finally {
-      DB_CONNECTION_MANAGER.freeConnection(poolName, con);
+      DB_CONNECTION_MANAGER.freeConnection(con);
     }
 
     return returnIntArray;

@@ -19,13 +19,12 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.Properties;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
-import com.xeiam.yank.DBConnectionManager;
 
 /**
  * @author timmolter
@@ -37,9 +36,8 @@ public class TestConnectionManager {
 
     // DB Properties
     Properties dbProps = new Properties();
-    dbProps.setProperty("driverclassname", "org.hsqldb.jdbcDriver");
     dbProps.setProperty("myconnectionpoolname.url", "jdbc:hsqldb:mem:aname;shutdown=true");
-    dbProps.setProperty("myconnectionpoolname.user", "root");
+    dbProps.setProperty("myconnectionpoolname.user", "sa");
     dbProps.setProperty("myconnectionpoolname.password", "");
     dbProps.setProperty("myconnectionpoolname.maxconn", "3");
 
@@ -53,45 +51,46 @@ public class TestConnectionManager {
   }
 
   @Test
-  public void testNonExistantPool() {
+  public void testNonExistantPool() throws SQLException {
 
     Connection con = DBConnectionManager.INSTANCE.getConnection("myfalseconnectionpoolname");
     assertNull(con);
   }
 
   @Test
-  public void testExistantPool() {
+  public void testExistantPool() throws SQLException {
 
     Connection con = DBConnectionManager.INSTANCE.getConnection("myconnectionpoolname");
     assertNotNull(con);
   }
 
+  // @Test
+  // public void testPool1() throws SQLException {
+  //
+  // Connection con = DBConnectionManager.INSTANCE.getConnection("myconnectionpoolname");
+  // assertNotNull(con);
+  // con = DBConnectionManager.INSTANCE.getConnection("myconnectionpoolname");
+  // assertNotNull(con);
+  // con = DBConnectionManager.INSTANCE.getConnection("myconnectionpoolname");
+  // assertNotNull(con);
+  // con = DBConnectionManager.INSTANCE.getConnection("myconnectionpoolname");
+  // assertNull(con);
+  // DBConnectionManager.INSTANCE.release();
+  // }
+
   @Test
-  public void testPool1() {
+  public void testPool2() throws SQLException {
 
     Connection con = DBConnectionManager.INSTANCE.getConnection("myconnectionpoolname");
     assertNotNull(con);
+    DBConnectionManager.INSTANCE.freeConnection(con);
     con = DBConnectionManager.INSTANCE.getConnection("myconnectionpoolname");
     assertNotNull(con);
     con = DBConnectionManager.INSTANCE.getConnection("myconnectionpoolname");
     assertNotNull(con);
     con = DBConnectionManager.INSTANCE.getConnection("myconnectionpoolname");
-    assertNull(con);
-    DBConnectionManager.INSTANCE.release();
-  }
+    assertNotNull(con);
+    DBConnectionManager.INSTANCE.freeConnection(con);
 
-  @Test
-  public void testPool2() {
-
-    Connection con = DBConnectionManager.INSTANCE.getConnection("myconnectionpoolname");
-    assertNotNull(con);
-    DBConnectionManager.INSTANCE.release();
-    con = DBConnectionManager.INSTANCE.getConnection("myconnectionpoolname");
-    assertNotNull(con);
-    con = DBConnectionManager.INSTANCE.getConnection("myconnectionpoolname");
-    assertNotNull(con);
-    con = DBConnectionManager.INSTANCE.getConnection("myconnectionpoolname");
-    assertNotNull(con);
-    DBConnectionManager.INSTANCE.release();
   }
 }
