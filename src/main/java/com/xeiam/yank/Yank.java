@@ -29,6 +29,8 @@ import org.slf4j.LoggerFactory;
 
 import com.xeiam.yank.exceptions.SQLStatementNotFoundException;
 
+import javax.sql.DataSource;
+
 /**
  * A wrapper for DBUtils' QueryRunner's methods: update, query, and batch. Connections are retrieved from the connection pool in DBConnectionManager.
  *
@@ -400,6 +402,15 @@ public final class Yank {
     }
 
     return returnIntArray;
+  }
+
+  /**
+   * Exposes access to the configured DataSource allowing direct use of DBUtils (or other) framework when needed.
+   * @param poolName  the connection pool name
+   * @return a configured (pooled) DataSource ready for use in QueryRunner instances.
+   */
+  public static DataSource getDataSource(String poolName) {
+      return YANK_POOL_MANAGER.getDataSource(poolName);
   }
 
   /**
