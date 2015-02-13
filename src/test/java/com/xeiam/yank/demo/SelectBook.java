@@ -34,7 +34,7 @@ public class SelectBook {
     dbProps.setProperty("username", "root");
     dbProps.setProperty("password", "");
 
-    // init YankPoolManager
+    // add connection pool
     Yank.addConnectionPool("myconnectionpoolname", dbProps);
 
     // query book
@@ -43,7 +43,7 @@ public class SelectBook {
     Book book = Yank.querySingleObjectSQL("myconnectionpoolname", sql, Book.class, params);
     System.out.println(book.toString());
 
-    // shutodwn DB Connection Manager
+    // release connection pool
     Yank.release();
 
   }

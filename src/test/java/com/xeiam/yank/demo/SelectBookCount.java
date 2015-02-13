@@ -30,14 +30,12 @@ public class SelectBookCount {
     // DB Properties
     Properties dbProps = PropertiesUtils.getPropertiesFromClasspath("MYSQL_DB.properties");
 
-    // init YankPoolManager
     Yank.addConnectionPool("myconnectionpoolname", dbProps);
 
     // query
     long numBooks = BooksDAO.getNumBooks();
     System.out.println("The number of books in the table are: " + numBooks);
 
-    // shutodwn DB Connection Manager
     Yank.release();
 
   }

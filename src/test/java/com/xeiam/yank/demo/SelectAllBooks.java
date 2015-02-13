@@ -33,7 +33,6 @@ public class SelectAllBooks {
     // DB Properties
     Properties dbProps = PropertiesUtils.getPropertiesFromClasspath("MYSQL_DB.properties");
 
-    // init YankPoolManager
     Yank.addConnectionPool("myconnectionpoolname", dbProps);
 
     // query
@@ -42,7 +41,6 @@ public class SelectAllBooks {
       System.out.println(book.getTitle());
     }
 
-    // shutdown YankPoolManager
     Yank.release();
 
   }

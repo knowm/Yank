@@ -32,7 +32,6 @@ public class InsertBook {
     // DB Properties
     Properties dbProps = PropertiesUtils.getPropertiesFromClasspath("MYSQL_DB.properties");
 
-    // init YankPoolManager
     Yank.addConnectionPool("myconnectionpoolname", dbProps);
 
     // query
@@ -43,7 +42,6 @@ public class InsertBook {
     int i = BooksDAO.insertBook(book);
     System.out.println(i);
 
-    // shutodwn DB Connection Manager
     Yank.release();
 
   }
