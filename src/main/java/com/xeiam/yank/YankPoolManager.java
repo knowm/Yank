@@ -77,7 +77,7 @@ public final class YankPoolManager {
   /**
    * Init method without a MYSQL_SQL.properties file
    *
-   * @param dbProperties
+   * @param dbProperties  The connection pool properties
    */
   public void init(Properties dbProperties) {
 
@@ -102,7 +102,7 @@ public final class YankPoolManager {
    * poolname.maxconn     The maximal number of connections (optional)
    * </pre>
    *
-   * @param props The connection pool properties
+   * @param dbProperties The connection pool properties
    */
   private void createPools(Properties dbProperties) {
 
@@ -113,28 +113,30 @@ public final class YankPoolManager {
         String poolName = name.substring(0, name.lastIndexOf('.'));
         String url = dbProperties.getProperty(poolName + ".url").trim();
         if (url == null) {
-          logger.warn("No URL specified for " + poolName);
+          logger.warn("No URL specified for {}", poolName);
           continue;
         }
         String user = dbProperties.getProperty(poolName + ".user").trim();
         String password = dbProperties.getProperty(poolName + ".password").trim();
-        String maxconn = dbProperties.getProperty(poolName + ".maxconn").trim();
-        int max;
-        try {
-          max = Integer.valueOf(maxconn).intValue();
-        } catch (NumberFormatException e) {
-          logger.warn("Invalid maxconn value " + maxconn + " for " + poolName);
-          max = 0;
-        }
 
         HikariDataSource ds = new HikariDataSource();
         ds.setJdbcUrl(url);
         ds.setUsername(user);
         ds.setPassword(password);
-        ds.setMaximumPoolSize(max);
+
+        // make this optional, per docs
+        String maxconn = dbProperties.getProperty(poolName + ".maxconn");
+        if (maxconn != null) {
+            maxconn = maxconn.trim();
+            try {
+                ds.setMaximumPoolSize(Integer.valueOf(maxconn));
+            } catch (NumberFormatException e) {
+                logger.warn("Invalid maxconn value {} for {} pool's default will be used", maxconn, poolName);
+            }
+        }
 
         pools.put(poolName, ds);
-        logger.info("Initialized pool '" + poolName + "'");
+        logger.info("Initialized pool '{}'", poolName);
       }
     }
   }
@@ -162,7 +164,7 @@ public final class YankPoolManager {
     for (Iterator<String> iterator = allPools.iterator(); iterator.hasNext();) {
 
       String poolName = iterator.next();
-      logger.debug("Releasing pool: " + poolName + "...");
+      logger.debug("Releasing pool: {}...", poolName);
 
       pools.get(poolName).shutdown();
     }
