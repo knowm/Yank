@@ -41,14 +41,14 @@ public class TestBooksTableDataSourceClassName {
     Properties sqlProps = PropertiesUtils.getPropertiesFromClasspath("HSQL_SQL.properties");
 
     // init YankPoolManager
-    YankPoolManager.INSTANCE.addConnectionPool("myconnectionpoolname", dbProps);
-    YankPoolManager.INSTANCE.addSQLStatements(sqlProps);
+    Yank.addConnectionPool("myconnectionpoolname", dbProps);
+    Yank.addSQLStatements(sqlProps);
   }
 
   @AfterClass
   public static void tearDownDB() {
 
-    YankPoolManager.INSTANCE.release();
+    Yank.release();
   }
 
   @Test

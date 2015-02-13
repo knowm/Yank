@@ -16,6 +16,7 @@
 package com.xeiam.yank;
 
 import java.util.List;
+import java.util.Properties;
 
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.ArrayListHandler;
@@ -64,7 +65,7 @@ public final class Yank {
    */
   public static int executeSQLKey(String poolName, String sqlKey, Object[] params) {
 
-    String sql = YANK_POOL_MANAGER.getSqlProperties().getProperty(sqlKey);
+    String sql = YANK_POOL_MANAGER.getMergedSqlProperties().getProperty(sqlKey);
     if (sql == null || sql.equalsIgnoreCase("")) {
       throw new SQLStatementNotFoundException();
     } else {
@@ -113,7 +114,7 @@ public final class Yank {
    */
   public static <T> T querySingleScalarSQLKey(String poolName, String sqlKey, Class<T> type, Object[] params) {
 
-    String sql = YANK_POOL_MANAGER.getSqlProperties().getProperty(sqlKey);
+    String sql = YANK_POOL_MANAGER.getMergedSqlProperties().getProperty(sqlKey);
     if (sql == null || sql.equalsIgnoreCase("")) {
       throw new SQLStatementNotFoundException();
     } else {
@@ -165,7 +166,7 @@ public final class Yank {
    */
   public static <T> T querySingleObjectSQLKey(String poolName, String sqlKey, Class<T> type, Object[] params) {
 
-    String sql = YANK_POOL_MANAGER.getSqlProperties().getProperty(sqlKey);
+    String sql = YANK_POOL_MANAGER.getMergedSqlProperties().getProperty(sqlKey);
     if (sql == null || sql.equalsIgnoreCase("")) {
       throw new SQLStatementNotFoundException();
     } else {
@@ -217,7 +218,7 @@ public final class Yank {
    */
   public static <T> List<T> queryObjectListSQLKey(String poolName, String sqlKey, Class<T> type, Object[] params) {
 
-    String sql = YANK_POOL_MANAGER.getSqlProperties().getProperty(sqlKey);
+    String sql = YANK_POOL_MANAGER.getMergedSqlProperties().getProperty(sqlKey);
     if (sql == null || sql.equalsIgnoreCase("")) {
       throw new SQLStatementNotFoundException();
     } else {
@@ -269,7 +270,7 @@ public final class Yank {
    */
   public static <T> List<T> queryColumnListSQLKey(String poolName, String sqlKey, String columnName, Class<T> type, Object[] params) {
 
-    String sql = YANK_POOL_MANAGER.getSqlProperties().getProperty(sqlKey);
+    String sql = YANK_POOL_MANAGER.getMergedSqlProperties().getProperty(sqlKey);
     if (sql == null || sql.equalsIgnoreCase("")) {
       throw new SQLStatementNotFoundException();
     } else {
@@ -320,7 +321,7 @@ public final class Yank {
    */
   public static List<Object[]> queryGenericObjectArrayListSQLKey(String poolName, String sqlKey, Object[] params) {
 
-    String sql = YANK_POOL_MANAGER.getSqlProperties().getProperty(sqlKey);
+    String sql = YANK_POOL_MANAGER.getMergedSqlProperties().getProperty(sqlKey);
     if (sql == null || sql.equalsIgnoreCase("")) {
       throw new SQLStatementNotFoundException();
     } else {
@@ -369,7 +370,7 @@ public final class Yank {
    */
   public static int[] executeBatchSQLKey(String poolName, String sqlKey, Object[][] params) {
 
-    String sql = YANK_POOL_MANAGER.getSqlProperties().getProperty(sqlKey);
+    String sql = YANK_POOL_MANAGER.getMergedSqlProperties().getProperty(sqlKey);
     if (sql == null || sql.equalsIgnoreCase("")) {
       throw new SQLStatementNotFoundException();
     } else {
@@ -399,5 +400,34 @@ public final class Yank {
     }
 
     return returnIntArray;
+  }
+
+  /**
+   * Add properties for a connection pool. Yank uses a Hikari connection pool under the hood, so you have to provide the minimal essential properties
+   * and the optional properties as defined here: https://github.com/brettwooldridge/HikariCP
+   *
+   * @param connectionPoolProperties
+   */
+  public static void addConnectionPool(String poolName, Properties connectionPoolProperties) {
+
+    YANK_POOL_MANAGER.addConnectionPool(poolName, connectionPoolProperties);
+  }
+
+  /**
+   * Add SQL statements in a properties file. Adding more will merge Properties.
+   *
+   * @param sqlProperties
+   */
+  public static void addSQLStatements(Properties sqlProperties) {
+
+    YANK_POOL_MANAGER.addSQLStatements(sqlProperties);
+  }
+
+  /**
+   * Closes all open connection pools
+   */
+  public static synchronized void release() {
+
+    YANK_POOL_MANAGER.release();
   }
 }

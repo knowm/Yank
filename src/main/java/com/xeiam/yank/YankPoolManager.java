@@ -45,7 +45,7 @@ public final class YankPoolManager {
   private final Properties mergedSqlProperties = new Properties();
 
   /** The singleton instance */
-  public static final YankPoolManager INSTANCE = new YankPoolManager();
+  protected static final YankPoolManager INSTANCE = new YankPoolManager();
 
   /**
    * A private constructor since this is a Singleton
@@ -60,12 +60,12 @@ public final class YankPoolManager {
    *
    * @param connectionPoolProperties
    */
-  public void addConnectionPool(String poolName, Properties connectionPoolProperties) {
+  protected void addConnectionPool(String poolName, Properties connectionPoolProperties) {
 
     createPool(poolName, connectionPoolProperties);
   }
 
-  public void addSQLStatements(Properties sqlProperties) {
+  protected void addSQLStatements(Properties sqlProperties) {
 
     this.mergedSqlProperties.putAll(sqlProperties);
   }
@@ -86,22 +86,11 @@ public final class YankPoolManager {
   }
 
   /**
-   * Get the DataSource corresponding to the provided poolName
-   *
-   * @param poolName
-   * @return
+   * Closes all connection pools
    */
-  public DataSource getDataSource(String poolName) {
+  protected synchronized void release() {
 
-    return pools.get(poolName);
-  }
-
-  /**
-   * Closes all open connections
-   */
-  public synchronized void release() {
-
-    logger.info("Releasing YankPoolManager...");
+    logger.info("Releasing Yank connection pools...");
 
     Set<String> allPools = pools.keySet();
 
@@ -112,13 +101,23 @@ public final class YankPoolManager {
 
       pools.get(poolName).shutdown();
     }
-
   }
 
   /**
-   * @return the sqlProperties
+   * Get the DataSource corresponding to the provided poolName
+   *
+   * @param poolName
+   * @return
    */
-  public Properties getSqlProperties() {
+  protected DataSource getDataSource(String poolName) {
+
+    return pools.get(poolName);
+  }
+
+  /**
+   * @return the mergedSqlProperties
+   */
+  protected Properties getMergedSqlProperties() {
 
     return mergedSqlProperties;
   }

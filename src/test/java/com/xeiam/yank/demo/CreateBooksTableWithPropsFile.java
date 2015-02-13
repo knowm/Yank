@@ -18,7 +18,7 @@ package com.xeiam.yank.demo;
 import java.util.Properties;
 
 import com.xeiam.yank.PropertiesUtils;
-import com.xeiam.yank.YankPoolManager;
+import com.xeiam.yank.Yank;
 
 /**
  * Create a table called BOOKS. Demonstrates getting the connection pool properties from a *.properties file.
@@ -39,14 +39,14 @@ public class CreateBooksTableWithPropsFile {
     Properties sqlProps = PropertiesUtils.getPropertiesFromClasspath("MYSQL_SQL.properties");
 
     // init YankPoolManager
-    YankPoolManager.INSTANCE.addConnectionPool("myconnectionpoolname", dbProps);
-    YankPoolManager.INSTANCE.addSQLStatements(sqlProps);
+    Yank.addConnectionPool("myconnectionpoolname", dbProps);
+    Yank.addSQLStatements(sqlProps);
 
     // query
     BooksDAO.createBooksTable();
 
     // shutodwn DB Connection Manager
-    YankPoolManager.INSTANCE.release();
+    Yank.release();
 
   }
 }

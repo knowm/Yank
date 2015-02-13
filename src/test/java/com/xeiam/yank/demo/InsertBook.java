@@ -18,7 +18,7 @@ package com.xeiam.yank.demo;
 import java.util.Properties;
 
 import com.xeiam.yank.PropertiesUtils;
-import com.xeiam.yank.YankPoolManager;
+import com.xeiam.yank.Yank;
 
 /**
  * Inserts a Book into the BOOKS table. Demonstrates fetching the connection pool properties from a file on the classpath
@@ -33,7 +33,7 @@ public class InsertBook {
     Properties dbProps = PropertiesUtils.getPropertiesFromClasspath("MYSQL_DB.properties");
 
     // init YankPoolManager
-    YankPoolManager.INSTANCE.addConnectionPool("myconnectionpoolname", dbProps);
+    Yank.addConnectionPool("myconnectionpoolname", dbProps);
 
     // query
     Book book = new Book();
@@ -44,7 +44,7 @@ public class InsertBook {
     System.out.println(i);
 
     // shutodwn DB Connection Manager
-    YankPoolManager.INSTANCE.release();
+    Yank.release();
 
   }
 }

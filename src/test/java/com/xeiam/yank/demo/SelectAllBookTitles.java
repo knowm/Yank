@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Properties;
 
 import com.xeiam.yank.PropertiesUtils;
-import com.xeiam.yank.YankPoolManager;
+import com.xeiam.yank.Yank;
 
 /**
  * Selects all Book titles from the BOOKS table. Demonstrates fetching a column as a List in a table given the column name
@@ -34,7 +34,7 @@ public class SelectAllBookTitles {
     Properties dbProps = PropertiesUtils.getPropertiesFromClasspath("MYSQL_DB.properties");
 
     // init YankPoolManager
-    YankPoolManager.INSTANCE.addConnectionPool("myconnectionpoolname", dbProps);
+    Yank.addConnectionPool("myconnectionpoolname", dbProps);
 
     // query
     List<String> bookTitles = BooksDAO.selectAllBookTitles();
@@ -43,7 +43,7 @@ public class SelectAllBookTitles {
     }
 
     // shutodwn DB Connection Manager
-    YankPoolManager.INSTANCE.release();
+    Yank.release();
 
   }
 }

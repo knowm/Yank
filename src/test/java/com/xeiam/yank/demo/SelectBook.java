@@ -18,7 +18,7 @@ package com.xeiam.yank.demo;
 import java.util.Properties;
 
 import com.xeiam.yank.PropertiesUtils;
-import com.xeiam.yank.YankPoolManager;
+import com.xeiam.yank.Yank;
 
 /**
  * Selects a single Book from the BOOKS table. Demonstrates using a SQL Key in MYSQL_SQL.properties
@@ -35,15 +35,15 @@ public class SelectBook {
     Properties sqlProps = PropertiesUtils.getPropertiesFromClasspath("MYSQL_SQL.properties");
 
     // init YankPoolManager
-    YankPoolManager.INSTANCE.addConnectionPool("myconnectionpoolname", dbProps);
-    YankPoolManager.INSTANCE.addSQLStatements(sqlProps);
+    Yank.addConnectionPool("myconnectionpoolname", dbProps);
+    Yank.addSQLStatements(sqlProps);
 
     // query
     Book book = BooksDAO.selectBook("Cryptonomicon");
     System.out.println(book.toString());
 
     // shutodwn DB Connection Manager
-    YankPoolManager.INSTANCE.release();
+    Yank.release();
 
   }
 }
