@@ -23,7 +23,7 @@ import com.xeiam.yank.Yank;
  * DAO (Data Access Object) Class for BOOKS table. <br>
  * This is where you create your own methods for SQL interaction with a database table.<br>
  * Each table in your database should have it's own DAO Class.<br>
- * 
+ *
  * @author timmolter
  */
 public class BooksDAO {
@@ -144,6 +144,19 @@ public class BooksDAO {
 
     String SQL = "SELECT COUNT(*) FROM BOOKS";
     return Yank.querySingleScalarSQL("myconnectionpoolname", SQL, Long.class, null);
+  }
+
+  /**
+   * This method demonstrates:
+   * <ul>
+   * <li>using a non-prepared statement with null params</li>
+   * <li>the advanced feature of using an SQL Key corresponding to an actual SQL statement stored in a Properties file using DBProxy.executeSQLKey</li>
+   * </ul>
+   */
+  public static Book selectRandomBook() {
+
+    String sqlKey = "BOOKS_SELECT_RANDOM_BOOK";
+    return Yank.querySingleObjectSQLKey("myconnectionpoolname", sqlKey, Book.class, null);
   }
 
 }
