@@ -31,10 +31,10 @@ public class SelectAllBooks {
   public static void main(String[] args) {
 
     // DB Properties
-    Properties props = PropertiesUtils.getPropertiesFromClasspath("MYSQL_DB.properties");
+    Properties dbProps = PropertiesUtils.getPropertiesFromClasspath("MYSQL_DB.properties");
 
     // init YankPoolManager
-    YankPoolManager.INSTANCE.init(props);
+    YankPoolManager.INSTANCE.addConnectionPool("myconnectionpoolname", dbProps);
 
     // query
     List<Book> allBooks = BooksDAO.selectAllBooks();

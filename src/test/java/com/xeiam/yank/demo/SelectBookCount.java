@@ -17,8 +17,8 @@ package com.xeiam.yank.demo;
 
 import java.util.Properties;
 
-import com.xeiam.yank.YankPoolManager;
 import com.xeiam.yank.PropertiesUtils;
+import com.xeiam.yank.YankPoolManager;
 
 /**
  * Selects Book count from the BOOKS table.
@@ -28,10 +28,10 @@ public class SelectBookCount {
   public static void main(String[] args) {
 
     // DB Properties
-    Properties props = PropertiesUtils.getPropertiesFromClasspath("MYSQL_DB.properties");
+    Properties dbProps = PropertiesUtils.getPropertiesFromClasspath("MYSQL_DB.properties");
 
-    // init DB Connection Manager
-    YankPoolManager.INSTANCE.init(props);
+    // init YankPoolManager
+    YankPoolManager.INSTANCE.addConnectionPool("myconnectionpoolname", dbProps);
 
     // query
     long numBooks = BooksDAO.getNumBooks();

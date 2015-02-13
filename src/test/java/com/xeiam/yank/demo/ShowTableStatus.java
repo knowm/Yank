@@ -18,12 +18,12 @@ package com.xeiam.yank.demo;
 import java.util.List;
 import java.util.Properties;
 
-import com.xeiam.yank.YankPoolManager;
 import com.xeiam.yank.PropertiesUtils;
+import com.xeiam.yank.YankPoolManager;
 
 /**
  * Gets table status from the YANK database. Demonstrates fetching a List of Object[]s from the DB. You need not return lists of Objects!
- * 
+ *
  * @author timmolter
  */
 public class ShowTableStatus {
@@ -31,12 +31,13 @@ public class ShowTableStatus {
   public static void main(String[] args) {
 
     // DB Properties
-    Properties dbprops = PropertiesUtils.getPropertiesFromClasspath("MYSQL_DB.properties");
+    Properties dbProps = PropertiesUtils.getPropertiesFromClasspath("MYSQL_DB.properties");
     // SQL Statements in Properties file
-    Properties sqlprops = PropertiesUtils.getPropertiesFromClasspath("MYSQL_SQL.properties");
+    Properties sqlProps = PropertiesUtils.getPropertiesFromClasspath("MYSQL_SQL.properties");
 
-    // init DB Connection Manager
-    YankPoolManager.INSTANCE.init(dbprops, sqlprops);
+    // init YankPoolManager
+    YankPoolManager.INSTANCE.addConnectionPool("myconnectionpoolname", dbProps);
+    YankPoolManager.INSTANCE.addSQLStatements(sqlProps);
 
     // query
     List<Object[]> matrix = BooksDAO.getTableStatus();

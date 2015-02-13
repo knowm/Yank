@@ -15,7 +15,6 @@
  */
 package com.xeiam.yank;
 
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -27,6 +26,7 @@ import javax.sql.DataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
 /**
@@ -42,7 +42,7 @@ public final class YankPoolManager {
 
   private final Map<String, HikariDataSource> pools = new HashMap<String, HikariDataSource>();
 
-  private Properties sqlProperties;
+  private final Properties mergedSqlProperties = new Properties();
 
   /** The singleton instance */
   public static final YankPoolManager INSTANCE = new YankPoolManager();
@@ -55,91 +55,34 @@ public final class YankPoolManager {
   }
 
   /**
-   * Init method with both DB properties and SQL properties file
+   * Add properties for a connection pool. Yank uses a Hikari connection pool under the hood, so you have to provide the minimal essential properties
+   * and the optional properties as defined here: https://github.com/brettwooldridge/HikariCP
    *
-   * @param dbProperties
-   * @param sqlProperties
+   * @param connectionPoolProperties
    */
-  public void init(Properties dbProperties, Properties sqlProperties) {
+  public void addConnectionPool(String poolName, Properties connectionPoolProperties) {
 
-    logger.info("Initializing DBConnectionManager...");
+    createPool(poolName, connectionPoolProperties);
+  }
 
-    if (dbProperties == null) {
-      logger.error("DB PROPS NULL!!!");
-    }
-    if (sqlProperties == null) {
-      logger.warn("SQL PROPS NULL!!!");
-    }
-    this.sqlProperties = sqlProperties;
+  public void addSQLStatements(Properties sqlProperties) {
 
-    createPools(dbProperties);
+    this.mergedSqlProperties.putAll(sqlProperties);
   }
 
   /**
-   * Init method without a MYSQL_SQL.properties file
+   * Creates a Hikari connection pool and puts it in the pools map.
    *
-   * @param dbProperties The connection pool properties
+   * @param poolName
+   * @param connectionPoolProperties
    */
-  public void init(Properties dbProperties) {
+  private void createPool(String poolName, Properties connectionPoolProperties) {
 
-    logger.info("Initializing DBConnectionManager...");
-
-    if (dbProperties == null) {
-      logger.error("DB PROPS NULL!!!");
-    }
-
-    this.sqlProperties = new Properties(); // create an empty properties file
-
-    createPools(dbProperties);
-  }
-
-  /**
-   * Creates instances of DBConnectionPool objects based on the properties. A ConnectionPool can be defined with the following properties:
-   *
-   * <pre>
-   * poolname.url         The JDBC URL for the database
-   * poolname.user        A database user (optional)
-   * poolname.password    A database user password (if user specified)
-   * poolname.maxconn     The maximal number of connections (optional)
-   * </pre>
-   *
-   * @param dbProperties The connection pool properties
-   */
-  private void createPools(Properties dbProperties) {
-
-    Enumeration propNames = dbProperties.propertyNames();
-    while (propNames.hasMoreElements()) {
-      String name = (String) propNames.nextElement();
-      if (name.endsWith(".url")) {
-        String poolName = name.substring(0, name.lastIndexOf('.'));
-        String url = dbProperties.getProperty(poolName + ".url").trim();
-        if (url == null) {
-          logger.warn("No URL specified for {}", poolName);
-          continue;
-        }
-        String user = dbProperties.getProperty(poolName + ".user").trim();
-        String password = dbProperties.getProperty(poolName + ".password").trim();
-
-        HikariDataSource ds = new HikariDataSource();
-        ds.setJdbcUrl(url);
-        ds.setUsername(user);
-        ds.setPassword(password);
-
-        // make this optional, per docs
-        String maxconn = dbProperties.getProperty(poolName + ".maxconn");
-        if (maxconn != null) {
-          maxconn = maxconn.trim();
-          try {
-            ds.setMaximumPoolSize(Integer.valueOf(maxconn));
-          } catch (NumberFormatException e) {
-            logger.warn("Invalid maxconn value {} for {} pool's default will be used", maxconn, poolName);
-          }
-        }
-
-        pools.put(poolName, ds);
-        logger.info("Initialized pool '{}'", poolName);
-      }
-    }
+    HikariConfig config = new HikariConfig(connectionPoolProperties);
+    config.setPoolName(poolName);
+    HikariDataSource ds = new HikariDataSource(config);
+    pools.put(poolName, ds);
+    logger.info("Initialized pool '{}'", poolName);
   }
 
   /**
@@ -158,7 +101,7 @@ public final class YankPoolManager {
    */
   public synchronized void release() {
 
-    logger.info("Releasing DBConnectionManager...");
+    logger.info("Releasing YankPoolManager...");
 
     Set<String> allPools = pools.keySet();
 
@@ -177,7 +120,7 @@ public final class YankPoolManager {
    */
   public Properties getSqlProperties() {
 
-    return sqlProperties;
+    return mergedSqlProperties;
   }
 
 }

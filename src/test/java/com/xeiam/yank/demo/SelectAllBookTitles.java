@@ -18,12 +18,12 @@ package com.xeiam.yank.demo;
 import java.util.List;
 import java.util.Properties;
 
-import com.xeiam.yank.YankPoolManager;
 import com.xeiam.yank.PropertiesUtils;
+import com.xeiam.yank.YankPoolManager;
 
 /**
  * Selects all Book titles from the BOOKS table. Demonstrates fetching a column as a List in a table given the column name
- * 
+ *
  * @author timmolter
  */
 public class SelectAllBookTitles {
@@ -31,10 +31,10 @@ public class SelectAllBookTitles {
   public static void main(String[] args) {
 
     // DB Properties
-    Properties props = PropertiesUtils.getPropertiesFromClasspath("MYSQL_DB.properties");
+    Properties dbProps = PropertiesUtils.getPropertiesFromClasspath("MYSQL_DB.properties");
 
-    // init DB Connection Manager
-    YankPoolManager.INSTANCE.init(props);
+    // init YankPoolManager
+    YankPoolManager.INSTANCE.addConnectionPool("myconnectionpoolname", dbProps);
 
     // query
     List<String> bookTitles = BooksDAO.selectAllBookTitles();

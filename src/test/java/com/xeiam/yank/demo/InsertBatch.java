@@ -19,12 +19,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-import com.xeiam.yank.YankPoolManager;
 import com.xeiam.yank.PropertiesUtils;
+import com.xeiam.yank.YankPoolManager;
 
 /**
  * Inserts a Batch of Book Objects into the BOOKS table.
- * 
+ *
  * @author timmolter
  */
 public class InsertBatch {
@@ -32,10 +32,10 @@ public class InsertBatch {
   public static void main(String[] args) {
 
     // DB Properties
-    Properties props = PropertiesUtils.getPropertiesFromClasspath("MYSQL_DB.properties");
+    Properties dbProps = PropertiesUtils.getPropertiesFromClasspath("MYSQL_DB.properties");
 
-    // init DB Connection Manager
-    YankPoolManager.INSTANCE.init(props);
+    // init YankPoolManager
+    YankPoolManager.INSTANCE.addConnectionPool("myconnectionpoolname", dbProps);
 
     // query
     List<Book> books = new ArrayList<Book>();

@@ -31,7 +31,7 @@ public class TestPropertiesUtils {
   public void testLoadProperties() {
 
     Properties dbProps = PropertiesUtils.getPropertiesFromClasspath("HSQL_DB.properties");
-    assertThat(dbProps.get("myconnectionpoolname.url").toString(), equalTo("jdbc:hsqldb:mem:aname;shutdown=true"));
+    assertThat(dbProps.get("jdbcUrl").toString(), equalTo("jdbc:hsqldb:mem:blah;shutdown=true"));
 
     Properties sqlProps = PropertiesUtils.getPropertiesFromPath("./src/test/resources/HSQL_SQL.properties");
     assertThat(sqlProps.get("BOOKS_SELECT_BY_TITLE").toString(), equalTo("SELECT * FROM BOOKS WHERE TITLE = ?"));

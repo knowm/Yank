@@ -26,23 +26,23 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.xeiam.yank.YankPoolManager;
-import com.xeiam.yank.PropertiesUtils;
 import com.xeiam.yank.demo.Book;
 import com.xeiam.yank.demo.BooksDAO;
 
 /**
  * @author timmolter
  */
-public class TestBooksTable {
+public class TestBooksTableDataSourceClassName {
 
   @BeforeClass
   public static void setUpDB() {
 
-    Properties dbProps = PropertiesUtils.getPropertiesFromClasspath("HSQL_DB.properties");
+    Properties dbProps = PropertiesUtils.getPropertiesFromClasspath("HSQL_DB_DATA_SRC.properties");
     Properties sqlProps = PropertiesUtils.getPropertiesFromClasspath("HSQL_SQL.properties");
 
-    YankPoolManager.INSTANCE.init(dbProps, sqlProps);
+    // init YankPoolManager
+    YankPoolManager.INSTANCE.addConnectionPool("myconnectionpoolname", dbProps);
+    YankPoolManager.INSTANCE.addSQLStatements(sqlProps);
   }
 
   @AfterClass
