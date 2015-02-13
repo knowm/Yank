@@ -17,11 +17,10 @@ package com.xeiam.yank.demo;
 
 import java.util.Properties;
 
-import com.xeiam.yank.PropertiesUtils;
 import com.xeiam.yank.Yank;
 
 /**
- * Selects a single Book from the BOOKS table. Demonstrates using a SQL Key in MYSQL_SQL.properties
+ * Selects a single Book from the BOOKS table. Demonstrates using the Yank API without DAOs or properties.
  *
  * @author timmolter
  */
@@ -30,16 +29,18 @@ public class SelectBook {
   public static void main(String[] args) {
 
     // DB Properties
-    Properties dbProps = PropertiesUtils.getPropertiesFromClasspath("MYSQL_DB.properties");
-    // SQL Statements in Properties file
-    Properties sqlProps = PropertiesUtils.getPropertiesFromClasspath("MYSQL_SQL.properties");
+    Properties dbProps = new Properties();
+    dbProps.setProperty("jdbcUrl", "jdbc:mysql://localhost:3306/Yank");
+    dbProps.setProperty("username", "root");
+    dbProps.setProperty("password", "");
 
     // init YankPoolManager
     Yank.addConnectionPool("myconnectionpoolname", dbProps);
-    Yank.addSQLStatements(sqlProps);
 
-    // query
-    Book book = BooksDAO.selectBook("Cryptonomicon");
+    // query book
+    String sql = "SELECT * FROM BOOKS WHERE TITLE = ?";
+    Object[] params = new Object[] { "Cryptonomicon" };
+    Book book = Yank.querySingleObjectSQL("myconnectionpoolname", sql, Book.class, params);
     System.out.println(book.toString());
 
     // shutodwn DB Connection Manager
