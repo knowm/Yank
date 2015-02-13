@@ -22,8 +22,6 @@ import java.util.Properties;
 
 import org.junit.Test;
 
-import com.xeiam.yank.PropertiesUtils;
-
 /**
  * @author timmolter
  */
@@ -33,7 +31,7 @@ public class TestPropertiesUtils {
   public void testLoadProperties() {
 
     Properties dbProps = PropertiesUtils.getPropertiesFromClasspath("HSQL_DB.properties");
-    assertThat(dbProps.get("driverclassname").toString(), equalTo("org.hsqldb.jdbcDriver"));
+    assertThat(dbProps.get("myconnectionpoolname.url").toString(), equalTo("jdbc:hsqldb:mem:aname;shutdown=true"));
 
     Properties sqlProps = PropertiesUtils.getPropertiesFromPath("./src/test/resources/HSQL_SQL.properties");
     assertThat(sqlProps.get("BOOKS_SELECT_BY_TITLE").toString(), equalTo("SELECT * FROM BOOKS WHERE TITLE = ?"));

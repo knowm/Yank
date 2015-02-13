@@ -30,8 +30,9 @@ import org.slf4j.LoggerFactory;
 import com.zaxxer.hikari.HikariDataSource;
 
 /**
- * This class is a Singleton that provides access to one or many connection pools defined in a Property file. A client gets access to the single instance and can then check-out and check-in
- * connections from a pool. When the client shuts down it should call the release() method to close all open connections and do other clean up.
+ * This class is a Singleton that provides access to one or many connection pools defined in a Property file. A client gets access to the single
+ * instance and can then check-out and check-in connections from a pool. When the client shuts down it should call the release() method to close all
+ * open connections and do other clean up.
  *
  * @author timmolter
  */
@@ -77,7 +78,7 @@ public final class YankPoolManager {
   /**
    * Init method without a MYSQL_SQL.properties file
    *
-   * @param dbProperties  The connection pool properties
+   * @param dbProperties The connection pool properties
    */
   public void init(Properties dbProperties) {
 
@@ -93,7 +94,7 @@ public final class YankPoolManager {
   }
 
   /**
-   * Creates instances of DBConnectionPool objects based on the properties. A DBConnectionPool can be defined with the following properties:
+   * Creates instances of DBConnectionPool objects based on the properties. A ConnectionPool can be defined with the following properties:
    *
    * <pre>
    * poolname.url         The JDBC URL for the database
@@ -127,12 +128,12 @@ public final class YankPoolManager {
         // make this optional, per docs
         String maxconn = dbProperties.getProperty(poolName + ".maxconn");
         if (maxconn != null) {
-            maxconn = maxconn.trim();
-            try {
-                ds.setMaximumPoolSize(Integer.valueOf(maxconn));
-            } catch (NumberFormatException e) {
-                logger.warn("Invalid maxconn value {} for {} pool's default will be used", maxconn, poolName);
-            }
+          maxconn = maxconn.trim();
+          try {
+            ds.setMaximumPoolSize(Integer.valueOf(maxconn));
+          } catch (NumberFormatException e) {
+            logger.warn("Invalid maxconn value {} for {} pool's default will be used", maxconn, poolName);
+          }
         }
 
         pools.put(poolName, ds);

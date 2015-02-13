@@ -105,7 +105,8 @@ public class BooksDAO {
   /**
    * This method demonstrates:
    * <ul>
-   * <li>the advanced feature of using an SQL Key corresponding to an actual SQL statement stored in a Properties file using DBProxy.querySingleObjectSQLKey</li>
+   * <li>the advanced feature of using an SQL Key corresponding to an actual SQL statement stored in a Properties file using
+   * DBProxy.querySingleObjectSQLKey</li>
    * <li>using a prepared statement with corresponding params</li>
    * </ul>
    */
@@ -120,7 +121,8 @@ public class BooksDAO {
   /**
    * This method demonstrates:
    * <ul>
-   * <li>the advanced feature of using an SQL Key corresponding to an actual SQL statement stored in a Properties file using DBProxy.queryGenericObjectArrayListSQLKey</li>
+   * <li>the advanced feature of using an SQL Key corresponding to an actual SQL statement stored in a Properties file using
+   * DBProxy.queryGenericObjectArrayListSQLKey</li>
    * <li>using a non-prepared statement with null params</li>
    * <li>querying for a List of Objects representing all columns in a table</li>
    * </ul>

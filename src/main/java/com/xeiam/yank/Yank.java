@@ -52,8 +52,8 @@ public final class Yank {
   // ////// INSERT, UPDATE, DELETE, or UPSERT //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   /**
-   * Executes the given INSERT, UPDATE, DELETE, REPLACE or UPSERT SQL statement matching the sqlKey String in a properties file passed to DBConnectionManager via the init method. Returns the number of
-   * rows affected.
+   * Executes the given INSERT, UPDATE, DELETE, REPLACE or UPSERT SQL statement matching the sqlKey String in a properties file passed to
+   * DBConnectionManager via the init method. Returns the number of rows affected.
    *
    * @param poolName The connection pool name
    * @param sqlKey The SQL Key found in a properties file corresponding to the desired SQL statement value
@@ -67,8 +67,7 @@ public final class Yank {
     String sql = YANK_POOL_MANAGER.getSqlProperties().getProperty(sqlKey);
     if (sql == null || sql.equalsIgnoreCase("")) {
       throw new SQLStatementNotFoundException();
-    }
-    else {
+    } else {
       return executeSQL(poolName, sql, params);
     }
   }
@@ -101,8 +100,8 @@ public final class Yank {
   // ////// Single Scalar QUERY //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   /**
-   * Return just one scalar given a SQL Key using an SQL statement matching the sqlKey String in a properties file passed to DBConnectionManager via the init method. If more than one row match the
-   * query, only the first row is returned.
+   * Return just one scalar given a SQL Key using an SQL statement matching the sqlKey String in a properties file passed to DBConnectionManager via
+   * the init method. If more than one row match the query, only the first row is returned.
    *
    * @param poolName The connection pool name
    * @param sqlKey The SQL Key found in a properties file corresponding to the desired SQL statement value
@@ -117,8 +116,7 @@ public final class Yank {
     String sql = YANK_POOL_MANAGER.getSqlProperties().getProperty(sqlKey);
     if (sql == null || sql.equalsIgnoreCase("")) {
       throw new SQLStatementNotFoundException();
-    }
-    else {
+    } else {
       return querySingleObjectSQL(poolName, sql, type, params);
     }
 
@@ -154,8 +152,8 @@ public final class Yank {
   // ////// Single Object QUERY //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   /**
-   * Return just one Object given a SQL Key using an SQL statement matching the sqlKey String in a properties file passed to DBConnectionManager via the init method. If more than one row match the
-   * query, only the first row is returned.
+   * Return just one Object given a SQL Key using an SQL statement matching the sqlKey String in a properties file passed to DBConnectionManager via
+   * the init method. If more than one row match the query, only the first row is returned.
    *
    * @param poolName The connection pool name
    * @param sqlKey The SQL Key found in a properties file corresponding to the desired SQL statement value
@@ -170,8 +168,7 @@ public final class Yank {
     String sql = YANK_POOL_MANAGER.getSqlProperties().getProperty(sqlKey);
     if (sql == null || sql.equalsIgnoreCase("")) {
       throw new SQLStatementNotFoundException();
-    }
-    else {
+    } else {
       return querySingleObjectSQL(poolName, sql, type, params);
     }
 
@@ -207,7 +204,8 @@ public final class Yank {
   // ////// Object List QUERY //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   /**
-   * Return a List of Objects given a SQL Key using an SQL statement matching the sqlKey String in a properties file passed to DBConnectionManager via the init method.
+   * Return a List of Objects given a SQL Key using an SQL statement matching the sqlKey String in a properties file passed to DBConnectionManager via
+   * the init method.
    *
    * @param poolName The connection pool name
    * @param sqlKey The SQL Key found in a properties file corresponding to the desired SQL statement value
@@ -222,8 +220,7 @@ public final class Yank {
     String sql = YANK_POOL_MANAGER.getSqlProperties().getProperty(sqlKey);
     if (sql == null || sql.equalsIgnoreCase("")) {
       throw new SQLStatementNotFoundException();
-    }
-    else {
+    } else {
       return queryObjectListSQL(poolName, sql, type, params);
     }
   }
@@ -259,7 +256,8 @@ public final class Yank {
   // ////// Column List QUERY //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   /**
-   * Return a List of Objects from a single table column given a SQL Key using an SQL statement matching the sqlKey String in a properties file passed to DBConnectionManager via the init method.
+   * Return a List of Objects from a single table column given a SQL Key using an SQL statement matching the sqlKey String in a properties file passed
+   * to DBConnectionManager via the init method.
    *
    * @param poolName The connection pool name
    * @param sqlKey The SQL Key found in a properties file corresponding to the desired SQL statement value
@@ -274,8 +272,7 @@ public final class Yank {
     String sql = YANK_POOL_MANAGER.getSqlProperties().getProperty(sqlKey);
     if (sql == null || sql.equalsIgnoreCase("")) {
       throw new SQLStatementNotFoundException();
-    }
-    else {
+    } else {
       return queryObjectListSQL(poolName, sql, type, params);
     }
   }
@@ -311,7 +308,8 @@ public final class Yank {
   // ////// OBJECT[] LIST QUERY //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   /**
-   * Return a List of generic Object[]s given a SQL Key using an SQL statement matching the sqlKey String in a properties file passed to DBConnectionManager via the init method.
+   * Return a List of generic Object[]s given a SQL Key using an SQL statement matching the sqlKey String in a properties file passed to
+   * DBConnectionManager via the init method.
    *
    * @param poolName The connection pool name
    * @param sqlKey The SQL Key found in a properties file corresponding to the desired SQL statement value
@@ -325,8 +323,7 @@ public final class Yank {
     String sql = YANK_POOL_MANAGER.getSqlProperties().getProperty(sqlKey);
     if (sql == null || sql.equalsIgnoreCase("")) {
       throw new SQLStatementNotFoundException();
-    }
-    else {
+    } else {
       return queryGenericObjectArrayListSQL(poolName, sql, params);
     }
   }
@@ -360,7 +357,8 @@ public final class Yank {
   // ////// BATCH //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   /**
-   * Batch executes the given INSERT, UPDATE, DELETE, REPLACE or UPSERT SQL statement matching the sqlKey String in a properties file passed to DBConnectionManager via the init method
+   * Batch executes the given INSERT, UPDATE, DELETE, REPLACE or UPSERT SQL statement matching the sqlKey String in a properties file passed to
+   * DBConnectionManager via the init method
    *
    * @param poolName The connection pool name
    * @param sqlKey The SQL Key found in a properties file corresponding to the desired SQL statement value
@@ -374,8 +372,7 @@ public final class Yank {
     String sql = YANK_POOL_MANAGER.getSqlProperties().getProperty(sqlKey);
     if (sql == null || sql.equalsIgnoreCase("")) {
       throw new SQLStatementNotFoundException();
-    }
-    else {
+    } else {
       return executeBatchSQL(poolName, sql, params);
     }
   }
