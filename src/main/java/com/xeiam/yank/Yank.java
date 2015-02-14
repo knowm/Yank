@@ -23,6 +23,7 @@ import javax.sql.DataSource;
 import org.apache.commons.dbutils.BasicRowProcessor;
 import org.apache.commons.dbutils.GenerousBeanProcessor;
 import org.apache.commons.dbutils.QueryRunner;
+import org.apache.commons.dbutils.ResultSetHandler;
 import org.apache.commons.dbutils.handlers.ArrayListHandler;
 import org.apache.commons.dbutils.handlers.BeanHandler;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
@@ -32,6 +33,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.xeiam.yank.exceptions.SQLStatementNotFoundException;
+import com.xeiam.yank.handlers.InsertedIDResultSetHandler;
 
 /**
  * A wrapper for DBUtils' QueryRunner's methods: update, query, and batch. Connections are retrieved from the connection pool in DBConnectionManager.
@@ -52,6 +54,50 @@ public final class Yank {
    */
   private Yank() {
 
+  }
+
+  // ////// INSERT //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+  /**
+   * Executes a given INSERT SQL prepared statement matching the sqlKey String in a properties file loaded via Yank.addSQLStatements(...). Returns the
+   * auto-increment id of the inserted row.
+   *
+   * @param poolName The connection pool name
+   * @param sqlKey The SQL Key found in a properties file corresponding to the desired SQL statement value
+   * @param params The replacement parameters
+   * @return the auto-increment id of the inserted row, or null if no id is available
+   * @throws SQLStatementNotFoundException if an SQL statement could not be found for the given sqlKey String
+   */
+  public static long insertSQLKey(String poolName, String sqlKey, Object[] params) {
+
+    String sql = YANK_POOL_MANAGER.getMergedSqlProperties().getProperty(sqlKey);
+    if (sql == null || sql.equalsIgnoreCase("")) {
+      throw new SQLStatementNotFoundException();
+    } else {
+      return insertSQL(poolName, sql, params);
+    }
+  }
+
+  /**
+   * Executes a given INSERT SQL prepared statement. Returns the auto-increment id of the inserted row.
+   *
+   * @param poolName The connection pool name
+   * @param sql The query to execute
+   * @param params The replacement parameters
+   * @return the auto-increment id of the inserted row, or null if no id is available
+   */
+  public static long insertSQL(String poolName, String sql, Object[] params) {
+
+    Long returnLong = null;
+
+    try {
+      ResultSetHandler<Long> rsh = new InsertedIDResultSetHandler();
+      returnLong = new QueryRunner(YANK_POOL_MANAGER.getDataSource(poolName)).insert(sql, rsh, params);
+    } catch (Exception e) {
+      logger.error(QUERY_EXCEPTION_MESSAGE, e);
+    }
+
+    return returnLong;
   }
 
   // ////// INSERT, UPDATE, DELETE, or UPSERT //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

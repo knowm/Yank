@@ -60,8 +60,10 @@ public class BooksTableDataSourceClassNameTest {
     book.setTitle("Cryptonomicon");
     book.setAuthorName("Neal Stephenson");
     book.setPrice(23.99);
-    int i = BooksDAO.insertBook(book);
-    assertThat(i, equalTo(1));
+    long i = BooksDAO.insertBook(book);
+    assertThat(i, equalTo(0L));
+    i = BooksDAO.insertBook(book);
+    assertThat(i, equalTo(1L));
 
     List<Book> books = new ArrayList<Book>();
 
@@ -87,16 +89,16 @@ public class BooksTableDataSourceClassNameTest {
     assertThat(returnValue.length, equalTo(3));
 
     List<Book> allBooks = BooksDAO.selectAllBooks();
-    assertThat(allBooks.size(), equalTo(4));
+    assertThat(allBooks.size(), equalTo(5));
 
     List<String> allBookTitles = BooksDAO.selectAllBookTitles();
-    assertThat(allBookTitles.size(), equalTo(4));
+    assertThat(allBookTitles.size(), equalTo(5));
 
     book = BooksDAO.selectBook("Cryptonomicon");
     assertThat(book.getPrice(), equalTo(23.99));
 
     long numBooks = BooksDAO.getNumBooks();
-    assertThat(numBooks, equalTo(4L));
+    assertThat(numBooks, equalTo(5L));
 
   }
 }

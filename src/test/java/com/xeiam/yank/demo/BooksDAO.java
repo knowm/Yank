@@ -35,11 +35,11 @@ public class BooksDAO {
    * <li>using a prepared statement with corresponding params</li>
    * </ul>
    */
-  public static int insertBook(Book book) {
+  public static long insertBook(Book book) {
 
     Object[] params = new Object[] { book.getTitle(), book.getAuthorName(), book.getPrice() };
     String SQL = "INSERT INTO BOOKS  (TITLE, AUTHORNAME, PRICE) VALUES (?, ?, ?)";
-    return Yank.executeSQL("myconnectionpoolname", SQL, params);
+    return Yank.insertSQL("myconnectionpoolname", SQL, params);
   }
 
   /**
@@ -85,7 +85,7 @@ public class BooksDAO {
       params[i] = new Object[] { book.getTitle(), book.getAuthorName(), book.getPrice() };
     }
 
-    String SQL = "INSERT INTO BOOKS  (TITLE, AUTHORNAME, PRICE) VALUES (?, ?, ?)";
+    String SQL = "INSERT INTO BOOKS (TITLE, AUTHORNAME, PRICE) VALUES (?, ?, ?)";
     return Yank.executeBatchSQL("myconnectionpoolname", SQL, params);
   }
 

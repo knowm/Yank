@@ -30,11 +30,20 @@ package com.xeiam.yank.demo;
  */
 public class Book {
 
+  private int id;
   private String title;
   private String authorName;
   private double price;
 
   /** Pro-tip: In Eclipse, generate all getters and setters after defining class fields: Right-click --> Source --> Generate Getters and Setters... */
+
+  public int getId() {
+    return id;
+  }
+
+  public void setId(int id) {
+    this.id = id;
+  }
 
   public String getTitle() {
 
@@ -68,7 +77,7 @@ public class Book {
 
   @Override
   public String toString() {
-    return "Book [title=" + title + ", authorName=" + authorName + ", price=" + price + "]";
+    return "Book [id=" + id + ", title=" + title + ", authorName=" + authorName + ", price=" + price + "]";
   }
 
 }

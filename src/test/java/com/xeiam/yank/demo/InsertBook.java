@@ -39,8 +39,8 @@ public class InsertBook {
     book.setTitle("Cryptonomicon");
     book.setAuthorName("Neal Stephenson");
     book.setPrice(23.99);
-    int i = BooksDAO.insertBook(book);
-    System.out.println(i);
+    long autoID = BooksDAO.insertBook(book);
+    System.out.println(autoID);
 
     Yank.release();
 

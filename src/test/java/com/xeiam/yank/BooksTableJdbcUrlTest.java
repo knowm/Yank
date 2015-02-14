@@ -18,7 +18,6 @@ package com.xeiam.yank;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
@@ -59,43 +58,11 @@ public class BooksTableJdbcUrlTest {
     book.setTitle("Cryptonomicon");
     book.setAuthorName("Neal Stephenson");
     book.setPrice(23.99);
-    int i = BooksDAO.insertBook(book);
-    assertThat(i, equalTo(1));
-
-    List<Book> books = new ArrayList<Book>();
-
-    book = new Book();
-    book.setTitle("Cryptonomicon");
-    book.setAuthorName("Neal Stephenson");
-    book.setPrice(23.99);
-    books.add(book);
-
-    book = new Book();
-    book.setTitle("Harry Potter");
-    book.setAuthorName("Joanne K. Rowling");
-    book.setPrice(11.99);
-    books.add(book);
-
-    book = new Book();
-    book.setTitle("Don Quijote");
-    book.setAuthorName("Cervantes");
-    book.setPrice(21.99);
-    books.add(book);
-
-    int[] returnValue = BooksDAO.insertBatch(books);
-    assertThat(returnValue.length, equalTo(3));
+    long i = BooksDAO.insertBook(book);
+    assertThat(i, equalTo(0L));
 
     List<Book> allBooks = BooksDAO.selectAllBooks();
-    assertThat(allBooks.size(), equalTo(4));
-
-    List<String> allBookTitles = BooksDAO.selectAllBookTitles();
-    assertThat(allBookTitles.size(), equalTo(4));
-
-    book = BooksDAO.selectBook("Cryptonomicon");
-    assertThat(book.getPrice(), equalTo(23.99));
-
-    long numBooks = BooksDAO.getNumBooks();
-    assertThat(numBooks, equalTo(4L));
+    assertThat(allBooks.size(), equalTo(1));
 
   }
 }
