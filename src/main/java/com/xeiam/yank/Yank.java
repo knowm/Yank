@@ -18,6 +18,8 @@ package com.xeiam.yank;
 import java.util.List;
 import java.util.Properties;
 
+import org.apache.commons.dbutils.BasicRowProcessor;
+import org.apache.commons.dbutils.GenerousBeanProcessor;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.ArrayListHandler;
 import org.apache.commons.dbutils.handlers.BeanHandler;
@@ -29,6 +31,8 @@ import org.slf4j.LoggerFactory;
 
 import com.xeiam.yank.exceptions.SQLStatementNotFoundException;
 
+import javax.sql.DataSource;
+
 /**
  * A wrapper for DBUtils' QueryRunner's methods: update, query, and batch. Connections are retrieved from the connection pool in DBConnectionManager.
  *
@@ -39,9 +43,11 @@ public final class Yank {
   private static final YankPoolManager YANK_POOL_MANAGER = YankPoolManager.INSTANCE;
 
   /** slf4J logger wrapper */
-  private static Logger logger = LoggerFactory.getLogger(Yank.class);
+  private static final Logger logger = LoggerFactory.getLogger(Yank.class);
+  private static final BasicRowProcessor ROW_PROCESSOR = new BasicRowProcessor(new GenerousBeanProcessor());
 
-  private static final String QUERY_EXCEPTION_MESSAGE = "Error in SQL query!!!";
+
+    private static final String QUERY_EXCEPTION_MESSAGE = "Error in SQL query!!!";
 
   /**
    * Prevent class instantiation with private constructor
@@ -191,7 +197,7 @@ public final class Yank {
 
     try {
 
-      BeanHandler<T> resultSetHandler = new BeanHandler<T>(type);
+      BeanHandler<T> resultSetHandler = new BeanHandler<T>(type, ROW_PROCESSOR);
 
       returnObject = new QueryRunner(YANK_POOL_MANAGER.getDataSource(poolName)).query(sql, resultSetHandler, params);
 
@@ -243,7 +249,7 @@ public final class Yank {
 
     try {
 
-      BeanListHandler<T> resultSetHandler = new BeanListHandler<T>(type);
+      BeanListHandler<T> resultSetHandler = new BeanListHandler<T>(type, ROW_PROCESSOR);
 
       returnList = new QueryRunner(YANK_POOL_MANAGER.getDataSource(poolName)).query(sql, resultSetHandler, params);
 
@@ -344,7 +350,7 @@ public final class Yank {
 
     try {
 
-      ArrayListHandler resultSetHandler = new ArrayListHandler();
+      ArrayListHandler resultSetHandler = new ArrayListHandler(ROW_PROCESSOR);
       // returnList = new QueryRunner().query(con, sql, resultSetHandler, params);
       returnList = new QueryRunner(YANK_POOL_MANAGER.getDataSource(poolName)).query(sql, resultSetHandler, params);
 
@@ -400,6 +406,15 @@ public final class Yank {
     }
 
     return returnIntArray;
+  }
+
+  /**
+   * Exposes access to the configured DataSource allowing direct use of DBUtils (or other) framework when needed.
+   * @param poolName  the connection pool name
+   * @return a configured (pooled) DataSource ready for use in QueryRunner instances.
+   */
+  public static DataSource getDataSource(String poolName) {
+      return YANK_POOL_MANAGER.getDataSource(poolName);
   }
 
   /**
