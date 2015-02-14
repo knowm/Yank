@@ -124,7 +124,7 @@ Now go ahead and [study some more examples](http://xeiam.com/yank-example-code),
 
 ## Missing Features
 
- * [x] Transactions
+ * [x] Multi-statement transactions (This may be just fine for small to medium projects or to back a REST web application's API: POST, GET, PUT, and DELETE. These correspond to create, read, update, and delete (or CRUD) operations, respectively.)
  * [x] Custom table column to POJO property mapping
  * [x] SQLExceptions (SQL Exceptions are internally caught and logged.)
 

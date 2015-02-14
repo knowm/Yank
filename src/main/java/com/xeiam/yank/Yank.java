@@ -57,15 +57,14 @@ public final class Yank {
   // ////// INSERT, UPDATE, DELETE, or UPSERT //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   /**
-   * Executes the given INSERT, UPDATE, DELETE, REPLACE or UPSERT SQL statement matching the sqlKey String in a properties file passed to
-   * DBConnectionManager via the init method. Returns the number of rows affected.
+   * Executes the given INSERT, UPDATE, DELETE, REPLACE or UPSERT SQL statement matching the sqlKey String in a properties file loaded via
+   * Yank.addSQLStatements(...). Returns the number of rows affected.
    *
    * @param poolName The connection pool name
    * @param sqlKey The SQL Key found in a properties file corresponding to the desired SQL statement value
    * @param params The replacement parameters
    * @return The number of rows affected
    * @throws SQLStatementNotFoundException if an SQL statement could not be found for the given sqlKey String
-   * @throws ConnectionException if a Connection could not be obtained for some reason
    */
   public static int executeSQLKey(String poolName, String sqlKey, Object[] params) {
 
@@ -84,7 +83,6 @@ public final class Yank {
    * @param sql The query to execute
    * @param params The replacement parameters
    * @return The number of rows affected
-   * @throws ConnectionException if a Connection could not be obtained for some reason
    */
   public static int executeSQL(String poolName, String sql, Object[] params) {
 
@@ -99,14 +97,13 @@ public final class Yank {
     }
 
     return returnInt;
-
   }
 
   // ////// Single Scalar QUERY //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   /**
-   * Return just one scalar given a SQL Key using an SQL statement matching the sqlKey String in a properties file passed to DBConnectionManager via
-   * the init method. If more than one row match the query, only the first row is returned.
+   * Return just one scalar given a SQL Key using an SQL statement matching the sqlKey String in a properties file loaded via
+   * Yank.addSQLStatements(...). If more than one row match the query, only the first row is returned.
    *
    * @param poolName The connection pool name
    * @param sqlKey The SQL Key found in a properties file corresponding to the desired SQL statement value
@@ -114,7 +111,6 @@ public final class Yank {
    * @param params The replacement parameters
    * @return The Object
    * @throws SQLStatementNotFoundException if an SQL statement could not be found for the given sqlKey String
-   * @throws ConnectionException if a Connection could not be obtained for some reason
    */
   public static <T> T querySingleScalarSQLKey(String poolName, String sqlKey, Class<T> type, Object[] params) {
 
@@ -135,7 +131,6 @@ public final class Yank {
    * @param params The replacement parameters
    * @return The scalar Object
    * @throws SQLStatementNotFoundException if an SQL statement could not be found for the given sqlKey String
-   * @throws ConnectionException if a Connection could not be obtained for some reason
    */
   public static <T> T querySingleScalarSQL(String poolName, String sql, Class<T> type, Object[] params) {
 
@@ -157,8 +152,8 @@ public final class Yank {
   // ////// Single Object QUERY //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   /**
-   * Return just one Object given a SQL Key using an SQL statement matching the sqlKey String in a properties file passed to DBConnectionManager via
-   * the init method. If more than one row match the query, only the first row is returned.
+   * Return just one Object given a SQL Key using an SQL statement matching the sqlKey String in a properties file loaded via
+   * Yank.addSQLStatements(...). If more than one row match the query, only the first row is returned.
    *
    * @param poolName The connection pool name
    * @param sqlKey The SQL Key found in a properties file corresponding to the desired SQL statement value
@@ -166,7 +161,6 @@ public final class Yank {
    * @param type The Class of the desired return Object matching the table
    * @return The Object
    * @throws SQLStatementNotFoundException if an SQL statement could not be found for the given sqlKey String
-   * @throws ConnectionException if a Connection could not be obtained for some reason
    */
   public static <T> T querySingleObjectSQLKey(String poolName, String sqlKey, Class<T> type, Object[] params) {
 
@@ -187,7 +181,6 @@ public final class Yank {
    * @param params The replacement parameters
    * @param type The Class of the desired return Object matching the table
    * @return The Object
-   * @throws ConnectionException if a Connection could not be obtained for some reason
    */
   public static <T> T querySingleObjectSQL(String poolName, String sql, Class<T> type, Object[] params) {
 
@@ -209,8 +202,8 @@ public final class Yank {
   // ////// Object List QUERY //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   /**
-   * Return a List of Objects given a SQL Key using an SQL statement matching the sqlKey String in a properties file passed to DBConnectionManager via
-   * the init method.
+   * Return a List of Objects given a SQL Key using an SQL statement matching the sqlKey String in a properties file loaded via
+   * Yank.addSQLStatements(...).
    *
    * @param poolName The connection pool name
    * @param sqlKey The SQL Key found in a properties file corresponding to the desired SQL statement value
@@ -218,7 +211,6 @@ public final class Yank {
    * @param type The Class of the desired return Objects matching the table
    * @return The List of Objects
    * @throws SQLStatementNotFoundException if an SQL statement could not be found for the given sqlKey String
-   * @throws ConnectionException if a Connection could not be obtained for some reason
    */
   public static <T> List<T> queryObjectListSQLKey(String poolName, String sqlKey, Class<T> type, Object[] params) {
 
@@ -239,7 +231,6 @@ public final class Yank {
    * @param params The replacement parameters
    * @param type The Class of the desired return Objects matching the table
    * @return The List of Objects
-   * @throws ConnectionException if a Connection could not be obtained for some reason
    */
   public static <T> List<T> queryObjectListSQL(String poolName, String sql, Class<T> type, Object[] params) {
 
@@ -261,8 +252,8 @@ public final class Yank {
   // ////// Column List QUERY //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   /**
-   * Return a List of Objects from a single table column given a SQL Key using an SQL statement matching the sqlKey String in a properties file passed
-   * to DBConnectionManager via the init method.
+   * Return a List of Objects from a single table column given a SQL Key using an SQL statement matching the sqlKey String in a properties file loaded
+   * via Yank.addSQLStatements(...).
    *
    * @param poolName The connection pool name
    * @param sqlKey The SQL Key found in a properties file corresponding to the desired SQL statement value
@@ -270,7 +261,6 @@ public final class Yank {
    * @param type The Class of the desired return Objects matching the table
    * @return The List of Objects
    * @throws SQLStatementNotFoundException if an SQL statement could not be found for the given sqlKey String
-   * @throws ConnectionException if a Connection could not be obtained for some reason
    */
   public static <T> List<T> queryColumnListSQLKey(String poolName, String sqlKey, String columnName, Class<T> type, Object[] params) {
 
@@ -291,7 +281,6 @@ public final class Yank {
    * @param params The replacement parameters
    * @param type The Class of the desired return Objects matching the table
    * @return The List of Objects
-   * @throws ConnectionException if a Connection could not be obtained for some reason
    */
   public static <T> List<T> queryColumnListSQL(String poolName, String sql, String columnName, Class<T> type, Object[] params) {
 
@@ -313,15 +302,14 @@ public final class Yank {
   // ////// OBJECT[] LIST QUERY //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   /**
-   * Return a List of generic Object[]s given a SQL Key using an SQL statement matching the sqlKey String in a properties file passed to
-   * DBConnectionManager via the init method.
+   * Return a List of generic Object[]s given a SQL Key using an SQL statement matching the sqlKey String in a properties file loaded via
+   * Yank.addSQLStatements(...).
    *
    * @param poolName The connection pool name
    * @param sqlKey The SQL Key found in a properties file corresponding to the desired SQL statement value
    * @param params The replacement parameters
    * @return The List of generic Object[]s
    * @throws SQLStatementNotFoundException if an SQL statement could not be found for the given sqlKey String
-   * @throws ConnectionException if a Connection could not be obtained for some reason
    */
   public static List<Object[]> queryGenericObjectArrayListSQLKey(String poolName, String sqlKey, Object[] params) {
 
@@ -340,7 +328,6 @@ public final class Yank {
    * @param sql The SQL statement
    * @param params The replacement parameters
    * @return The List of generic Object[]s
-   * @throws ConnectionException if a Connection could not be obtained for some reason
    */
   public static List<Object[]> queryGenericObjectArrayListSQL(String poolName, String sql, Object[] params) {
 
@@ -362,15 +349,14 @@ public final class Yank {
   // ////// BATCH //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   /**
-   * Batch executes the given INSERT, UPDATE, DELETE, REPLACE or UPSERT SQL statement matching the sqlKey String in a properties file passed to
-   * DBConnectionManager via the init method
+   * Batch executes the given INSERT, UPDATE, DELETE, REPLACE or UPSERT SQL statement matching the sqlKey String in a properties file loaded via
+   * Yank.addSQLStatements(...).
    *
    * @param poolName The connection pool name
    * @param sqlKey The SQL Key found in a properties file corresponding to the desired SQL statement value
    * @param params An array of query replacement parameters. Each row in this array is one set of batch replacement values
    * @return The number of rows affected or each individual execution
    * @throws SQLStatementNotFoundException if an SQL statement could not be found for the given sqlKey String
-   * @throws ConnectionException if a Connection could not be obtained for some reason
    */
   public static int[] executeBatchSQLKey(String poolName, String sqlKey, Object[][] params) {
 
@@ -389,7 +375,6 @@ public final class Yank {
    * @param sql The SQL statement
    * @param params An array of query replacement parameters. Each row in this array is one set of batch replacement values
    * @return The number of rows affected or each individual execution
-   * @throws ConnectionException if a Connection could not be obtained for some reason
    */
   public static int[] executeBatchSQL(String poolName, String sql, Object[][] params) {
 
