@@ -32,7 +32,7 @@ public class Book {
 
   private int id;
   private String title;
-  private String authorName;
+  private String author;
   private double price;
 
   /** Pro-tip: In Eclipse, generate all getters and setters after defining class fields: Right-click --> Source --> Generate Getters and Setters... */
@@ -55,12 +55,12 @@ public class Book {
     this.title = title;
   }
 
-  public String getAuthorName() {
-    return authorName;
+  public String getAuthor() {
+    return author;
   }
 
-  public void setAuthorName(String authorName) {
-    this.authorName = authorName;
+  public void setAuthor(String author) {
+    this.author = author;
   }
 
   public double getPrice() {
@@ -77,7 +77,7 @@ public class Book {
 
   @Override
   public String toString() {
-    return "Book [id=" + id + ", title=" + title + ", authorName=" + authorName + ", price=" + price + "]";
+    return "Book [id=" + id + ", title=" + title + ", author=" + author + ", price=" + price + "]";
   }
 
 }

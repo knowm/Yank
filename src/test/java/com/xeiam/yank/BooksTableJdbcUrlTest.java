@@ -56,7 +56,7 @@ public class BooksTableJdbcUrlTest {
 
     Book book = new Book();
     book.setTitle("Cryptonomicon");
-    book.setAuthorName("Neal Stephenson");
+    book.setAuthor("Neal Stephenson");
     book.setPrice(23.99);
     long i = BooksDAO.insertBook(book);
     assertThat(i, equalTo(0L));

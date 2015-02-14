@@ -37,7 +37,7 @@ public class InsertBook {
     // query
     Book book = new Book();
     book.setTitle("Cryptonomicon");
-    book.setAuthorName("Neal Stephenson");
+    book.setAuthor("Neal Stephenson");
     book.setPrice(23.99);
     long autoID = BooksDAO.insertBook(book);
     System.out.println(autoID);

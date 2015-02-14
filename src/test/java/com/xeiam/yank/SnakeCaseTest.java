@@ -30,7 +30,7 @@ import com.xeiam.yank.demo.BooksDAO;
 /**
  * @author timmolter
  */
-public class GenerousBeanHandlerTest {
+public class SnakeCaseTest {
 
   @BeforeClass
   public static void setUpDB() {
@@ -51,20 +51,20 @@ public class GenerousBeanHandlerTest {
   @Test
   public void testBooksTable() {
 
-    String sql = "CREATE TABLE Books (TITLE VARCHAR(42) NULL, AUTHOR_NAME VARCHAR(42) NULL, PRICE DECIMAL(10,2) NOT NULL)";
+    String sql = "CREATE TABLE Books (TITLE VARCHAR(42) NULL, AUT_HOR VARCHAR(42) NULL, PRICE DECIMAL(10,2) NOT NULL)";
     Yank.executeSQL("myconnectionpoolname", sql, null);
 
     Book book = new Book();
     book.setTitle("Cryptonomicon");
-    book.setAuthorName("Neal Stephenson");
+    book.setAuthor("Neal Stephenson");
     book.setPrice(23.99);
-    Object[] params = new Object[] { book.getTitle(), book.getAuthorName(), book.getPrice() };
-    String SQL = "INSERT INTO BOOKS  (TITLE, AUTHOR_NAME, PRICE) VALUES (?, ?, ?)";
+    Object[] params = new Object[] { book.getTitle(), book.getAuthor(), book.getPrice() };
+    String SQL = "INSERT INTO BOOKS  (TITLE, AUT_HOR, PRICE) VALUES (?, ?, ?)";
     Yank.executeSQL("myconnectionpoolname", SQL, params);
 
     book = BooksDAO.selectBook("Cryptonomicon");
     assertThat(book.getPrice(), equalTo(23.99));
-    assertThat(book.getAuthorName(), equalTo("Neal Stephenson"));
+    assertThat(book.getAuthor(), equalTo("Neal Stephenson"));
 
   }
 

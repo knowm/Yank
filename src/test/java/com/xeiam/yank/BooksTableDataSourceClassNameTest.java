@@ -58,7 +58,7 @@ public class BooksTableDataSourceClassNameTest {
 
     Book book = new Book();
     book.setTitle("Cryptonomicon");
-    book.setAuthorName("Neal Stephenson");
+    book.setAuthor("Neal Stephenson");
     book.setPrice(23.99);
     long i = BooksDAO.insertBook(book);
     assertThat(i, equalTo(0L));
@@ -69,19 +69,19 @@ public class BooksTableDataSourceClassNameTest {
 
     book = new Book();
     book.setTitle("Cryptonomicon");
-    book.setAuthorName("Neal Stephenson");
+    book.setAuthor("Neal Stephenson");
     book.setPrice(23.99);
     books.add(book);
 
     book = new Book();
     book.setTitle("Harry Potter");
-    book.setAuthorName("Joanne K. Rowling");
+    book.setAuthor("Joanne K. Rowling");
     book.setPrice(11.99);
     books.add(book);
 
     book = new Book();
     book.setTitle("Don Quijote");
-    book.setAuthorName("Cervantes");
+    book.setAuthor("Cervantes");
     book.setPrice(21.99);
     books.add(book);
 

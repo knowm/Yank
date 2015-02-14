@@ -69,7 +69,7 @@ public final class Yank {
    * @return the auto-increment id of the inserted row, or null if no id is available
    * @throws SQLStatementNotFoundException if an SQL statement could not be found for the given sqlKey String
    */
-  public static long insertSQLKey(String poolName, String sqlKey, Object[] params) {
+  public static Long insertSQLKey(String poolName, String sqlKey, Object[] params) {
 
     String sql = YANK_POOL_MANAGER.getMergedSqlProperties().getProperty(sqlKey);
     if (sql == null || sql.equalsIgnoreCase("")) {
@@ -87,7 +87,7 @@ public final class Yank {
    * @param params The replacement parameters
    * @return the auto-increment id of the inserted row, or null if no id is available
    */
-  public static long insertSQL(String poolName, String sql, Object[] params) {
+  public static Long insertSQL(String poolName, String sql, Object[] params) {
 
     Long returnLong = null;
 
@@ -98,7 +98,7 @@ public final class Yank {
       logger.error(QUERY_EXCEPTION_MESSAGE, e);
     }
 
-    return returnLong;
+    return returnLong == null ? 0 : returnLong;
   }
 
   // ////// INSERT, UPDATE, DELETE, or UPSERT //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
