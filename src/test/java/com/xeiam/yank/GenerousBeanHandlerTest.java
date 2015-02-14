@@ -51,8 +51,8 @@ public class GenerousBeanHandlerTest {
   @Test
   public void testBooksTable() {
 
-    String sqlKey = "CREATE TABLE Books (TITLE VARCHAR(42) NULL, AUTHOR_NAME VARCHAR(42) NULL, PRICE DECIMAL(10,2) NOT NULL)";
-    Yank.executeSQL("myconnectionpoolname", sqlKey, null);
+    String sql = "CREATE TABLE Books (TITLE VARCHAR(42) NULL, AUTHOR_NAME VARCHAR(42) NULL, PRICE DECIMAL(10,2) NOT NULL)";
+    Yank.executeSQL("myconnectionpoolname", sql, null);
 
     Book book = new Book();
     book.setTitle("Cryptonomicon");

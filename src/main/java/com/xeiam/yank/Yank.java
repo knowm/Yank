@@ -34,6 +34,7 @@ import org.slf4j.LoggerFactory;
 
 import com.xeiam.yank.exceptions.SQLStatementNotFoundException;
 import com.xeiam.yank.handlers.InsertedIDResultSetHandler;
+import com.xeiam.yank.processors.YankBeanProcessor;
 
 /**
  * A wrapper for DBUtils' QueryRunner's methods: update, query, and batch. Connections are retrieved from the connection pool in DBConnectionManager.
@@ -234,7 +235,7 @@ public final class Yank {
 
     try {
 
-      BeanHandler<T> resultSetHandler = new BeanHandler<T>(type, new BasicRowProcessor(new GenerousBeanProcessor()));
+      BeanHandler<T> resultSetHandler = new BeanHandler<T>(type, new BasicRowProcessor(new YankBeanProcessor(type)));
 
       returnObject = new QueryRunner(YANK_POOL_MANAGER.getDataSource(poolName)).query(sql, resultSetHandler, params);
 

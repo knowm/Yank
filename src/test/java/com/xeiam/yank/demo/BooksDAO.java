@@ -33,6 +33,7 @@ public class BooksDAO {
    * <ul>
    * <li>executing an SQL statement with DBProxy.executeSQL</li>
    * <li>using a prepared statement with corresponding params</li>
+   * <li>retrieving assigned auto-increment primary key ID</li>
    * </ul>
    */
   public static long insertBook(Book book) {
