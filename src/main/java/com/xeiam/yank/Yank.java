@@ -18,6 +18,8 @@ package com.xeiam.yank;
 import java.util.List;
 import java.util.Properties;
 
+import javax.sql.DataSource;
+
 import org.apache.commons.dbutils.BasicRowProcessor;
 import org.apache.commons.dbutils.GenerousBeanProcessor;
 import org.apache.commons.dbutils.QueryRunner;
@@ -431,5 +433,16 @@ public final class Yank {
   public static synchronized void release() {
 
     YANK_POOL_MANAGER.release();
+  }
+
+  /**
+   * Exposes access to the configured DataSource
+   *
+   * @param poolName the connection pool name
+   * @return a configured (pooled) DataSource.
+   */
+  public static DataSource getDataSource(String poolName) {
+
+    return YANK_POOL_MANAGER.getDataSource(poolName);
   }
 }
