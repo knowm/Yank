@@ -113,7 +113,32 @@ public class BooksDAO {
   }
 }
 ```
-Why? By creating a DAO class and putting all methods related to a single database table in it, you have a single point of access to that table. In this example the **BooksDAO** corresponds to a table called **Books**, which contains rows of **Book** objects. BTW, the automatic mapping from database row to Java objects happens because the object's field names match exactly the table column names. This is the one constraint you need to follow. Snake case (my_column_name) to camel case (myColumnName) is supported though too!
+Why? By creating a DAO class and putting all methods related to a single database table in it, you have a single point of access to that table. In this example the **BooksDAO** corresponds to a table called **Books**, which contains rows of **Book** objects.
+
+## Annotate Class Fields
+```java
+public static class Book {
+
+  private int id;
+  @Column("TITEL")
+  private String title;
+  @Column("AUTOR")
+  private String authorName;
+  @Column("PREIS")
+  private double price;
+
+  // getters and setters
+}
+```
+The default automatic mapping from database row to Java objects happens when the object's field names match the table column names (not case-sensitive). Automatic snake case (my_column_name) to camel case (myColumnName) mapping is supported too. If that still isn't good enough, you can annotate the Java object's fields with a `Column` annotation.
+
+## Insert and Get the Assigned ID
+```java
+Object[] params = new Object[] { book.getTitle(), book.getAuthorName(), book.getPrice() };
+String SQL = "INSERT INTO BOOKS (TITLE, AUTHORNAME, PRICE) VALUES (?, ?, ?)";
+Long id = Yank.insertSQL("myconnectionpoolname", SQL, params);
+```
+With a special `Yank.insertSQL(...)` method, Yank will return the assigned auto-increment primary key ID. Note that you can alternatively use the `Yank.executeSQL(...)` method for inserts, which returns the number of affected rows.
 
 ## Summary
 
