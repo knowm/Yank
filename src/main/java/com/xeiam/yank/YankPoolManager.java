@@ -78,6 +78,9 @@ public final class YankPoolManager {
    */
   private void createPool(String poolName, Properties connectionPoolProperties) {
 
+    // DBUtils execute methods require autoCommit to be true.
+    connectionPoolProperties.put("autoCommit", true);
+
     HikariConfig config = new HikariConfig(connectionPoolProperties);
     config.setPoolName(poolName);
     HikariDataSource ds = new HikariDataSource(config);
