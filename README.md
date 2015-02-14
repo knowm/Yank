@@ -1,4 +1,4 @@
-## [![Yank](http://xeiam.com/wp-content/uploads/yanklogo.png)](http://xeiam.com/yank) Yank
+## [![Yank](https://raw.githubusercontent.com/timmolter/Yank/devlop/etc/Yank_64_64.png)](http://xeiam.com/yank) Yank
 Ultra-Light JDBC Persistance Layer
 
 ## In a Nutshell
