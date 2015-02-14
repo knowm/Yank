@@ -37,8 +37,8 @@ public class BooksDAO {
    */
   public static int insertBook(Book book) {
 
-    Object[] params = new Object[] { book.getTitle(), book.getAuthor(), book.getPrice() };
-    String SQL = "INSERT INTO BOOKS  (TITLE, AUTHOR, PRICE) VALUES (?, ?, ?)";
+    Object[] params = new Object[] { book.getTitle(), book.getAuthorName(), book.getPrice() };
+    String SQL = "INSERT INTO BOOKS  (TITLE, AUTHORNAME, PRICE) VALUES (?, ?, ?)";
     return Yank.executeSQL("myconnectionpoolname", SQL, params);
   }
 
@@ -82,10 +82,10 @@ public class BooksDAO {
 
     for (int i = 0; i < books.size(); i++) {
       Book book = books.get(i);
-      params[i] = new Object[] { book.getTitle(), book.getAuthor(), book.getPrice() };
+      params[i] = new Object[] { book.getTitle(), book.getAuthorName(), book.getPrice() };
     }
 
-    String SQL = "INSERT INTO BOOKS  (TITLE, AUTHOR, PRICE) VALUES (?, ?, ?)";
+    String SQL = "INSERT INTO BOOKS  (TITLE, AUTHORNAME, PRICE) VALUES (?, ?, ?)";
     return Yank.executeBatchSQL("myconnectionpoolname", SQL, params);
   }
 

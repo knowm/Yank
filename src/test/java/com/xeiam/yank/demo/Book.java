@@ -25,13 +25,13 @@ package com.xeiam.yank.demo;
  * <li>The columns are matched to the object's class members</li>
  * <li>If the conversion fails (i.e. the property was an int and the column was a Timestamp) an SQLException is thrown.</li>
  * </ul>
- * 
+ *
  * @author timmolter
  */
 public class Book {
 
   private String title;
-  private String author;
+  private String authorName;
   private double price;
 
   /** Pro-tip: In Eclipse, generate all getters and setters after defining class fields: Right-click --> Source --> Generate Getters and Setters... */
@@ -46,14 +46,12 @@ public class Book {
     this.title = title;
   }
 
-  public String getAuthor() {
-
-    return author;
+  public String getAuthorName() {
+    return authorName;
   }
 
-  public void setAuthor(String author) {
-
-    this.author = author;
+  public void setAuthorName(String authorName) {
+    this.authorName = authorName;
   }
 
   public double getPrice() {
@@ -70,8 +68,7 @@ public class Book {
 
   @Override
   public String toString() {
-
-    return "Book [title=" + title + ", author=" + author + ", price=" + price + "]";
+    return "Book [title=" + title + ", authorName=" + authorName + ", price=" + price + "]";
   }
 
 }

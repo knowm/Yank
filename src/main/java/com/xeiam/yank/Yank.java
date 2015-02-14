@@ -18,6 +18,8 @@ package com.xeiam.yank;
 import java.util.List;
 import java.util.Properties;
 
+import org.apache.commons.dbutils.BasicRowProcessor;
+import org.apache.commons.dbutils.GenerousBeanProcessor;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.ArrayListHandler;
 import org.apache.commons.dbutils.handlers.BeanHandler;
@@ -191,7 +193,7 @@ public final class Yank {
 
     try {
 
-      BeanHandler<T> resultSetHandler = new BeanHandler<T>(type);
+      BeanHandler<T> resultSetHandler = new BeanHandler<T>(type, new BasicRowProcessor(new GenerousBeanProcessor()));
 
       returnObject = new QueryRunner(YANK_POOL_MANAGER.getDataSource(poolName)).query(sql, resultSetHandler, params);
 
@@ -243,7 +245,7 @@ public final class Yank {
 
     try {
 
-      BeanListHandler<T> resultSetHandler = new BeanListHandler<T>(type);
+      BeanListHandler<T> resultSetHandler = new BeanListHandler<T>(type, new BasicRowProcessor(new GenerousBeanProcessor()));
 
       returnList = new QueryRunner(YANK_POOL_MANAGER.getDataSource(poolName)).query(sql, resultSetHandler, params);
 
@@ -344,7 +346,7 @@ public final class Yank {
 
     try {
 
-      ArrayListHandler resultSetHandler = new ArrayListHandler();
+      ArrayListHandler resultSetHandler = new ArrayListHandler(new BasicRowProcessor(new GenerousBeanProcessor()));
       // returnList = new QueryRunner().query(con, sql, resultSetHandler, params);
       returnList = new QueryRunner(YANK_POOL_MANAGER.getDataSource(poolName)).query(sql, resultSetHandler, params);
 
