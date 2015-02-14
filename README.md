@@ -123,7 +123,7 @@ public static class Book {
   @Column("TITEL")
   private String title;
   @Column("AUTOR")
-  private String authorName;
+  private String author;
   @Column("PREIS")
   private double price;
 
@@ -132,13 +132,28 @@ public static class Book {
 ```
 The default automatic mapping from database row to Java objects happens when the object's field names match the table column names (not case-sensitive). Automatic snake case (my_column_name) to camel case (myColumnName) mapping is supported too. If that still isn't good enough, you can annotate the Java object's fields with a `Column` annotation.
 
-## Insert and Get the Assigned ID
+## Insert and Receive the Assigned ID
 ```java
 Object[] params = new Object[] { book.getTitle(), book.getAuthorName(), book.getPrice() };
 String SQL = "INSERT INTO BOOKS (TITLE, AUTHORNAME, PRICE) VALUES (?, ?, ?)";
 Long id = Yank.insertSQL("myconnectionpoolname", SQL, params);
 ```
 With a special `Yank.insertSQL(...)` method, Yank will return the assigned auto-increment primary key ID. Note that you can alternatively use the `Yank.executeSQL(...)` method for inserts, which returns the number of affected rows.
+
+## Retrieve a Column as a List
+```java
+String SQL = "SELECT TITLE FROM BOOKS";
+String columnName = "title";
+List<String> bookTitles = Yank.queryColumnListSQL("myconnectionpoolname", SQL, columnName, String.class, null);
+```
+With the `Yank.queryColumnListSQL(...)` method you can retrieve a List containing objects matching column data type.
+
+## Query a Scalar Value
+```java
+String SQL = "SELECT COUNT(*) FROM BOOKS";
+long numBooks = Yank.querySingleScalarSQL("myconnectionpoolname", SQL, Long.class, null);
+```
+With the `Yank.querySingleScalarSQL(...)` method you can retriev a single scalar value that matches the return type of the given SQL statement.
 
 ## Summary
 
