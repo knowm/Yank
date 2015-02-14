@@ -25,7 +25,7 @@ import org.junit.Test;
 /**
  * @author timmolter
  */
-public class TestPropertiesUtils {
+public class PropertiesUtilsTest {
 
   @Test
   public void testLoadProperties() {

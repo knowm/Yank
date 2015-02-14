@@ -32,7 +32,7 @@ import com.xeiam.yank.demo.BooksDAO;
 /**
  * @author timmolter
  */
-public class TestBooksTableJdbcUrl {
+public class BooksTableJdbcUrlTest {
 
   @BeforeClass
   public static void setUpDB() {
