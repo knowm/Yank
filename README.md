@@ -18,9 +18,12 @@ methods execute INSERT, UPDATE, and DELETE (and other) statements. Recently, bat
  * [x] ~10KB Jar
  * [x] Uses Apache DBUtils for JDBC
  * [x] Uses HikariCP for connection pooling
- * [x] Easy prepared statements
- * [x] Java object data sinking
+ * [x] Supports prepared statements
+ * [x] Java object create, read, update, and delete (or CRUD) operations
+ * [x] Retrieving assigned auto-increment primary key ID for inserts
  * [x] Java object and object List querying
+ * [x] Scalar querying
+ * [x] Column List querying
  * [x] Batch execute
  * [x] Works with any JDBC-compliant database
  * [x] Write your own SQL statements
@@ -108,7 +111,7 @@ public class BooksDAO {
   }
 }
 ```
-Why? By creating a DAO class and putting all methods related to a single database table in it, you have a single point of access to that table. In this example the **BooksDAO** corresponds to a table called **Books**, which contains rows of **Book** objects. BTW, the automatic mapping from database row to Java objects happens because the object's field names match exactly the table column names. This is the one constraint you need to follow.
+Why? By creating a DAO class and putting all methods related to a single database table in it, you have a single point of access to that table. In this example the **BooksDAO** corresponds to a table called **Books**, which contains rows of **Book** objects. BTW, the automatic mapping from database row to Java objects happens because the object's field names match exactly the table column names. This is the one constraint you need to follow. Snake case (my_column_name) to camel case (myCoulumnName) is supported though too!
 
 ## Summary
 
@@ -125,7 +128,7 @@ Now go ahead and [study some more examples](http://xeiam.com/yank-example-code),
 ## Missing Features
 
  * [x] Multi-statement transactions (This may be just fine for small to medium projects or to back a REST web application's API: POST, GET, PUT, and DELETE. These correspond to create, read, update, and delete (or CRUD) operations, respectively.)
- * [x] Custom table column to POJO property mapping
+ * [x] Custom table column to POJO property mapping (snake case (my_column_name) to camel case (myCoulumnName) is supported.)
  * [x] SQLExceptions (SQL Exceptions are internally caught and logged.)
 
 The above missing features were deliberately excluded to keep the library as simple as possible. For many cases, they are not necessary. If you need those features, check out these projects similar to Yank: [sql2o](http://www.sql2o.org/) and [JDBI](http://jdbi.org/).
