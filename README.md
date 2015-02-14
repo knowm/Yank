@@ -20,6 +20,8 @@ methods execute INSERT, UPDATE, and DELETE (and other) statements. Recently, bat
  * [x] Uses HikariCP for connection pooling
  * [x] Supports prepared statements
  * [x] Java object create, read, update, and delete (or CRUD) operations
+ * [x] Automatic snake case (my_column_name) to camel case (myColumnName) mapping
+ * [x] Automatic column name to field mapping via annotations
  * [x] Retrieving assigned auto-increment primary key ID for inserts
  * [x] Java object and object List querying
  * [x] Scalar querying
@@ -111,7 +113,7 @@ public class BooksDAO {
   }
 }
 ```
-Why? By creating a DAO class and putting all methods related to a single database table in it, you have a single point of access to that table. In this example the **BooksDAO** corresponds to a table called **Books**, which contains rows of **Book** objects. BTW, the automatic mapping from database row to Java objects happens because the object's field names match exactly the table column names. This is the one constraint you need to follow. Snake case (my_column_name) to camel case (myCoulumnName) is supported though too!
+Why? By creating a DAO class and putting all methods related to a single database table in it, you have a single point of access to that table. In this example the **BooksDAO** corresponds to a table called **Books**, which contains rows of **Book** objects. BTW, the automatic mapping from database row to Java objects happens because the object's field names match exactly the table column names. This is the one constraint you need to follow. Snake case (my_column_name) to camel case (myColumnName) is supported though too!
 
 ## Summary
 
@@ -125,11 +127,10 @@ For an example of Yank in action in a `DropWizard` web application see [XDropWiz
 
 Now go ahead and [study some more examples](http://xeiam.com/yank-example-code), [download the thing](http://xeiam.com/yank-change-log) and [provide feedback](https://github.com/timmolter/Yank/issues).
 
-## Missing Features
+## Caveats
 
- * [x] Multi-statement transactions (This may be just fine for small to medium projects or to back a REST web application's API: POST, GET, PUT, and DELETE. These correspond to create, read, update, and delete (or CRUD) operations, respectively.)
- * [x] Custom table column to POJO property mapping (snake case (my_column_name) to camel case (myCoulumnName) is supported.)
- * [x] SQLExceptions (SQL Exceptions are internally caught and logged.)
+ * [x] No multi-statement transaction service (This may be just fine for small to medium projects or to back a REST web application's API: POST, GET, PUT, and DELETE. These correspond to create, read, update, and delete (or CRUD) operations, respectively.)
+ * [x] Checked SQLExceptions are logged (SQL Exceptions are internally caught and logged.)
 
 The above missing features were deliberately excluded to keep the library as simple as possible. For many cases, they are not necessary. If you need those features, check out these projects similar to Yank: [sql2o](http://www.sql2o.org/) and [JDBI](http://jdbi.org/).
 
@@ -137,8 +138,8 @@ The above missing features were deliberately excluded to keep the library as sim
 ### Non-Maven
 Download Jar: http://xeiam.com/yank-change-log
 #### Dependencies
-* commons-dbutils.dbutils-1.5.0
-* org.slf4j.slf4j-api-1.7.7
+* commons-dbutils.dbutils-1.6.0
+* org.slf4j.slf4j-api-1.7.10
 * a JDBC-compliant Connector jar
 
 ### Maven
