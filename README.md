@@ -1,21 +1,21 @@
 ## [![Yank](https://raw.githubusercontent.com/timmolter/Yank/develop/etc/Yank_64_64.png)](http://xeiam.com/yank) Yank
-Ultra-Light JDBC Persistance Layer
+Ultra-Light JDBC Persistance Layer for Java Apps
 
 ## In a Nutshell
 
-Never deal with the monotony and pitfalls of handling JDBC ResultSets and Connections again. Yank provides a dead-simple API for saving and yanking Java objects into and out of databases.
+Never deal with the monotony and pitfalls of handling JDBC ResultSets and Connections again. Yank deals with connection pooling and table row to Java object mapping for you so you don't have to worry about it.
 
 ## Long Description
 Yank is a very easy-to-use yet flexible SQL-centric persistence layer for JDBC-compatible databases build on top of org.apache.DBUtils. Yank is a different approach to the over-ORMing of Java persistence.
 Rather than try to abstract away the SQL underneath, Yank assumes you want low level control over the SQL queries you execute. Yank wraps DBUtils,
 hiding the nitty-gritty Connection and ResultSet handling behind a straight-forward proxy class: `Yank`. "Query" methods execute SELECT statements and return POJOs or a List of POJOs. "Execute"
-methods execute INSERT, UPDATE, and DELETE (and other) statements. Recently, batch executing, column list querying and scalar querying has been added. Since version 3.0.0, Yank uses the
-[Hikari connection pool](https://github.com/brettwooldridge/HikariCP) for managing JDBC datasources and connection pools.
+methods execute INSERT, UPDATE, and DELETE (and other) statements. Recently, annotation-based column-field mapping, batch executing, column list querying and scalar querying has been added. Since version 3.0.0, Yank uses the
+[Hikari connection pool](https://github.com/brettwooldridge/HikariCP) as its integrated connection pool.
 
 ## Features
 
  * [x] Apache 2.0 license
- * [x] ~10KB Jar
+ * [x] ~13KB Jar
  * [x] Uses Apache DBUtils for JDBC
  * [x] Uses HikariCP for connection pooling
  * [x] Supports prepared statements
@@ -68,7 +68,7 @@ Properties dbProps = PropertiesUtils.getPropertiesFromClasspath("MYSQL_DB.proper
 // add connection pool
 Yank.addConnectionPool("myconnectionpoolname", dbProps);
 ```
-Why? Hardcoding properties is fine for something quick and dirty, but loading them from a file is generally more convenient and flexible. BTW, you can load them from a path too with: `PropertiesUtils.getPropertiesFromPath(String fileName)`.
+Why? Hardcoding properties is fine for something quick and dirty, but loading them from a file is generally more convenient and flexible. For example, you may have separate properties for unit tests, development and production deployments. BTW, you can load them from a path too with: `PropertiesUtils.getPropertiesFromPath(String fileName)`. At the bare minimum, you need to provide `username`, `password`, and `jdbcUrl` configuration properties.
 
 ## Hide Those SQL Statements Away!
 
@@ -82,7 +82,7 @@ Yank.executeSQLKey("myconnectionpoolname", sqlKey, null);
 ```
 Why? Sometimes it's nice to have all your SQL statements in one place. As an example see: [MYSQL_SQL.properties](https://github.com/timmolter/Yank/blob/develop/src/test/resources/MYSQL_SQL.properties). Also this allows you to swap databases easily without changing any code. Keep one for database type `X` and one for database type `Y`. BTW, to access the actual statements in the  properties file, you use the `Yank.*SQLKey(...)` methods in `Yank`. You can also add multiple properties files and they will be merged!
 
-## Organize Your Persistence Layer Code
+## Stay Organized! You Will Thank Yourself Later.
 ```java
 public class Book {
 
@@ -169,10 +169,13 @@ Now go ahead and [study some more examples](http://xeiam.com/yank-example-code),
 
 ## Caveats
 
- * [x] No multi-statement transaction service (This may be just fine for small to medium projects or to back a REST web application's API: POST, GET, PUT, and DELETE. These correspond to create, read, update, and delete (or CRUD) operations, respectively.)
- * [x] Checked SQLExceptions are logged (SQL Exceptions are internally caught and logged.)
+Yank was designed to be ultra-light and ultra-convenient and is philosophically different than most other competing libraries. Some "sacrifices" were made to stick to this design.
 
-The above missing features were deliberately excluded to keep the library as simple as possible. For many cases, they are not necessary. If you need those features, check out these projects similar to Yank: [sql2o](http://www.sql2o.org/) and [JDBI](http://jdbi.org/).
+ * No multi-statement transaction service (This may be just fine for small to medium projects or to back a REST web application's API: POST, GET, PUT, and DELETE. These correspond to create, read, update, and delete (or CRUD) operations, respectively.)
+ * Checked SQLExceptions are logged (SQL Exceptions are internally caught and logged. This is a heavily debated topic and many differing opinions exist. Yank, being ultra-light, catches and logs SQLExceptions.)
+ * A Hikari connection pool is used behind the scenes (Generic DataSource integration isn't supported. If you just want a connection pool that works and don't care about the specific implementation this point is irrelevant.)
+
+For many cases, the above features are not necessary, but that's for you to determine. If you are developing a critical banking application, you will probably need those features. For other applications where 100% data integrity isn't critical (such as [bitcoinium.com](https://bitcoinium.com/) for example), Yank's simplicity may be attractive. In return for the sacrifices, you write less code and your code will cleaner. Additionally, since `Yank`'s methods are `public static`, you can access it from anywhere in your application and not have to worry about passing around a reference to it. If you need those missing features, check out these projects similar to Yank: [sql2o](http://www.sql2o.org/) and [JDBI](http://jdbi.org/).
 
 ## Getting Started
 ### Non-Maven
@@ -180,6 +183,7 @@ Download Jar: http://xeiam.com/yank-change-log
 #### Dependencies
 * commons-dbutils.dbutils-1.6.0
 * org.slf4j.slf4j-api-1.7.10
+* com.zaxxer.HikariCP-java6-2.3.2
 * a JDBC-compliant Connector jar
 
 ### Maven
@@ -219,6 +223,10 @@ For snapshots, add the following to your pom.xml file:
     mvn license:check
     mvn license:format
     mvn license:remove
+
+## DropWizard Integration
+
+If you want to integrate Yank into a DropWizard application, head over to [XDropWizard](https://github.com/timmolter/XDropWizard) and grab [YankManager.java](https://github.com/timmolter/XDropWizard/blob/master/src/main/java/com/xeiam/xdropwizard/manager/YankManager.java) and add a simple configuration to your DropWizard [myapp.yml](https://github.com/timmolter/XDropWizard/blob/master/xdropwizard.yml) file.
 
 ## Bugs
 Please report any bugs or submit feature requests to [Yank's Github issue tracker](https://github.com/timmolter/Yank/issues).  
