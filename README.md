@@ -153,6 +153,21 @@ String SQL = "SELECT COUNT(*) FROM BOOKS";
 long numBooks = Yank.querySingleScalarSQL(SQL, Long.class, null);
 ```
 With the `Yank.querySingleScalarSQL(...)` method you can retriev a single scalar value that matches the return type of the given SQL statement.
+## Life's a Batch
+```java
+List<Book> books = new ArrayList<Book>();
+// add books to list
+
+Object[][] params = new Object[books.size()][];
+
+for (int i = 0; i < books.size(); i++) {
+  Book book = books.get(i);
+  params[i] = new Object[] { book.getTitle(), book.getAuthor(), book.getPrice() };
+}
+
+String SQL = "INSERT INTO BOOKS (TITLE, AUTHOR, PRICE) VALUES (?, ?, ?)";
+int numInsertedRows = Yank.executeBatchSQL(SQL, params);
+```
 
 ## Summary
 
