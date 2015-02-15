@@ -45,7 +45,7 @@ public static void main(String[] args) {
   dbProps.setProperty("password", "");
 
   // add connection pool
-  Yank.addConnectionPool(dbProps);
+  Yank.setupDataSource(dbProps);
 
   // query book
   String sql = "SELECT * FROM BOOKS WHERE TITLE = ?";
@@ -54,7 +54,7 @@ public static void main(String[] args) {
   System.out.println(book.toString());
 
   // release connection pool
-  Yank.release();
+  Yank.releaseDataSource();
 }
 ```
 
@@ -65,7 +65,7 @@ public static void main(String[] args) {
 Properties dbProps = PropertiesUtils.getPropertiesFromClasspath("MYSQL_DB.properties");
 
 // add connection pool
-Yank.addConnectionPool(dbProps);
+Yank.setupDataSource(dbProps);
 ```
 Why? Hardcoding properties is fine for something quick and dirty, but loading them from a file is generally more convenient and flexible. For example, you may have separate properties for unit tests, development and production deployments. BTW, you can load them from a path too with: `PropertiesUtils.getPropertiesFromPath(String fileName)`. At the bare minimum, you need to provide `username`, `password`, and `jdbcUrl` configuration properties.
 
@@ -158,9 +158,9 @@ With the `Yank.querySingleScalarSQL(...)` method you can retriev a single scalar
 
 Whether or not your app is a tiny scipt, a large webapp, or anything in between the main pattern to follow is the same:
 
-1. Configure a connection pool: `Yank.addConnectionPool("myconnectionpoolname", dbProps);`
+1. Configure a connection pool: `Yank.setupDataSource(dbProps);`
 1. Use Yank once or many times: `Yank.executeSQL("myconnectionpoolname", SQL, params);`
-1. Release the connection pool: ` Yank.release();`
+1. Release the connection pool: ` Yank.releaseDataSource();`
 
 For an example of Yank in action in a `DropWizard` web application see [XDropWizard](https://github.com/timmolter/XDropWizard).
 

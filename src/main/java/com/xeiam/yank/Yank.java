@@ -18,8 +18,6 @@ package com.xeiam.yank;
 import java.util.List;
 import java.util.Properties;
 
-import javax.sql.DataSource;
-
 import org.apache.commons.dbutils.BasicRowProcessor;
 import org.apache.commons.dbutils.GenerousBeanProcessor;
 import org.apache.commons.dbutils.QueryRunner;
@@ -35,6 +33,7 @@ import org.slf4j.LoggerFactory;
 import com.xeiam.yank.exceptions.SQLStatementNotFoundException;
 import com.xeiam.yank.handlers.InsertedIDResultSetHandler;
 import com.xeiam.yank.processors.YankBeanProcessor;
+import com.zaxxer.hikari.HikariDataSource;
 
 /**
  * A wrapper for DBUtils' QueryRunner's methods: update, query, and batch. Connections are retrieved from the connection pool in DBConnectionManager.
@@ -439,14 +438,14 @@ public final class Yank {
   }
 
   /**
-   * Add properties for a connection pool. Yank uses a Hikari connection pool under the hood, so you have to provide the minimal essential properties
-   * and the optional properties as defined here: https://github.com/brettwooldridge/HikariCP
+   * Add properties for a DataSource (connection pool). Yank uses a Hikari DataSource (connection pool) under the hood, so you have to provide the
+   * minimal essential properties and the optional properties as defined here: https://github.com/brettwooldridge/HikariCP
    *
-   * @param connectionPoolProperties
+   * @param dataSourceProperties
    */
-  public static void addConnectionPool(Properties connectionPoolProperties) {
+  public static void setupDataSource(Properties dataSourceProperties) {
 
-    YANK_POOL_MANAGER.addConnectionPool(connectionPoolProperties);
+    YANK_POOL_MANAGER.setupDataSource(dataSourceProperties);
   }
 
   /**
@@ -462,17 +461,17 @@ public final class Yank {
   /**
    * Closes all open connection pools
    */
-  public static synchronized void release() {
+  public static synchronized void releaseDataSource() {
 
-    YANK_POOL_MANAGER.release();
+    YANK_POOL_MANAGER.releaseDataSource();
   }
 
   /**
    * Exposes access to the configured DataSource
    *
-   * @return a configured (pooled) DataSource.
+   * @return a configured (pooled) HikariDataSource.
    */
-  public static DataSource getDataSource() {
+  public static HikariDataSource getDataSource() {
 
     return YANK_POOL_MANAGER.getDataSource();
   }

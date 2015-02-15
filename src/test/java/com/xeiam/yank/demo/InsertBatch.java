@@ -34,7 +34,7 @@ public class InsertBatch {
     // DB Properties
     Properties dbProps = PropertiesUtils.getPropertiesFromClasspath("MYSQL_DB.properties");
 
-    Yank.addConnectionPool(dbProps);
+    Yank.setupDataSource(dbProps);
 
     // query
     List<Book> books = new ArrayList<Book>();
@@ -59,7 +59,7 @@ public class InsertBatch {
 
     BooksDAO.insertBatch(books);
 
-    Yank.release();
+    Yank.releaseDataSource();
 
   }
 }

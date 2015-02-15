@@ -32,7 +32,7 @@ public class InsertBook {
     // DB Properties
     Properties dbProps = PropertiesUtils.getPropertiesFromClasspath("MYSQL_DB.properties");
 
-    Yank.addConnectionPool(dbProps);
+    Yank.setupDataSource(dbProps);
 
     // query
     Book book = new Book();
@@ -42,7 +42,7 @@ public class InsertBook {
     long autoID = BooksDAO.insertBook(book);
     System.out.println(autoID);
 
-    Yank.release();
+    Yank.releaseDataSource();
 
   }
 }

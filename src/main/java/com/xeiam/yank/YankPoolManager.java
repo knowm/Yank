@@ -17,8 +17,6 @@ package com.xeiam.yank;
 
 import java.util.Properties;
 
-import javax.sql.DataSource;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,7 +35,7 @@ public final class YankPoolManager {
 
   private final Logger logger = LoggerFactory.getLogger(YankPoolManager.class);
 
-  private HikariDataSource connectionPool;
+  private HikariDataSource hikariDataSource;
 
   private final Properties mergedSqlProperties = new Properties();
 
@@ -52,14 +50,14 @@ public final class YankPoolManager {
   }
 
   /**
-   * Add properties for a connection pool. Yank uses a Hikari connection pool under the hood, so you have to provide the minimal essential properties
-   * and the optional properties as defined here: https://github.com/brettwooldridge/HikariCP
+   * Add properties for a DataSource (connection pool). Yank uses a Hikari DataSource (connection pool) under the hood, so you have to provide the
+   * minimal essential properties and the optional properties as defined here: https://github.com/brettwooldridge/HikariCP
    *
-   * @param connectionPoolProperties
+   * @param dataSourceProperties
    */
-  protected void addConnectionPool(Properties connectionPoolProperties) {
+  protected void setupDataSource(Properties dataSourceProperties) {
 
-    createPool(connectionPoolProperties);
+    createPool(dataSourceProperties);
   }
 
   protected void addSQLStatements(Properties sqlProperties) {
@@ -75,23 +73,26 @@ public final class YankPoolManager {
    */
   private void createPool(Properties connectionPoolProperties) {
 
+    releaseDataSource();
+
     // DBUtils execute methods require autoCommit to be true.
     connectionPoolProperties.put("autoCommit", true);
 
     HikariConfig config = new HikariConfig(connectionPoolProperties);
-    HikariDataSource ds = new HikariDataSource(config);
-    this.connectionPool = ds;
-    logger.info("Initialized pool '{}'", ds.getPoolName());
+    HikariDataSource hikariDataSource = new HikariDataSource(config);
+    this.hikariDataSource = hikariDataSource;
+    logger.info("Initialized pool '{}'", hikariDataSource.getPoolName());
   }
 
   /**
-   * Closes all connection pools
+   * Closes connection pool
    */
-  protected synchronized void release() {
+  protected synchronized void releaseDataSource() {
 
-    logger.debug("Releasing pool: {}...", this.connectionPool.getPoolName());
-
-    this.connectionPool.shutdown();
+    if (this.hikariDataSource != null) {
+      logger.debug("Releasing pool: {}...", this.hikariDataSource.getPoolName());
+      this.hikariDataSource.shutdown();
+    }
   }
 
   /**
@@ -99,9 +100,9 @@ public final class YankPoolManager {
    *
    * @return
    */
-  protected DataSource getDataSource() {
+  protected HikariDataSource getDataSource() {
 
-    return this.connectionPool;
+    return this.hikariDataSource;
   }
 
   /**

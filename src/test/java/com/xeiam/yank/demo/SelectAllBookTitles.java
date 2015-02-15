@@ -33,7 +33,7 @@ public class SelectAllBookTitles {
     // DB Properties
     Properties dbProps = PropertiesUtils.getPropertiesFromClasspath("MYSQL_DB.properties");
 
-    Yank.addConnectionPool(dbProps);
+    Yank.setupDataSource(dbProps);
 
     // query
     List<String> bookTitles = BooksDAO.selectAllBookTitles();
@@ -41,7 +41,7 @@ public class SelectAllBookTitles {
       System.out.println(bookTitle);
     }
 
-    Yank.release();
+    Yank.releaseDataSource();
 
   }
 }

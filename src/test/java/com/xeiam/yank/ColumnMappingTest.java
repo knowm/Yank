@@ -22,14 +22,14 @@ public class ColumnMappingTest {
     Properties dbProps = PropertiesUtils.getPropertiesFromClasspath("HSQL_DB.properties");
     Properties sqlProps = PropertiesUtils.getPropertiesFromClasspath("HSQL_SQL.properties");
 
-    Yank.addConnectionPool(dbProps);
+    Yank.setupDataSource(dbProps);
     Yank.addSQLStatements(sqlProps);
   }
 
   @AfterClass
   public static void tearDownDB() {
 
-    Yank.release();
+    Yank.releaseDataSource();
   }
 
   @Test
