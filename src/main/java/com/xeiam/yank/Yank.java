@@ -69,13 +69,13 @@ public final class Yank {
    * @return the auto-increment id of the inserted row, or null if no id is available
    * @throws SQLStatementNotFoundException if an SQL statement could not be found for the given sqlKey String
    */
-  public static Long insertSQLKey(String poolName, String sqlKey, Object[] params) {
+  public static Long insertSQLKey(String sqlKey, Object[] params) {
 
     String sql = YANK_POOL_MANAGER.getMergedSqlProperties().getProperty(sqlKey);
     if (sql == null || sql.equalsIgnoreCase("")) {
       throw new SQLStatementNotFoundException();
     } else {
-      return insertSQL(poolName, sql, params);
+      return insertSQL(sql, params);
     }
   }
 
@@ -87,13 +87,13 @@ public final class Yank {
    * @param params The replacement parameters
    * @return the auto-increment id of the inserted row, or null if no id is available
    */
-  public static Long insertSQL(String poolName, String sql, Object[] params) {
+  public static Long insertSQL(String sql, Object[] params) {
 
     Long returnLong = null;
 
     try {
       ResultSetHandler<Long> rsh = new InsertedIDResultSetHandler();
-      returnLong = new QueryRunner(YANK_POOL_MANAGER.getDataSource(poolName)).insert(sql, rsh, params);
+      returnLong = new QueryRunner(YANK_POOL_MANAGER.getDataSource()).insert(sql, rsh, params);
     } catch (Exception e) {
       logger.error(QUERY_EXCEPTION_MESSAGE, e);
     }
@@ -113,13 +113,13 @@ public final class Yank {
    * @return The number of rows affected
    * @throws SQLStatementNotFoundException if an SQL statement could not be found for the given sqlKey String
    */
-  public static int executeSQLKey(String poolName, String sqlKey, Object[] params) {
+  public static int executeSQLKey(String sqlKey, Object[] params) {
 
     String sql = YANK_POOL_MANAGER.getMergedSqlProperties().getProperty(sqlKey);
     if (sql == null || sql.equalsIgnoreCase("")) {
       throw new SQLStatementNotFoundException();
     } else {
-      return executeSQL(poolName, sql, params);
+      return executeSQL(sql, params);
     }
   }
 
@@ -131,13 +131,13 @@ public final class Yank {
    * @param params The replacement parameters
    * @return The number of rows affected
    */
-  public static int executeSQL(String poolName, String sql, Object[] params) {
+  public static int executeSQL(String sql, Object[] params) {
 
     int returnInt = 0;
 
     try {
 
-      returnInt = new QueryRunner(YANK_POOL_MANAGER.getDataSource(poolName)).update(sql, params);
+      returnInt = new QueryRunner(YANK_POOL_MANAGER.getDataSource()).update(sql, params);
 
     } catch (Exception e) {
       logger.error(QUERY_EXCEPTION_MESSAGE, e);
@@ -159,13 +159,13 @@ public final class Yank {
    * @return The Object
    * @throws SQLStatementNotFoundException if an SQL statement could not be found for the given sqlKey String
    */
-  public static <T> T querySingleScalarSQLKey(String poolName, String sqlKey, Class<T> type, Object[] params) {
+  public static <T> T querySingleScalarSQLKey(String sqlKey, Class<T> type, Object[] params) {
 
     String sql = YANK_POOL_MANAGER.getMergedSqlProperties().getProperty(sqlKey);
     if (sql == null || sql.equalsIgnoreCase("")) {
       throw new SQLStatementNotFoundException();
     } else {
-      return querySingleObjectSQL(poolName, sql, type, params);
+      return querySingleObjectSQL(sql, type, params);
     }
 
   }
@@ -179,7 +179,7 @@ public final class Yank {
    * @return The scalar Object
    * @throws SQLStatementNotFoundException if an SQL statement could not be found for the given sqlKey String
    */
-  public static <T> T querySingleScalarSQL(String poolName, String sql, Class<T> type, Object[] params) {
+  public static <T> T querySingleScalarSQL(String sql, Class<T> type, Object[] params) {
 
     T returnObject = null;
 
@@ -187,7 +187,7 @@ public final class Yank {
 
       ScalarHandler<T> resultSetHandler = new ScalarHandler<T>();
 
-      returnObject = new QueryRunner(YANK_POOL_MANAGER.getDataSource(poolName)).query(sql, resultSetHandler, params);
+      returnObject = new QueryRunner(YANK_POOL_MANAGER.getDataSource()).query(sql, resultSetHandler, params);
 
     } catch (Exception e) {
       logger.error(QUERY_EXCEPTION_MESSAGE, e);
@@ -209,13 +209,13 @@ public final class Yank {
    * @return The Object
    * @throws SQLStatementNotFoundException if an SQL statement could not be found for the given sqlKey String
    */
-  public static <T> T querySingleObjectSQLKey(String poolName, String sqlKey, Class<T> type, Object[] params) {
+  public static <T> T querySingleObjectSQLKey(String sqlKey, Class<T> type, Object[] params) {
 
     String sql = YANK_POOL_MANAGER.getMergedSqlProperties().getProperty(sqlKey);
     if (sql == null || sql.equalsIgnoreCase("")) {
       throw new SQLStatementNotFoundException();
     } else {
-      return querySingleObjectSQL(poolName, sql, type, params);
+      return querySingleObjectSQL(sql, type, params);
     }
 
   }
@@ -229,7 +229,7 @@ public final class Yank {
    * @param type The Class of the desired return Object matching the table
    * @return The Object
    */
-  public static <T> T querySingleObjectSQL(String poolName, String sql, Class<T> type, Object[] params) {
+  public static <T> T querySingleObjectSQL(String sql, Class<T> type, Object[] params) {
 
     T returnObject = null;
 
@@ -237,7 +237,7 @@ public final class Yank {
 
       BeanHandler<T> resultSetHandler = new BeanHandler<T>(type, new BasicRowProcessor(new YankBeanProcessor(type)));
 
-      returnObject = new QueryRunner(YANK_POOL_MANAGER.getDataSource(poolName)).query(sql, resultSetHandler, params);
+      returnObject = new QueryRunner(YANK_POOL_MANAGER.getDataSource()).query(sql, resultSetHandler, params);
 
     } catch (Exception e) {
       logger.error(QUERY_EXCEPTION_MESSAGE, e);
@@ -259,13 +259,13 @@ public final class Yank {
    * @return The List of Objects
    * @throws SQLStatementNotFoundException if an SQL statement could not be found for the given sqlKey String
    */
-  public static <T> List<T> queryObjectListSQLKey(String poolName, String sqlKey, Class<T> type, Object[] params) {
+  public static <T> List<T> queryObjectListSQLKey(String sqlKey, Class<T> type, Object[] params) {
 
     String sql = YANK_POOL_MANAGER.getMergedSqlProperties().getProperty(sqlKey);
     if (sql == null || sql.equalsIgnoreCase("")) {
       throw new SQLStatementNotFoundException();
     } else {
-      return queryObjectListSQL(poolName, sql, type, params);
+      return queryObjectListSQL(sql, type, params);
     }
   }
 
@@ -279,7 +279,7 @@ public final class Yank {
    * @param type The Class of the desired return Objects matching the table
    * @return The List of Objects
    */
-  public static <T> List<T> queryObjectListSQL(String poolName, String sql, Class<T> type, Object[] params) {
+  public static <T> List<T> queryObjectListSQL(String sql, Class<T> type, Object[] params) {
 
     List<T> returnList = null;
 
@@ -287,7 +287,7 @@ public final class Yank {
 
       BeanListHandler<T> resultSetHandler = new BeanListHandler<T>(type, new BasicRowProcessor(new GenerousBeanProcessor()));
 
-      returnList = new QueryRunner(YANK_POOL_MANAGER.getDataSource(poolName)).query(sql, resultSetHandler, params);
+      returnList = new QueryRunner(YANK_POOL_MANAGER.getDataSource()).query(sql, resultSetHandler, params);
 
     } catch (Exception e) {
       logger.error(QUERY_EXCEPTION_MESSAGE, e);
@@ -309,13 +309,13 @@ public final class Yank {
    * @return The List of Objects
    * @throws SQLStatementNotFoundException if an SQL statement could not be found for the given sqlKey String
    */
-  public static <T> List<T> queryColumnListSQLKey(String poolName, String sqlKey, String columnName, Class<T> type, Object[] params) {
+  public static <T> List<T> queryColumnListSQLKey(String sqlKey, String columnName, Class<T> type, Object[] params) {
 
     String sql = YANK_POOL_MANAGER.getMergedSqlProperties().getProperty(sqlKey);
     if (sql == null || sql.equalsIgnoreCase("")) {
       throw new SQLStatementNotFoundException();
     } else {
-      return queryObjectListSQL(poolName, sql, type, params);
+      return queryObjectListSQL(sql, type, params);
     }
   }
 
@@ -329,7 +329,7 @@ public final class Yank {
    * @param type The Class of the desired return Objects matching the table
    * @return The List of Objects
    */
-  public static <T> List<T> queryColumnListSQL(String poolName, String sql, String columnName, Class<T> type, Object[] params) {
+  public static <T> List<T> queryColumnListSQL(String sql, String columnName, Class<T> type, Object[] params) {
 
     List<T> returnList = null;
 
@@ -337,7 +337,7 @@ public final class Yank {
 
       ColumnListHandler<T> resultSetHandler = new ColumnListHandler<T>(columnName);
 
-      returnList = new QueryRunner(YANK_POOL_MANAGER.getDataSource(poolName)).query(sql, resultSetHandler, params);
+      returnList = new QueryRunner(YANK_POOL_MANAGER.getDataSource()).query(sql, resultSetHandler, params);
 
     } catch (Exception e) {
       logger.error(QUERY_EXCEPTION_MESSAGE, e);
@@ -358,13 +358,13 @@ public final class Yank {
    * @return The List of generic Object[]s
    * @throws SQLStatementNotFoundException if an SQL statement could not be found for the given sqlKey String
    */
-  public static List<Object[]> queryGenericObjectArrayListSQLKey(String poolName, String sqlKey, Object[] params) {
+  public static List<Object[]> queryGenericObjectArrayListSQLKey(String sqlKey, Object[] params) {
 
     String sql = YANK_POOL_MANAGER.getMergedSqlProperties().getProperty(sqlKey);
     if (sql == null || sql.equalsIgnoreCase("")) {
       throw new SQLStatementNotFoundException();
     } else {
-      return queryGenericObjectArrayListSQL(poolName, sql, params);
+      return queryGenericObjectArrayListSQL(sql, params);
     }
   }
 
@@ -376,7 +376,7 @@ public final class Yank {
    * @param params The replacement parameters
    * @return The List of generic Object[]s
    */
-  public static List<Object[]> queryGenericObjectArrayListSQL(String poolName, String sql, Object[] params) {
+  public static List<Object[]> queryGenericObjectArrayListSQL(String sql, Object[] params) {
 
     List<Object[]> returnList = null;
 
@@ -384,7 +384,7 @@ public final class Yank {
 
       ArrayListHandler resultSetHandler = new ArrayListHandler(new BasicRowProcessor(new GenerousBeanProcessor()));
       // returnList = new QueryRunner().query(con, sql, resultSetHandler, params);
-      returnList = new QueryRunner(YANK_POOL_MANAGER.getDataSource(poolName)).query(sql, resultSetHandler, params);
+      returnList = new QueryRunner(YANK_POOL_MANAGER.getDataSource()).query(sql, resultSetHandler, params);
 
     } catch (Exception e) {
       logger.error(QUERY_EXCEPTION_MESSAGE, e);
@@ -405,13 +405,13 @@ public final class Yank {
    * @return The number of rows affected or each individual execution
    * @throws SQLStatementNotFoundException if an SQL statement could not be found for the given sqlKey String
    */
-  public static int[] executeBatchSQLKey(String poolName, String sqlKey, Object[][] params) {
+  public static int[] executeBatchSQLKey(String sqlKey, Object[][] params) {
 
     String sql = YANK_POOL_MANAGER.getMergedSqlProperties().getProperty(sqlKey);
     if (sql == null || sql.equalsIgnoreCase("")) {
       throw new SQLStatementNotFoundException();
     } else {
-      return executeBatchSQL(poolName, sql, params);
+      return executeBatchSQL(sql, params);
     }
   }
 
@@ -423,13 +423,13 @@ public final class Yank {
    * @param params An array of query replacement parameters. Each row in this array is one set of batch replacement values
    * @return The number of rows affected or each individual execution
    */
-  public static int[] executeBatchSQL(String poolName, String sql, Object[][] params) {
+  public static int[] executeBatchSQL(String sql, Object[][] params) {
 
     int[] returnIntArray = null;
 
     try {
 
-      returnIntArray = new QueryRunner(YANK_POOL_MANAGER.getDataSource(poolName)).batch(sql, params);
+      returnIntArray = new QueryRunner(YANK_POOL_MANAGER.getDataSource()).batch(sql, params);
 
     } catch (Exception e) {
       logger.error(QUERY_EXCEPTION_MESSAGE, e);
@@ -444,9 +444,9 @@ public final class Yank {
    *
    * @param connectionPoolProperties
    */
-  public static void addConnectionPool(String poolName, Properties connectionPoolProperties) {
+  public static void addConnectionPool(Properties connectionPoolProperties) {
 
-    YANK_POOL_MANAGER.addConnectionPool(poolName, connectionPoolProperties);
+    YANK_POOL_MANAGER.addConnectionPool(connectionPoolProperties);
   }
 
   /**
@@ -470,11 +470,10 @@ public final class Yank {
   /**
    * Exposes access to the configured DataSource
    *
-   * @param poolName the connection pool name
    * @return a configured (pooled) DataSource.
    */
-  public static DataSource getDataSource(String poolName) {
+  public static DataSource getDataSource() {
 
-    return YANK_POOL_MANAGER.getDataSource(poolName);
+    return YANK_POOL_MANAGER.getDataSource();
   }
 }

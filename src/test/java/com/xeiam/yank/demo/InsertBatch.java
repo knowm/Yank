@@ -34,7 +34,7 @@ public class InsertBatch {
     // DB Properties
     Properties dbProps = PropertiesUtils.getPropertiesFromClasspath("MYSQL_DB.properties");
 
-    Yank.addConnectionPool("myconnectionpoolname", dbProps);
+    Yank.addConnectionPool(dbProps);
 
     // query
     List<Book> books = new ArrayList<Book>();

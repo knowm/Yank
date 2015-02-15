@@ -38,7 +38,7 @@ public class SnakeCaseTest {
     Properties dbProps = PropertiesUtils.getPropertiesFromClasspath("HSQL_DB.properties");
     Properties sqlProps = PropertiesUtils.getPropertiesFromClasspath("HSQL_SQL.properties");
 
-    Yank.addConnectionPool("myconnectionpoolname", dbProps);
+    Yank.addConnectionPool(dbProps);
     Yank.addSQLStatements(sqlProps);
   }
 
@@ -52,7 +52,7 @@ public class SnakeCaseTest {
   public void testBooksTable() {
 
     String sql = "CREATE TABLE Books (TITLE VARCHAR(42) NULL, AUT_HOR VARCHAR(42) NULL, PRICE DECIMAL(10,2) NOT NULL)";
-    Yank.executeSQL("myconnectionpoolname", sql, null);
+    Yank.executeSQL(sql, null);
 
     Book book = new Book();
     book.setTitle("Cryptonomicon");
@@ -60,7 +60,7 @@ public class SnakeCaseTest {
     book.setPrice(23.99);
     Object[] params = new Object[] { book.getTitle(), book.getAuthor(), book.getPrice() };
     String SQL = "INSERT INTO BOOKS  (TITLE, AUT_HOR, PRICE) VALUES (?, ?, ?)";
-    Yank.executeSQL("myconnectionpoolname", SQL, params);
+    Yank.executeSQL(SQL, params);
 
     book = BooksDAO.selectBook("Cryptonomicon");
     assertThat(book.getPrice(), equalTo(23.99));

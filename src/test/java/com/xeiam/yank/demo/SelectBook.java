@@ -35,12 +35,12 @@ public class SelectBook {
     dbProps.setProperty("password", "");
 
     // add connection pool
-    Yank.addConnectionPool("myconnectionpoolname", dbProps);
+    Yank.addConnectionPool(dbProps);
 
     // query book
     String sql = "SELECT * FROM BOOKS WHERE TITLE = ?";
     Object[] params = new Object[] { "Cryptonomicon" };
-    Book book = Yank.querySingleObjectSQL("myconnectionpoolname", sql, Book.class, params);
+    Book book = Yank.querySingleObjectSQL(sql, Book.class, params);
     System.out.println(book.toString());
 
     // release connection pool

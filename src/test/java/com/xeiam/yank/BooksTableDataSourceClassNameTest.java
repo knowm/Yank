@@ -41,7 +41,7 @@ public class BooksTableDataSourceClassNameTest {
     Properties sqlProps = PropertiesUtils.getPropertiesFromClasspath("HSQL_SQL.properties");
 
     // init YankPoolManager
-    Yank.addConnectionPool("myconnectionpoolname", dbProps);
+    Yank.addConnectionPool(dbProps);
     Yank.addSQLStatements(sqlProps);
   }
 

@@ -39,7 +39,7 @@ public class BooksTableJdbcUrlTest {
     Properties dbProps = PropertiesUtils.getPropertiesFromClasspath("HSQL_DB.properties");
     Properties sqlProps = PropertiesUtils.getPropertiesFromClasspath("HSQL_SQL.properties");
 
-    Yank.addConnectionPool("myconnectionpoolname", dbProps);
+    Yank.addConnectionPool(dbProps);
     Yank.addSQLStatements(sqlProps);
   }
 

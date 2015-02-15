@@ -22,7 +22,7 @@ public class ColumnMappingTest {
     Properties dbProps = PropertiesUtils.getPropertiesFromClasspath("HSQL_DB.properties");
     Properties sqlProps = PropertiesUtils.getPropertiesFromClasspath("HSQL_SQL.properties");
 
-    Yank.addConnectionPool("myconnectionpoolname", dbProps);
+    Yank.addConnectionPool(dbProps);
     Yank.addSQLStatements(sqlProps);
   }
 
@@ -37,7 +37,7 @@ public class ColumnMappingTest {
 
     // Make the column names German :)
     String sql = "CREATE TABLE Buecher (TITEL VARCHAR(42) NULL, AUTOR VARCHAR(42) NULL, PREIS DECIMAL(10,2) NOT NULL)";
-    Yank.executeSQL("myconnectionpoolname", sql, null);
+    Yank.executeSQL(sql, null);
 
     Buch book = new Buch();
     book.setTitle("Cryptonomicon");
@@ -45,11 +45,11 @@ public class ColumnMappingTest {
     book.setPrice(23.99);
     Object[] params = new Object[] { book.getTitle(), book.getAuthorName(), book.getPrice() };
     sql = "INSERT INTO Buecher  (TITEL, AUTOR, PREIS) VALUES (?, ?, ?)";
-    Yank.executeSQL("myconnectionpoolname", sql, params);
+    Yank.executeSQL(sql, params);
 
     sql = "SELECT * FROM Buecher WHERE TITEL = ?";
     params = new Object[] { "Cryptonomicon" };
-    book = Yank.querySingleObjectSQL("myconnectionpoolname", sql, Buch.class, params);
+    book = Yank.querySingleObjectSQL(sql, Buch.class, params);
 
     assertThat(book.getPrice(), equalTo(23.99));
     assertThat(book.getAuthorName(), equalTo("Neal Stephenson"));

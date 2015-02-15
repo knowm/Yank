@@ -35,7 +35,7 @@ public class ShowTableStatus {
     // SQL Statements in Properties file
     Properties sqlProps = PropertiesUtils.getPropertiesFromClasspath("MYSQL_SQL.properties");
 
-    Yank.addConnectionPool("myconnectionpoolname", dbProps);
+    Yank.addConnectionPool(dbProps);
     Yank.addSQLStatements(sqlProps);
 
     // query

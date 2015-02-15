@@ -45,19 +45,18 @@ public static void main(String[] args) {
   dbProps.setProperty("password", "");
 
   // add connection pool
-  Yank.addConnectionPool("myconnectionpoolname", dbProps);
+  Yank.addConnectionPool(dbProps);
 
   // query book
   String sql = "SELECT * FROM BOOKS WHERE TITLE = ?";
   Object[] params = new Object[] { "Cryptonomicon" };
-  Book book = Yank.querySingleObjectSQL("myconnectionpoolname", sql, Book.class, params);
+  Book book = Yank.querySingleObjectSQL(sql, Book.class, params);
   System.out.println(book.toString());
 
   // release connection pool
   Yank.release();
 }
 ```
-Note that the String `myconnectionpoolname` is used as a key for the connection pool to use as the first argument in the `Yank.*` SQL methods. With Yank, you can run multiple pools, each connected to different databases and/or database types (MySQL, Oracle, etc.), all from the same app.
 
 ## Hide Those Properties Away!
 
@@ -66,7 +65,7 @@ Note that the String `myconnectionpoolname` is used as a key for the connection 
 Properties dbProps = PropertiesUtils.getPropertiesFromClasspath("MYSQL_DB.properties");
 
 // add connection pool
-Yank.addConnectionPool("myconnectionpoolname", dbProps);
+Yank.addConnectionPool(dbProps);
 ```
 Why? Hardcoding properties is fine for something quick and dirty, but loading them from a file is generally more convenient and flexible. For example, you may have separate properties for unit tests, development and production deployments. BTW, you can load them from a path too with: `PropertiesUtils.getPropertiesFromPath(String fileName)`. At the bare minimum, you need to provide `username`, `password`, and `jdbcUrl` configuration properties.
 
@@ -101,7 +100,7 @@ public class BooksDAO {
 
     Object[] params = new Object[] { book.getTitle(), book.getAuthor(), book.getPrice() };
     String SQL = "INSERT INTO BOOKS  (TITLE, AUTHOR, PRICE) VALUES (?, ?, ?)";
-    return Yank.executeSQL("myconnectionpoolname", SQL, params);
+    return Yank.executeSQL(SQL, params);
   }
 
   // ...
@@ -109,7 +108,7 @@ public class BooksDAO {
   public static List<Book> selectAllBooks() {
 
     String SQL = "SELECT * FROM BOOKS";
-    return Yank.queryObjectListSQL("myconnectionpoolname", SQL, Book.class, null);
+    return Yank.queryObjectListSQL(SQL, Book.class, null);
   }
 }
 ```
@@ -136,7 +135,7 @@ The default automatic mapping from database row to Java objects happens when the
 ```java
 Object[] params = new Object[] { book.getTitle(), book.getAuthorName(), book.getPrice() };
 String SQL = "INSERT INTO BOOKS (TITLE, AUTHORNAME, PRICE) VALUES (?, ?, ?)";
-Long id = Yank.insertSQL("myconnectionpoolname", SQL, params);
+Long id = Yank.insertSQL(SQL, params);
 ```
 With a special `Yank.insertSQL(...)` method, Yank will return the assigned auto-increment primary key ID. Note that you can alternatively use the `Yank.executeSQL(...)` method for inserts, which returns the number of affected rows.
 
@@ -144,14 +143,14 @@ With a special `Yank.insertSQL(...)` method, Yank will return the assigned auto-
 ```java
 String SQL = "SELECT TITLE FROM BOOKS";
 String columnName = "title";
-List<String> bookTitles = Yank.queryColumnListSQL("myconnectionpoolname", SQL, columnName, String.class, null);
+List<String> bookTitles = Yank.queryColumnListSQL(QL, columnName, String.class, null);
 ```
 With the `Yank.queryColumnListSQL(...)` method you can retrieve a List containing objects matching column data type.
 
 ## Query a Scalar Value
 ```java
 String SQL = "SELECT COUNT(*) FROM BOOKS";
-long numBooks = Yank.querySingleScalarSQL("myconnectionpoolname", SQL, Long.class, null);
+long numBooks = Yank.querySingleScalarSQL(SQL, Long.class, null);
 ```
 With the `Yank.querySingleScalarSQL(...)` method you can retriev a single scalar value that matches the return type of the given SQL statement.
 

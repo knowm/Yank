@@ -40,7 +40,7 @@ public class BooksDAO {
 
     Object[] params = new Object[] { book.getTitle(), book.getAuthor(), book.getPrice() };
     String SQL = "INSERT INTO BOOKS (TITLE, AUTHOR, PRICE) VALUES (?, ?, ?)";
-    return Yank.insertSQL("myconnectionpoolname", SQL, params);
+    return Yank.insertSQL(SQL, params);
   }
 
   /**
@@ -53,7 +53,7 @@ public class BooksDAO {
   public static List<Book> selectAllBooks() {
 
     String SQL = "SELECT * FROM BOOKS";
-    return Yank.queryObjectListSQL("myconnectionpoolname", SQL, Book.class, null);
+    return Yank.queryObjectListSQL(SQL, Book.class, null);
   }
 
   /**
@@ -67,7 +67,7 @@ public class BooksDAO {
 
     String SQL = "SELECT TITLE FROM BOOKS";
     String columnName = "title";
-    return Yank.queryColumnListSQL("myconnectionpoolname", SQL, columnName, String.class, null);
+    return Yank.queryColumnListSQL(SQL, columnName, String.class, null);
   }
 
   /**
@@ -87,7 +87,7 @@ public class BooksDAO {
     }
 
     String SQL = "INSERT INTO BOOKS (TITLE, AUTHOR, PRICE) VALUES (?, ?, ?)";
-    return Yank.executeBatchSQL("myconnectionpoolname", SQL, params);
+    return Yank.executeBatchSQL(SQL, params);
   }
 
   /**
@@ -100,7 +100,7 @@ public class BooksDAO {
   public static int createBooksTable() {
 
     String sqlKey = "BOOKS_CREATE_TABLE";
-    return Yank.executeSQLKey("myconnectionpoolname", sqlKey, null);
+    return Yank.executeSQLKey(sqlKey, null);
   }
 
   /**
@@ -116,7 +116,7 @@ public class BooksDAO {
     Object[] params = new Object[] { title };
 
     String sqlKey = "BOOKS_SELECT_BY_TITLE";
-    return Yank.querySingleObjectSQLKey("myconnectionpoolname", sqlKey, Book.class, params);
+    return Yank.querySingleObjectSQLKey(sqlKey, Book.class, params);
   }
 
   /**
@@ -131,7 +131,7 @@ public class BooksDAO {
   public static List<Object[]> getTableStatus() {
 
     String sqlKey = "BOOKS_SELECT_TABLE_STATUS";
-    return Yank.queryGenericObjectArrayListSQLKey("myconnectionpoolname", sqlKey, null);
+    return Yank.queryGenericObjectArrayListSQLKey(sqlKey, null);
   }
 
   /**
@@ -144,7 +144,7 @@ public class BooksDAO {
   public static long getNumBooks() {
 
     String SQL = "SELECT COUNT(*) FROM BOOKS";
-    return Yank.querySingleScalarSQL("myconnectionpoolname", SQL, Long.class, null);
+    return Yank.querySingleScalarSQL(SQL, Long.class, null);
   }
 
   /**
@@ -157,7 +157,7 @@ public class BooksDAO {
   public static Book selectRandomBook() {
 
     String sqlKey = "BOOKS_SELECT_RANDOM_BOOK";
-    return Yank.querySingleObjectSQLKey("myconnectionpoolname", sqlKey, Book.class, null);
+    return Yank.querySingleObjectSQLKey(sqlKey, Book.class, null);
   }
 
 }

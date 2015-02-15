@@ -15,11 +15,7 @@
  */
 package com.xeiam.yank;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 import java.util.Properties;
-import java.util.Set;
 
 import javax.sql.DataSource;
 
@@ -30,9 +26,10 @@ import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
 /**
- * This class is a Singleton that provides access to one or many connection pools defined in a Property file. A client gets access to the single
- * instance and can then check-out and check-in connections from a pool. When the client shuts down it should call the release() method to close all
- * open connections and do other clean up.
+ * This class is a Singleton that provides access to one connection pool defined in a Property file. When the client shuts down it should call the
+ * release() method to close all open connections and do other clean up.
+ * <p>
+ * This class should not be directly accessed by client code.
  *
  * @author timmolter
  */
@@ -40,7 +37,7 @@ public final class YankPoolManager {
 
   private final Logger logger = LoggerFactory.getLogger(YankPoolManager.class);
 
-  private final Map<String, HikariDataSource> pools = new HashMap<String, HikariDataSource>();
+  private HikariDataSource connectionPool;
 
   private final Properties mergedSqlProperties = new Properties();
 
@@ -60,9 +57,9 @@ public final class YankPoolManager {
    *
    * @param connectionPoolProperties
    */
-  protected void addConnectionPool(String poolName, Properties connectionPoolProperties) {
+  protected void addConnectionPool(Properties connectionPoolProperties) {
 
-    createPool(poolName, connectionPoolProperties);
+    createPool(connectionPoolProperties);
   }
 
   protected void addSQLStatements(Properties sqlProperties) {
@@ -76,16 +73,15 @@ public final class YankPoolManager {
    * @param poolName
    * @param connectionPoolProperties
    */
-  private void createPool(String poolName, Properties connectionPoolProperties) {
+  private void createPool(Properties connectionPoolProperties) {
 
     // DBUtils execute methods require autoCommit to be true.
     connectionPoolProperties.put("autoCommit", true);
 
     HikariConfig config = new HikariConfig(connectionPoolProperties);
-    config.setPoolName(poolName);
     HikariDataSource ds = new HikariDataSource(config);
-    pools.put(poolName, ds);
-    logger.info("Initialized pool '{}'", poolName);
+    this.connectionPool = ds;
+    logger.info("Initialized pool '{}'", ds.getPoolName());
   }
 
   /**
@@ -93,28 +89,19 @@ public final class YankPoolManager {
    */
   protected synchronized void release() {
 
-    logger.info("Releasing Yank connection pools...");
+    logger.debug("Releasing pool: {}...", this.connectionPool.getPoolName());
 
-    Set<String> allPools = pools.keySet();
-
-    for (Iterator<String> iterator = allPools.iterator(); iterator.hasNext();) {
-
-      String poolName = iterator.next();
-      logger.debug("Releasing pool: {}...", poolName);
-
-      pools.get(poolName).shutdown();
-    }
+    this.connectionPool.shutdown();
   }
 
   /**
-   * Get the DataSource corresponding to the provided poolName
+   * Get the DataSource
    *
-   * @param poolName
    * @return
    */
-  protected DataSource getDataSource(String poolName) {
+  protected DataSource getDataSource() {
 
-    return pools.get(poolName);
+    return this.connectionPool;
   }
 
   /**
