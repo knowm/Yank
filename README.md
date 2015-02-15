@@ -79,7 +79,7 @@ Yank.addSQLStatements(sqlProps);
 String sqlKey = "BOOKS_CREATE_TABLE";
 Yank.executeSQLKey(sqlKey, null);
 ```
-Why? Sometimes it's nice to have all your SQL statements in one place. As an example see: [MYSQL_SQL.properties](https://github.com/timmolter/Yank/blob/develop/src/test/resources/MYSQL_SQL.properties). Also this allows you to swap databases easily without changing any code. Keep one for database type `X` and one for database type `Y`. BTW, to access the actual statements in the  properties file, you use the `Yank.*SQLKey(...)` methods in `Yank`. You can also add multiple properties files and they will be merged!
+Why? Sometimes it's nice to have all your SQL statements in one place. As an example see: [MYSQL_SQL.properties](https://github.com/timmolter/Yank/blob/develop/src/test/resources/MYSQL_SQL.properties). Also this allows you to swap databases easily without changing any code. Keep one for database type `X` and one for database type `Y`. BTW, to access the actual statements in the  properties file, you use the `Yank.*SQLKey(...)` methods in `Yank`. You can also add multiple properties files and they will be merged! If the SQL statement cannot be found, a `SQLStatementNotFoundException` runtime exception is thrown.
 
 ## Stay Organized! You Will Thank Yourself Later.
 ```java

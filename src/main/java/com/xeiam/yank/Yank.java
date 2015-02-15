@@ -61,7 +61,6 @@ public final class Yank {
    * Executes a given INSERT SQL prepared statement matching the sqlKey String in a properties file loaded via Yank.addSQLStatements(...). Returns the
    * auto-increment id of the inserted row.
    *
-   * @param poolName The connection pool name
    * @param sqlKey The SQL Key found in a properties file corresponding to the desired SQL statement value
    * @param params The replacement parameters
    * @return the auto-increment id of the inserted row, or null if no id is available
@@ -80,7 +79,6 @@ public final class Yank {
   /**
    * Executes a given INSERT SQL prepared statement. Returns the auto-increment id of the inserted row.
    *
-   * @param poolName The connection pool name
    * @param sql The query to execute
    * @param params The replacement parameters
    * @return the auto-increment id of the inserted row, or null if no id is available
@@ -105,7 +103,6 @@ public final class Yank {
    * Executes the given INSERT, UPDATE, DELETE, REPLACE or UPSERT SQL statement matching the sqlKey String in a properties file loaded via
    * Yank.addSQLStatements(...). Returns the number of rows affected.
    *
-   * @param poolName The connection pool name
    * @param sqlKey The SQL Key found in a properties file corresponding to the desired SQL statement value
    * @param params The replacement parameters
    * @return The number of rows affected
@@ -124,7 +121,6 @@ public final class Yank {
   /**
    * Executes the given INSERT, UPDATE, DELETE, REPLACE or UPSERT SQL prepared statement. Returns the number of rows affected.
    *
-   * @param poolName The connection pool name
    * @param sql The query to execute
    * @param params The replacement parameters
    * @return The number of rows affected
@@ -150,7 +146,6 @@ public final class Yank {
    * Return just one scalar given a SQL Key using an SQL statement matching the sqlKey String in a properties file loaded via
    * Yank.addSQLStatements(...). If more than one row match the query, only the first row is returned.
    *
-   * @param poolName The connection pool name
    * @param sqlKey The SQL Key found in a properties file corresponding to the desired SQL statement value
    * @param type The Class of the desired return scalar matching the table
    * @param params The replacement parameters
@@ -171,7 +166,6 @@ public final class Yank {
   /**
    * Return just one scalar given a an SQL statement
    *
-   * @param poolName The connection pool name
    * @param type The Class of the desired return scalar matching the table
    * @param params The replacement parameters
    * @return The scalar Object
@@ -200,7 +194,6 @@ public final class Yank {
    * Return just one Object given a SQL Key using an SQL statement matching the sqlKey String in a properties file loaded via
    * Yank.addSQLStatements(...). If more than one row match the query, only the first row is returned.
    *
-   * @param poolName The connection pool name
    * @param sqlKey The SQL Key found in a properties file corresponding to the desired SQL statement value
    * @param params The replacement parameters
    * @param type The Class of the desired return Object matching the table
@@ -221,7 +214,6 @@ public final class Yank {
   /**
    * Return just one Object given an SQL statement. If more than one row match the query, only the first row is returned.
    *
-   * @param poolName The connection pool name
    * @param sql The SQL statement
    * @param params The replacement parameters
    * @param type The Class of the desired return Object matching the table
@@ -250,7 +242,6 @@ public final class Yank {
    * Return a List of Objects given a SQL Key using an SQL statement matching the sqlKey String in a properties file loaded via
    * Yank.addSQLStatements(...).
    *
-   * @param poolName The connection pool name
    * @param sqlKey The SQL Key found in a properties file corresponding to the desired SQL statement value
    * @param params The replacement parameters
    * @param type The Class of the desired return Objects matching the table
@@ -271,7 +262,6 @@ public final class Yank {
    * Return a List of Objects given an SQL statement
    *
    * @param <T>
-   * @param poolName The connection pool name
    * @param sql The SQL statement
    * @param params The replacement parameters
    * @param type The Class of the desired return Objects matching the table
@@ -300,7 +290,6 @@ public final class Yank {
    * Return a List of Objects from a single table column given a SQL Key using an SQL statement matching the sqlKey String in a properties file loaded
    * via Yank.addSQLStatements(...).
    *
-   * @param poolName The connection pool name
    * @param sqlKey The SQL Key found in a properties file corresponding to the desired SQL statement value
    * @param params The replacement parameters
    * @param type The Class of the desired return Objects matching the table
@@ -321,7 +310,6 @@ public final class Yank {
    * Return a List of Objects from a single table column given an SQL statement
    *
    * @param <T>
-   * @param poolName The connection pool name
    * @param sql The SQL statement
    * @param params The replacement parameters
    * @param type The Class of the desired return Objects matching the table
@@ -350,7 +338,6 @@ public final class Yank {
    * Return a List of generic Object[]s given a SQL Key using an SQL statement matching the sqlKey String in a properties file loaded via
    * Yank.addSQLStatements(...).
    *
-   * @param poolName The connection pool name
    * @param sqlKey The SQL Key found in a properties file corresponding to the desired SQL statement value
    * @param params The replacement parameters
    * @return The List of generic Object[]s
@@ -369,7 +356,6 @@ public final class Yank {
   /**
    * Return a List of generic Object[]s given an SQL statement
    *
-   * @param poolName The connection pool name
    * @param sql The SQL statement
    * @param params The replacement parameters
    * @return The List of generic Object[]s
@@ -396,7 +382,6 @@ public final class Yank {
    * Batch executes the given INSERT, UPDATE, DELETE, REPLACE or UPSERT SQL statement matching the sqlKey String in a properties file loaded via
    * Yank.addSQLStatements(...).
    *
-   * @param poolName The connection pool name
    * @param sqlKey The SQL Key found in a properties file corresponding to the desired SQL statement value
    * @param params An array of query replacement parameters. Each row in this array is one set of batch replacement values
    * @return The number of rows affected or each individual execution
@@ -415,7 +400,6 @@ public final class Yank {
   /**
    * Batch executes the given INSERT, UPDATE, DELETE, REPLACE or UPSERT SQL statement
    *
-   * @param poolName The connection pool name
    * @param sql The SQL statement
    * @param params An array of query replacement parameters. Each row in this array is one set of batch replacement values
    * @return The number of rows affected or each individual execution
