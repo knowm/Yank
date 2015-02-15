@@ -50,7 +50,7 @@ public static void main(String[] args) {
   // query book
   String sql = "SELECT * FROM BOOKS WHERE TITLE = ?";
   Object[] params = new Object[] { "Cryptonomicon" };
-  Book book = Yank.querySingleObjectSQL(sql, Book.class, params);
+  Book book = Yank.querySingleObject(sql, Book.class, params);
   System.out.println(book.toString());
 
   // release connection pool
@@ -77,7 +77,7 @@ Properties sqlProps = PropertiesUtils.getPropertiesFromClasspath("MYSQL_SQL.prop
 Yank.addSQLStatements(sqlProps);
 // ...
 String sqlKey = "BOOKS_CREATE_TABLE";
-Yank.executeSQLKey("myconnectionpoolname", sqlKey, null);
+Yank.executeSQLKey(sqlKey, null);
 ```
 Why? Sometimes it's nice to have all your SQL statements in one place. As an example see: [MYSQL_SQL.properties](https://github.com/timmolter/Yank/blob/develop/src/test/resources/MYSQL_SQL.properties). Also this allows you to swap databases easily without changing any code. Keep one for database type `X` and one for database type `Y`. BTW, to access the actual statements in the  properties file, you use the `Yank.*SQLKey(...)` methods in `Yank`. You can also add multiple properties files and they will be merged!
 
@@ -100,7 +100,7 @@ public class BooksDAO {
 
     Object[] params = new Object[] { book.getTitle(), book.getAuthor(), book.getPrice() };
     String SQL = "INSERT INTO BOOKS  (TITLE, AUTHOR, PRICE) VALUES (?, ?, ?)";
-    return Yank.executeSQL(SQL, params);
+    return Yank.execute(SQL, params);
   }
 
   // ...
@@ -108,7 +108,7 @@ public class BooksDAO {
   public static List<Book> selectAllBooks() {
 
     String SQL = "SELECT * FROM BOOKS";
-    return Yank.queryObjectListSQL(SQL, Book.class, null);
+    return Yank.queryObjectList(SQL, Book.class, null);
   }
 }
 ```
@@ -135,24 +135,24 @@ The default automatic mapping from database row to Java objects happens when the
 ```java
 Object[] params = new Object[] { book.getTitle(), book.getAuthorName(), book.getPrice() };
 String SQL = "INSERT INTO BOOKS (TITLE, AUTHORNAME, PRICE) VALUES (?, ?, ?)";
-Long id = Yank.insertSQL(SQL, params);
+Long id = Yank.insert(SQL, params);
 ```
-With a special `Yank.insertSQL(...)` method, Yank will return the assigned auto-increment primary key ID. Note that you can alternatively use the `Yank.executeSQL(...)` method for inserts, which returns the number of affected rows.
+With a special `Yank.insert(...)` method, Yank will return the assigned auto-increment primary key ID. Note that you can alternatively use the `Yank.execute(...)` method for inserts, which returns the number of affected rows.
 
 ## Retrieve a Column as a List
 ```java
 String SQL = "SELECT TITLE FROM BOOKS";
 String columnName = "title";
-List<String> bookTitles = Yank.queryColumnListSQL(QL, columnName, String.class, null);
+List<String> bookTitles = Yank.queryColumnList(QL, columnName, String.class, null);
 ```
-With the `Yank.queryColumnListSQL(...)` method you can retrieve a List containing objects matching column data type.
+With the `Yank.queryColumnList(...)` method you can retrieve a List containing objects matching column data type.
 
 ## Query a Scalar Value
 ```java
 String SQL = "SELECT COUNT(*) FROM BOOKS";
-long numBooks = Yank.querySingleScalarSQL(SQL, Long.class, null);
+long numBooks = Yank.querySingleScalar(SQL, Long.class, null);
 ```
-With the `Yank.querySingleScalarSQL(...)` method you can retriev a single scalar value that matches the return type of the given SQL statement.
+With the `Yank.querySingleScalar(...)` method you can retrieve a single scalar value that matches the return type of the given SQL statement.
 ## Life's a Batch
 ```java
 List<Book> books = new ArrayList<Book>();
@@ -166,7 +166,7 @@ for (int i = 0; i < books.size(); i++) {
 }
 
 String SQL = "INSERT INTO BOOKS (TITLE, AUTHOR, PRICE) VALUES (?, ?, ?)";
-int numInsertedRows = Yank.executeBatchSQL(SQL, params);
+int numInsertedRows = Yank.executeBatch(SQL, params);
 ```
 
 ## Summary
@@ -174,7 +174,7 @@ int numInsertedRows = Yank.executeBatchSQL(SQL, params);
 Whether or not your app is a tiny scipt, a large webapp, or anything in between the main pattern to follow is the same:
 
 1. Configure a connection pool: `Yank.setupDataSource(dbProps);`
-1. Use Yank once or many times: `Yank.executeSQL("myconnectionpoolname", SQL, params);`
+1. Use Yank's methods: `Yank.execute(...) `,`Yank.executeBatch(...) `,`Yank.insert(...) `,`Yank.queryColumnList(...) `,`Yank.queryGenericObjectArrayList(...) `,`Yank.queryObjectList(...) `,`Yank.querySingleObject(...) `,,`Yank.querySingleScalar(...) `
 1. Release the connection pool: ` Yank.releaseDataSource();`
 
 For an example of Yank in action in a `DropWizard` web application see [XDropWizard](https://github.com/timmolter/XDropWizard).

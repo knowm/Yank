@@ -74,7 +74,7 @@ public final class Yank {
     if (sql == null || sql.equalsIgnoreCase("")) {
       throw new SQLStatementNotFoundException();
     } else {
-      return insertSQL(sql, params);
+      return insert(sql, params);
     }
   }
 
@@ -86,7 +86,7 @@ public final class Yank {
    * @param params The replacement parameters
    * @return the auto-increment id of the inserted row, or null if no id is available
    */
-  public static Long insertSQL(String sql, Object[] params) {
+  public static Long insert(String sql, Object[] params) {
 
     Long returnLong = null;
 
@@ -118,7 +118,7 @@ public final class Yank {
     if (sql == null || sql.equalsIgnoreCase("")) {
       throw new SQLStatementNotFoundException();
     } else {
-      return executeSQL(sql, params);
+      return execute(sql, params);
     }
   }
 
@@ -130,7 +130,7 @@ public final class Yank {
    * @param params The replacement parameters
    * @return The number of rows affected
    */
-  public static int executeSQL(String sql, Object[] params) {
+  public static int execute(String sql, Object[] params) {
 
     int returnInt = 0;
 
@@ -164,7 +164,7 @@ public final class Yank {
     if (sql == null || sql.equalsIgnoreCase("")) {
       throw new SQLStatementNotFoundException();
     } else {
-      return querySingleObjectSQL(sql, type, params);
+      return querySingleObject(sql, type, params);
     }
 
   }
@@ -178,7 +178,7 @@ public final class Yank {
    * @return The scalar Object
    * @throws SQLStatementNotFoundException if an SQL statement could not be found for the given sqlKey String
    */
-  public static <T> T querySingleScalarSQL(String sql, Class<T> type, Object[] params) {
+  public static <T> T querySingleScalar(String sql, Class<T> type, Object[] params) {
 
     T returnObject = null;
 
@@ -214,7 +214,7 @@ public final class Yank {
     if (sql == null || sql.equalsIgnoreCase("")) {
       throw new SQLStatementNotFoundException();
     } else {
-      return querySingleObjectSQL(sql, type, params);
+      return querySingleObject(sql, type, params);
     }
 
   }
@@ -228,7 +228,7 @@ public final class Yank {
    * @param type The Class of the desired return Object matching the table
    * @return The Object
    */
-  public static <T> T querySingleObjectSQL(String sql, Class<T> type, Object[] params) {
+  public static <T> T querySingleObject(String sql, Class<T> type, Object[] params) {
 
     T returnObject = null;
 
@@ -264,7 +264,7 @@ public final class Yank {
     if (sql == null || sql.equalsIgnoreCase("")) {
       throw new SQLStatementNotFoundException();
     } else {
-      return queryObjectListSQL(sql, type, params);
+      return queryObjectList(sql, type, params);
     }
   }
 
@@ -278,7 +278,7 @@ public final class Yank {
    * @param type The Class of the desired return Objects matching the table
    * @return The List of Objects
    */
-  public static <T> List<T> queryObjectListSQL(String sql, Class<T> type, Object[] params) {
+  public static <T> List<T> queryObjectList(String sql, Class<T> type, Object[] params) {
 
     List<T> returnList = null;
 
@@ -314,7 +314,7 @@ public final class Yank {
     if (sql == null || sql.equalsIgnoreCase("")) {
       throw new SQLStatementNotFoundException();
     } else {
-      return queryObjectListSQL(sql, type, params);
+      return queryObjectList(sql, type, params);
     }
   }
 
@@ -328,7 +328,7 @@ public final class Yank {
    * @param type The Class of the desired return Objects matching the table
    * @return The List of Objects
    */
-  public static <T> List<T> queryColumnListSQL(String sql, String columnName, Class<T> type, Object[] params) {
+  public static <T> List<T> queryColumnList(String sql, String columnName, Class<T> type, Object[] params) {
 
     List<T> returnList = null;
 
@@ -363,7 +363,7 @@ public final class Yank {
     if (sql == null || sql.equalsIgnoreCase("")) {
       throw new SQLStatementNotFoundException();
     } else {
-      return queryGenericObjectArrayListSQL(sql, params);
+      return queryGenericObjectArrayList(sql, params);
     }
   }
 
@@ -375,7 +375,7 @@ public final class Yank {
    * @param params The replacement parameters
    * @return The List of generic Object[]s
    */
-  public static List<Object[]> queryGenericObjectArrayListSQL(String sql, Object[] params) {
+  public static List<Object[]> queryGenericObjectArrayList(String sql, Object[] params) {
 
     List<Object[]> returnList = null;
 
@@ -410,7 +410,7 @@ public final class Yank {
     if (sql == null || sql.equalsIgnoreCase("")) {
       throw new SQLStatementNotFoundException();
     } else {
-      return executeBatchSQL(sql, params);
+      return executeBatch(sql, params);
     }
   }
 
@@ -422,7 +422,7 @@ public final class Yank {
    * @param params An array of query replacement parameters. Each row in this array is one set of batch replacement values
    * @return The number of rows affected or each individual execution
    */
-  public static int[] executeBatchSQL(String sql, Object[][] params) {
+  public static int[] executeBatch(String sql, Object[][] params) {
 
     int[] returnIntArray = null;
 

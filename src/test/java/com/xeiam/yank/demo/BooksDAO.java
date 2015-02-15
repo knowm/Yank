@@ -40,7 +40,7 @@ public class BooksDAO {
 
     Object[] params = new Object[] { book.getTitle(), book.getAuthor(), book.getPrice() };
     String SQL = "INSERT INTO BOOKS (TITLE, AUTHOR, PRICE) VALUES (?, ?, ?)";
-    return Yank.insertSQL(SQL, params);
+    return Yank.insert(SQL, params);
   }
 
   /**
@@ -53,7 +53,7 @@ public class BooksDAO {
   public static List<Book> selectAllBooks() {
 
     String SQL = "SELECT * FROM BOOKS";
-    return Yank.queryObjectListSQL(SQL, Book.class, null);
+    return Yank.queryObjectList(SQL, Book.class, null);
   }
 
   /**
@@ -67,7 +67,7 @@ public class BooksDAO {
 
     String SQL = "SELECT TITLE FROM BOOKS";
     String columnName = "title";
-    return Yank.queryColumnListSQL(SQL, columnName, String.class, null);
+    return Yank.queryColumnList(SQL, columnName, String.class, null);
   }
 
   /**
@@ -87,7 +87,7 @@ public class BooksDAO {
     }
 
     String SQL = "INSERT INTO BOOKS (TITLE, AUTHOR, PRICE) VALUES (?, ?, ?)";
-    return Yank.executeBatchSQL(SQL, params);
+    return Yank.executeBatch(SQL, params);
   }
 
   /**
@@ -144,7 +144,7 @@ public class BooksDAO {
   public static long getNumBooks() {
 
     String SQL = "SELECT COUNT(*) FROM BOOKS";
-    return Yank.querySingleScalarSQL(SQL, Long.class, null);
+    return Yank.querySingleScalar(SQL, Long.class, null);
   }
 
   /**

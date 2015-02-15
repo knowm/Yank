@@ -52,7 +52,7 @@ public class SnakeCaseTest {
   public void testBooksTable() {
 
     String sql = "CREATE TABLE Books (TITLE VARCHAR(42) NULL, AUT_HOR VARCHAR(42) NULL, PRICE DECIMAL(10,2) NOT NULL)";
-    Yank.executeSQL(sql, null);
+    Yank.execute(sql, null);
 
     Book book = new Book();
     book.setTitle("Cryptonomicon");
@@ -60,7 +60,7 @@ public class SnakeCaseTest {
     book.setPrice(23.99);
     Object[] params = new Object[] { book.getTitle(), book.getAuthor(), book.getPrice() };
     String SQL = "INSERT INTO BOOKS  (TITLE, AUT_HOR, PRICE) VALUES (?, ?, ?)";
-    Yank.executeSQL(SQL, params);
+    Yank.execute(SQL, params);
 
     book = BooksDAO.selectBook("Cryptonomicon");
     assertThat(book.getPrice(), equalTo(23.99));
