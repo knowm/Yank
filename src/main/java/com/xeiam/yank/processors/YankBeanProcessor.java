@@ -13,7 +13,7 @@ import org.apache.commons.dbutils.BeanProcessor;
 import com.xeiam.yank.annotations.Column;
 
 /**
- * Combines the orverride map of BeanProcessor with the snake case mapping of GenererousBeanProcessor.
+ * Combines the override map of BeanProcessor with the snake case mapping of GenererousBeanProcessor. Uses Column annotations to build map
  *
  * @author timmolter
  */
@@ -31,10 +31,10 @@ public class YankBeanProcessor<T> extends BeanProcessor {
    */
   public YankBeanProcessor(Class<T> type) {
     super();
-    this.columnToFieldOverrides = getMapping(type);
+    this.columnToFieldOverrides = getMappingFromAnnotations(type);
   }
 
-  private Map<String, String> getMapping(Class<T> type) {
+  private Map<String, String> getMappingFromAnnotations(Class<T> type) {
 
     final Map<String, String> columnToPropertyOverrides = new HashMap<String, String>();
 

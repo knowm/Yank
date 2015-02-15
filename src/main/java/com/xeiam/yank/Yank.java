@@ -19,7 +19,6 @@ import java.util.List;
 import java.util.Properties;
 
 import org.apache.commons.dbutils.BasicRowProcessor;
-import org.apache.commons.dbutils.GenerousBeanProcessor;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.ResultSetHandler;
 import org.apache.commons.dbutils.handlers.ArrayListHandler;
@@ -234,7 +233,7 @@ public final class Yank {
 
     try {
 
-      BeanHandler<T> resultSetHandler = new BeanHandler<T>(type, new BasicRowProcessor(new YankBeanProcessor(type)));
+      BeanHandler<T> resultSetHandler = new BeanHandler<T>(type, new BasicRowProcessor(new YankBeanProcessor<T>(type)));
 
       returnObject = new QueryRunner(YANK_POOL_MANAGER.getDataSource()).query(sql, resultSetHandler, params);
 
@@ -284,7 +283,7 @@ public final class Yank {
 
     try {
 
-      BeanListHandler<T> resultSetHandler = new BeanListHandler<T>(type, new BasicRowProcessor(new GenerousBeanProcessor()));
+      BeanListHandler<T> resultSetHandler = new BeanListHandler<T>(type, new BasicRowProcessor(new YankBeanProcessor<T>(type)));
 
       returnList = new QueryRunner(YANK_POOL_MANAGER.getDataSource()).query(sql, resultSetHandler, params);
 
@@ -381,8 +380,7 @@ public final class Yank {
 
     try {
 
-      ArrayListHandler resultSetHandler = new ArrayListHandler(new BasicRowProcessor(new GenerousBeanProcessor()));
-      // returnList = new QueryRunner().query(con, sql, resultSetHandler, params);
+      ArrayListHandler resultSetHandler = new ArrayListHandler();
       returnList = new QueryRunner(YANK_POOL_MANAGER.getDataSource()).query(sql, resultSetHandler, params);
 
     } catch (Exception e) {

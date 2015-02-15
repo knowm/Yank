@@ -41,9 +41,9 @@ public class ColumnMappingTest {
 
     Buch book = new Buch();
     book.setTitle("Cryptonomicon");
-    book.setAuthorName("Neal Stephenson");
+    book.setAuthor("Neal Stephenson");
     book.setPrice(23.99);
-    Object[] params = new Object[] { book.getTitle(), book.getAuthorName(), book.getPrice() };
+    Object[] params = new Object[] { book.getTitle(), book.getAuthor(), book.getPrice() };
     sql = "INSERT INTO Buecher  (TITEL, AUTOR, PREIS) VALUES (?, ?, ?)";
     Yank.execute(sql, params);
 
@@ -52,7 +52,7 @@ public class ColumnMappingTest {
     book = Yank.querySingleObject(sql, Buch.class, params);
 
     assertThat(book.getPrice(), equalTo(23.99));
-    assertThat(book.getAuthorName(), equalTo("Neal Stephenson"));
+    assertThat(book.getAuthor(), equalTo("Neal Stephenson"));
 
   }
 
@@ -62,7 +62,7 @@ public class ColumnMappingTest {
     @Column("TITEL")
     private String title;
     @Column("AUTOR")
-    private String authorName;
+    private String author;
     @Column("PREIS")
     private double price;
 
@@ -84,12 +84,12 @@ public class ColumnMappingTest {
       this.title = title;
     }
 
-    public String getAuthorName() {
-      return authorName;
+    public String getAuthor() {
+      return author;
     }
 
-    public void setAuthorName(String authorName) {
-      this.authorName = authorName;
+    public void setAuthor(String author) {
+      this.author = author;
     }
 
     public double getPrice() {
