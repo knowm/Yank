@@ -44,7 +44,7 @@ public static void main(String[] args) {
   dbProps.setProperty("username", "root");
   dbProps.setProperty("password", "");
 
-  // add connection pool
+  // setup data source
   Yank.setupDataSource(dbProps);
 
   // query book
@@ -53,7 +53,7 @@ public static void main(String[] args) {
   Book book = Yank.querySingleObject(sql, Book.class, params);
   System.out.println(book.toString());
 
-  // release connection pool
+  // release data source
   Yank.releaseDataSource();
 }
 ```
@@ -64,7 +64,7 @@ public static void main(String[] args) {
 // Connection Pool Properties
 Properties dbProps = PropertiesUtils.getPropertiesFromClasspath("MYSQL_DB.properties");
 
-// add connection pool
+// // setup data source
 Yank.setupDataSource(dbProps);
 ```
 Why? Hardcoding properties is fine for something quick and dirty, but loading them from a file is generally more convenient and flexible. For example, you may have separate properties for unit tests, development and production deployments. BTW, you can load them from a path too with: `PropertiesUtils.getPropertiesFromPath(String fileName)`. At the bare minimum, you need to provide `username`, `password`, and `jdbcUrl` configuration properties.
@@ -134,7 +134,7 @@ The default automatic mapping from database row to Java objects happens when the
 ## Insert and Receive the Assigned ID
 ```java
 Object[] params = new Object[] { book.getTitle(), book.getAuthorName(), book.getPrice() };
-String SQL = "INSERT INTO BOOKS (TITLE, AUTHORNAME, PRICE) VALUES (?, ?, ?)";
+String SQL = "INSERT INTO BOOKS (TITLE, AUTHOR, PRICE) VALUES (?, ?, ?)";
 Long id = Yank.insert(SQL, params);
 ```
 With a special `Yank.insert(...)` method, Yank will return the assigned auto-increment primary key ID. Note that you can alternatively use the `Yank.execute(...)` method for inserts, which returns the number of affected rows.
@@ -143,7 +143,7 @@ With a special `Yank.insert(...)` method, Yank will return the assigned auto-inc
 ```java
 String SQL = "SELECT TITLE FROM BOOKS";
 String columnName = "title";
-List<String> bookTitles = Yank.queryColumnList(QL, columnName, String.class, null);
+List<String> bookTitles = Yank.queryColumnList(SQL, columnName, String.class, null);
 ```
 With the `Yank.queryColumnList(...)` method you can retrieve a List containing objects matching column data type.
 
