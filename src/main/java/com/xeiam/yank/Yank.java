@@ -15,6 +15,7 @@
  */
 package com.xeiam.yank;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Properties;
 
@@ -46,6 +47,7 @@ public final class Yank {
   /** slf4J logger wrapper */
   private static Logger logger = LoggerFactory.getLogger(Yank.class);
 
+  private static final String BEAN_EXCEPTION_MESSAGE = "Error converting row to bean!! Make sure you have a default no-args constructor!";
   private static final String QUERY_EXCEPTION_MESSAGE = "Error in SQL query!!!";
 
   /**
@@ -90,8 +92,8 @@ public final class Yank {
     try {
       ResultSetHandler<Long> rsh = new InsertedIDResultSetHandler();
       returnLong = new QueryRunner(YANK_POOL_MANAGER.getDataSource()).insert(sql, rsh, params);
-    } catch (Exception e) {
-      logger.error(QUERY_EXCEPTION_MESSAGE, e);
+    } catch (SQLException e) {
+      handleSQLException(e);
     }
 
     return returnLong == null ? 0 : returnLong;
@@ -133,8 +135,8 @@ public final class Yank {
 
       returnInt = new QueryRunner(YANK_POOL_MANAGER.getDataSource()).update(sql, params);
 
-    } catch (Exception e) {
-      logger.error(QUERY_EXCEPTION_MESSAGE, e);
+    } catch (SQLException e) {
+      handleSQLException(e);
     }
 
     return returnInt;
@@ -181,8 +183,8 @@ public final class Yank {
 
       returnObject = new QueryRunner(YANK_POOL_MANAGER.getDataSource()).query(sql, resultSetHandler, params);
 
-    } catch (Exception e) {
-      logger.error(QUERY_EXCEPTION_MESSAGE, e);
+    } catch (SQLException e) {
+      handleSQLException(e);
     }
 
     return returnObject;
@@ -229,8 +231,8 @@ public final class Yank {
 
       returnObject = new QueryRunner(YANK_POOL_MANAGER.getDataSource()).query(sql, resultSetHandler, params);
 
-    } catch (Exception e) {
-      logger.error(QUERY_EXCEPTION_MESSAGE, e);
+    } catch (SQLException e) {
+      handleSQLException(e);
     }
 
     return returnObject;
@@ -276,10 +278,9 @@ public final class Yank {
 
       returnList = new QueryRunner(YANK_POOL_MANAGER.getDataSource()).query(sql, resultSetHandler, params);
 
-    } catch (Exception e) {
-      logger.error(QUERY_EXCEPTION_MESSAGE, e);
+    } catch (SQLException e) {
+      handleSQLException(e);
     }
-
     return returnList;
   }
 
@@ -324,8 +325,8 @@ public final class Yank {
 
       returnList = new QueryRunner(YANK_POOL_MANAGER.getDataSource()).query(sql, resultSetHandler, params);
 
-    } catch (Exception e) {
-      logger.error(QUERY_EXCEPTION_MESSAGE, e);
+    } catch (SQLException e) {
+      handleSQLException(e);
     }
 
     return returnList;
@@ -368,8 +369,8 @@ public final class Yank {
       ArrayListHandler resultSetHandler = new ArrayListHandler();
       returnList = new QueryRunner(YANK_POOL_MANAGER.getDataSource()).query(sql, resultSetHandler, params);
 
-    } catch (Exception e) {
-      logger.error(QUERY_EXCEPTION_MESSAGE, e);
+    } catch (SQLException e) {
+      handleSQLException(e);
     }
 
     return returnList;
@@ -411,11 +412,25 @@ public final class Yank {
 
       returnIntArray = new QueryRunner(YANK_POOL_MANAGER.getDataSource()).batch(sql, params);
 
-    } catch (Exception e) {
-      logger.error(QUERY_EXCEPTION_MESSAGE, e);
+    } catch (SQLException e) {
+      handleSQLException(e);
     }
 
     return returnIntArray;
+  }
+
+  /**
+   * Handles exceptions and logs them
+   *
+   * @param e the SQLException
+   */
+  private static void handleSQLException(SQLException e) {
+
+    if (e.getMessage().startsWith("Cannot create")) {
+      logger.error(BEAN_EXCEPTION_MESSAGE, e);
+    } else {
+      logger.error(QUERY_EXCEPTION_MESSAGE, e);
+    }
   }
 
   /**
