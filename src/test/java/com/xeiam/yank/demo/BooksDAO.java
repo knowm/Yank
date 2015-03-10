@@ -67,7 +67,7 @@ public class BooksDAO {
 
     String SQL = "SELECT TITLE FROM BOOKS";
     String columnName = "title";
-    return Yank.queryColumnList(SQL, columnName, String.class, null);
+    return Yank.queryColumn(SQL, columnName, String.class, null);
   }
 
   /**
@@ -131,7 +131,7 @@ public class BooksDAO {
   public static List<Object[]> getTableStatus() {
 
     String sqlKey = "BOOKS_SELECT_TABLE_STATUS";
-    return Yank.queryObjectArrayListSQLKey(sqlKey, null);
+    return Yank.queryObjectArraysSQLKey(sqlKey, null);
   }
 
   /**

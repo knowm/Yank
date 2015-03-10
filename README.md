@@ -50,7 +50,7 @@ public static void main(String[] args) {
   // query book
   String sql = "SELECT * FROM BOOKS WHERE TITLE = ?";
   Object[] params = new Object[] { "Cryptonomicon" };
-  Book book = Yank.querySingleObject(sql, Book.class, params);
+  Book book = Yank.queryBean(sql, Book.class, params);
   System.out.println(book.toString());
 
   // release data source
@@ -108,7 +108,7 @@ public class BooksDAO {
   public static List<Book> selectAllBooks() {
 
     String SQL = "SELECT * FROM BOOKS";
-    return Yank.queryObjectList(SQL, Book.class, null);
+    return Yank.queryBeanList(SQL, Book.class, null);
   }
 }
 ```
@@ -174,7 +174,7 @@ int numInsertedRows = Yank.executeBatch(SQL, params);
 Whether or not your app is a tiny scipt, a large webapp, or anything in between the main pattern to follow is the same:
 
 1. Configure a connection pool: `Yank.setupDataSource(dbProps);`
-1. Use Yank's methods: `Yank.execute(...) `,`Yank.executeBatch(...) `,`Yank.insert(...) `,`Yank.queryColumnList(...) `,`Yank.queryGenericObjectArrayList(...) `,`Yank.queryObjectList(...) `,`Yank.querySingleObject(...) `,,`Yank.querySingleScalar(...) `
+1. Use Yank's methods: `Yank.execute(...) `,`Yank.executeBatch(...) `, `Yank.insert(...) `, `Yank.queryColumnList(...) `, `Yank.queryObjectArrayList(...) `, `Yank.queryBeanList(...) `, `Yank.queryBean(...) `, `Yank.queryScalar(...) `
 1. Release the connection pool: ` Yank.releaseDataSource();`
 
 For an example of Yank in action in a `DropWizard` web application see [XDropWizard](https://github.com/timmolter/XDropWizard).

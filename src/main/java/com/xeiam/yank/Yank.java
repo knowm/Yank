@@ -295,7 +295,7 @@ public final class Yank {
    * @return The Column as a List
    * @throws SQLStatementNotFoundException if an SQL statement could not be found for the given sqlKey String
    */
-  public static <T> List<T> queryColumnListSQLKey(String sqlKey, String columnName, Class<T> columnType, Object[] params) {
+  public static <T> List<T> queryColumnSQLKey(String sqlKey, String columnName, Class<T> columnType, Object[] params) {
 
     String sql = YANK_POOL_MANAGER.getMergedSqlProperties().getProperty(sqlKey);
     if (sql == null || sql.equalsIgnoreCase("")) {
@@ -314,7 +314,7 @@ public final class Yank {
    * @param columnType The Class of the desired return Objects matching the table
    * @return The Column as a List
    */
-  public static <T> List<T> queryColumnList(String sql, String columnName, Class<T> columnType, Object[] params) {
+  public static <T> List<T> queryColumn(String sql, String columnName, Class<T> columnType, Object[] params) {
 
     List<T> returnList = null;
 
@@ -342,13 +342,13 @@ public final class Yank {
    * @return The List of generic Object[]s
    * @throws SQLStatementNotFoundException if an SQL statement could not be found for the given sqlKey String
    */
-  public static List<Object[]> queryObjectArrayListSQLKey(String sqlKey, Object[] params) {
+  public static List<Object[]> queryObjectArraysSQLKey(String sqlKey, Object[] params) {
 
     String sql = YANK_POOL_MANAGER.getMergedSqlProperties().getProperty(sqlKey);
     if (sql == null || sql.equalsIgnoreCase("")) {
       throw new SQLStatementNotFoundException();
     } else {
-      return queryObjectArrayList(sql, params);
+      return queryObjectArrays(sql, params);
     }
   }
 
@@ -359,7 +359,7 @@ public final class Yank {
    * @param params The replacement parameters
    * @return The List of generic Object[]s
    */
-  public static List<Object[]> queryObjectArrayList(String sql, Object[] params) {
+  public static List<Object[]> queryObjectArrays(String sql, Object[] params) {
 
     List<Object[]> returnList = null;
 
