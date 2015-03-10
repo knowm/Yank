@@ -147,18 +147,18 @@ public final class Yank {
    * Yank.addSQLStatements(...). If more than one row match the query, only the first row is returned.
    *
    * @param sqlKey The SQL Key found in a properties file corresponding to the desired SQL statement value
-   * @param type The Class of the desired return scalar matching the table
+   * @param scalarType The Class of the desired return scalar matching the table
    * @param params The replacement parameters
    * @return The Object
    * @throws SQLStatementNotFoundException if an SQL statement could not be found for the given sqlKey String
    */
-  public static <T> T querySingleScalarSQLKey(String sqlKey, Class<T> type, Object[] params) {
+  public static <T> T queryScalarSQLKey(String sqlKey, Class<T> scalarType, Object[] params) {
 
     String sql = YANK_POOL_MANAGER.getMergedSqlProperties().getProperty(sqlKey);
     if (sql == null || sql.equalsIgnoreCase("")) {
       throw new SQLStatementNotFoundException();
     } else {
-      return querySingleObject(sql, type, params);
+      return queryBean(sql, scalarType, params);
     }
 
   }
@@ -166,12 +166,12 @@ public final class Yank {
   /**
    * Return just one scalar given a an SQL statement
    *
-   * @param type The Class of the desired return scalar matching the table
+   * @param scalarType The Class of the desired return scalar matching the table
    * @param params The replacement parameters
    * @return The scalar Object
    * @throws SQLStatementNotFoundException if an SQL statement could not be found for the given sqlKey String
    */
-  public static <T> T querySingleScalar(String sql, Class<T> type, Object[] params) {
+  public static <T> T queryScalar(String sql, Class<T> scalarType, Object[] params) {
 
     T returnObject = null;
 
@@ -191,41 +191,41 @@ public final class Yank {
   // ////// Single Object QUERY //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   /**
-   * Return just one Object given a SQL Key using an SQL statement matching the sqlKey String in a properties file loaded via
+   * Return just one Bean given a SQL Key using an SQL statement matching the sqlKey String in a properties file loaded via
    * Yank.addSQLStatements(...). If more than one row match the query, only the first row is returned.
    *
    * @param sqlKey The SQL Key found in a properties file corresponding to the desired SQL statement value
    * @param params The replacement parameters
-   * @param type The Class of the desired return Object matching the table
+   * @param beanType The Class of the desired return Object matching the table
    * @return The Object
    * @throws SQLStatementNotFoundException if an SQL statement could not be found for the given sqlKey String
    */
-  public static <T> T querySingleObjectSQLKey(String sqlKey, Class<T> type, Object[] params) {
+  public static <T> T queryBeanSQLKey(String sqlKey, Class<T> beanType, Object[] params) {
 
     String sql = YANK_POOL_MANAGER.getMergedSqlProperties().getProperty(sqlKey);
     if (sql == null || sql.equalsIgnoreCase("")) {
       throw new SQLStatementNotFoundException();
     } else {
-      return querySingleObject(sql, type, params);
+      return queryBean(sql, beanType, params);
     }
 
   }
 
   /**
-   * Return just one Object given an SQL statement. If more than one row match the query, only the first row is returned.
+   * Return just one Bean given an SQL statement. If more than one row match the query, only the first row is returned.
    *
    * @param sql The SQL statement
    * @param params The replacement parameters
-   * @param type The Class of the desired return Object matching the table
+   * @param beanType The Class of the desired return Object matching the table
    * @return The Object
    */
-  public static <T> T querySingleObject(String sql, Class<T> type, Object[] params) {
+  public static <T> T queryBean(String sql, Class<T> beanType, Object[] params) {
 
     T returnObject = null;
 
     try {
 
-      BeanHandler<T> resultSetHandler = new BeanHandler<T>(type, new BasicRowProcessor(new YankBeanProcessor<T>(type)));
+      BeanHandler<T> resultSetHandler = new BeanHandler<T>(beanType, new BasicRowProcessor(new YankBeanProcessor<T>(beanType)));
 
       returnObject = new QueryRunner(YANK_POOL_MANAGER.getDataSource()).query(sql, resultSetHandler, params);
 
@@ -239,41 +239,40 @@ public final class Yank {
   // ////// Object List QUERY //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   /**
-   * Return a List of Objects given a SQL Key using an SQL statement matching the sqlKey String in a properties file loaded via
+   * Return a List of Beans given a SQL Key using an SQL statement matching the sqlKey String in a properties file loaded via
    * Yank.addSQLStatements(...).
    *
    * @param sqlKey The SQL Key found in a properties file corresponding to the desired SQL statement value
+   * @param beanType The Class of the desired return Objects matching the table
    * @param params The replacement parameters
-   * @param type The Class of the desired return Objects matching the table
    * @return The List of Objects
    * @throws SQLStatementNotFoundException if an SQL statement could not be found for the given sqlKey String
    */
-  public static <T> List<T> queryObjectListSQLKey(String sqlKey, Class<T> type, Object[] params) {
+  public static <T> List<T> queryBeanListSQLKey(String sqlKey, Class<T> beanType, Object[] params) {
 
     String sql = YANK_POOL_MANAGER.getMergedSqlProperties().getProperty(sqlKey);
     if (sql == null || sql.equalsIgnoreCase("")) {
       throw new SQLStatementNotFoundException();
     } else {
-      return queryObjectList(sql, type, params);
+      return queryBeanList(sql, beanType, params);
     }
   }
 
   /**
-   * Return a List of Objects given an SQL statement
+   * Return a List of Beans given an SQL statement
    *
-   * @param <T>
    * @param sql The SQL statement
+   * @param beanType The Class of the desired return Objects matching the table
    * @param params The replacement parameters
-   * @param type The Class of the desired return Objects matching the table
    * @return The List of Objects
    */
-  public static <T> List<T> queryObjectList(String sql, Class<T> type, Object[] params) {
+  public static <T> List<T> queryBeanList(String sql, Class<T> beanType, Object[] params) {
 
     List<T> returnList = null;
 
     try {
 
-      BeanListHandler<T> resultSetHandler = new BeanListHandler<T>(type, new BasicRowProcessor(new YankBeanProcessor<T>(type)));
+      BeanListHandler<T> resultSetHandler = new BeanListHandler<T>(beanType, new BasicRowProcessor(new YankBeanProcessor<T>(beanType)));
 
       returnList = new QueryRunner(YANK_POOL_MANAGER.getDataSource()).query(sql, resultSetHandler, params);
 
@@ -292,17 +291,17 @@ public final class Yank {
    *
    * @param sqlKey The SQL Key found in a properties file corresponding to the desired SQL statement value
    * @param params The replacement parameters
-   * @param type The Class of the desired return Objects matching the table
-   * @return The List of Objects
+   * @param columnType The Class of the desired return Objects matching the table
+   * @return The Column as a List
    * @throws SQLStatementNotFoundException if an SQL statement could not be found for the given sqlKey String
    */
-  public static <T> List<T> queryColumnListSQLKey(String sqlKey, String columnName, Class<T> type, Object[] params) {
+  public static <T> List<T> queryColumnListSQLKey(String sqlKey, String columnName, Class<T> columnType, Object[] params) {
 
     String sql = YANK_POOL_MANAGER.getMergedSqlProperties().getProperty(sqlKey);
     if (sql == null || sql.equalsIgnoreCase("")) {
       throw new SQLStatementNotFoundException();
     } else {
-      return queryObjectList(sql, type, params);
+      return queryBeanList(sql, columnType, params);
     }
   }
 
@@ -312,10 +311,10 @@ public final class Yank {
    * @param <T>
    * @param sql The SQL statement
    * @param params The replacement parameters
-   * @param type The Class of the desired return Objects matching the table
-   * @return The List of Objects
+   * @param columnType The Class of the desired return Objects matching the table
+   * @return The Column as a List
    */
-  public static <T> List<T> queryColumnList(String sql, String columnName, Class<T> type, Object[] params) {
+  public static <T> List<T> queryColumnList(String sql, String columnName, Class<T> columnType, Object[] params) {
 
     List<T> returnList = null;
 
@@ -343,13 +342,13 @@ public final class Yank {
    * @return The List of generic Object[]s
    * @throws SQLStatementNotFoundException if an SQL statement could not be found for the given sqlKey String
    */
-  public static List<Object[]> queryGenericObjectArrayListSQLKey(String sqlKey, Object[] params) {
+  public static List<Object[]> queryObjectArrayListSQLKey(String sqlKey, Object[] params) {
 
     String sql = YANK_POOL_MANAGER.getMergedSqlProperties().getProperty(sqlKey);
     if (sql == null || sql.equalsIgnoreCase("")) {
       throw new SQLStatementNotFoundException();
     } else {
-      return queryGenericObjectArrayList(sql, params);
+      return queryObjectArrayList(sql, params);
     }
   }
 
@@ -360,7 +359,7 @@ public final class Yank {
    * @param params The replacement parameters
    * @return The List of generic Object[]s
    */
-  public static List<Object[]> queryGenericObjectArrayList(String sql, Object[] params) {
+  public static List<Object[]> queryObjectArrayList(String sql, Object[] params) {
 
     List<Object[]> returnList = null;
 

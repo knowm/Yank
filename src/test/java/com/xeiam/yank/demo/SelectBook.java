@@ -40,7 +40,7 @@ public class SelectBook {
     // query book
     String sql = "SELECT * FROM BOOKS WHERE TITLE = ?";
     Object[] params = new Object[] { "Cryptonomicon" };
-    Book book = Yank.querySingleObject(sql, Book.class, params);
+    Book book = Yank.queryBean(sql, Book.class, params);
     System.out.println(book.toString());
 
     // release connection pool

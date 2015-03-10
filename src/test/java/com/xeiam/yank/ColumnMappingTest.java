@@ -49,7 +49,7 @@ public class ColumnMappingTest {
 
     sql = "SELECT * FROM Buecher WHERE TITEL = ?";
     params = new Object[] { "Cryptonomicon" };
-    book = Yank.querySingleObject(sql, Buch.class, params);
+    book = Yank.queryBean(sql, Buch.class, params);
 
     assertThat(book.getPrice(), equalTo(23.99));
     assertThat(book.getAuthor(), equalTo("Neal Stephenson"));

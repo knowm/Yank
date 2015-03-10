@@ -53,7 +53,7 @@ public class BooksDAO {
   public static List<Book> selectAllBooks() {
 
     String SQL = "SELECT * FROM BOOKS";
-    return Yank.queryObjectList(SQL, Book.class, null);
+    return Yank.queryBeanList(SQL, Book.class, null);
   }
 
   /**
@@ -116,7 +116,7 @@ public class BooksDAO {
     Object[] params = new Object[] { title };
 
     String sqlKey = "BOOKS_SELECT_BY_TITLE";
-    return Yank.querySingleObjectSQLKey(sqlKey, Book.class, params);
+    return Yank.queryBeanSQLKey(sqlKey, Book.class, params);
   }
 
   /**
@@ -131,7 +131,7 @@ public class BooksDAO {
   public static List<Object[]> getTableStatus() {
 
     String sqlKey = "BOOKS_SELECT_TABLE_STATUS";
-    return Yank.queryGenericObjectArrayListSQLKey(sqlKey, null);
+    return Yank.queryObjectArrayListSQLKey(sqlKey, null);
   }
 
   /**
@@ -144,7 +144,7 @@ public class BooksDAO {
   public static long getNumBooks() {
 
     String SQL = "SELECT COUNT(*) FROM BOOKS";
-    return Yank.querySingleScalar(SQL, Long.class, null);
+    return Yank.queryScalar(SQL, Long.class, null);
   }
 
   /**
@@ -157,7 +157,7 @@ public class BooksDAO {
   public static Book selectRandomBook() {
 
     String sqlKey = "BOOKS_SELECT_RANDOM_BOOK";
-    return Yank.querySingleObjectSQLKey(sqlKey, Book.class, null);
+    return Yank.queryBeanSQLKey(sqlKey, Book.class, null);
   }
 
 }

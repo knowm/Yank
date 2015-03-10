@@ -52,7 +52,7 @@ public class GenericObjectTest {
 
     sql = "SELECT * FROM BOOKS WHERE TITLE = ?";
     params = new Object[] { "Cryptonomicon" };
-    List<Object[]> rawRows = Yank.queryGenericObjectArrayList(sql, params);
+    List<Object[]> rawRows = Yank.queryObjectArrayList(sql, params);
 
     assertThat(rawRows.get(0), not(equalTo(null)));
     assertThat((String) rawRows.get(0)[0], equalTo("Cryptonomicon"));
