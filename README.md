@@ -88,6 +88,8 @@ public class Book {
   private String title;
   private String author;
   private double price;
+  
+    // default constructor
 
   // getters and setters
 }
@@ -112,7 +114,7 @@ public class BooksDAO {
   }
 }
 ```
-Why? By creating a DAO class and putting all methods related to a single database table in it, you have a single point of access to that table. In this example the **BooksDAO** corresponds to a table called **Books**, which contains rows of **Book** objects.
+Why? By creating a DAO class and putting all methods related to a single database table in it, you have a single point of access to that table. In this example the **BooksDAO** corresponds to a table called **Books**, which contains rows of **Book** objects (a.k.a beans). Note that your beans **must** have the default, no args constructor.
 
 ## Annotate Class Fields
 ```java
@@ -125,6 +127,8 @@ public static class Book {
   private String author;
   @Column("PREIS")
   private double price;
+  
+  // default constructor
 
   // getters and setters
 }
@@ -174,7 +178,7 @@ int numInsertedRows = Yank.executeBatch(SQL, params);
 Whether or not your app is a tiny scipt, a large webapp, or anything in between the main pattern to follow is the same:
 
 1. Configure a connection pool: `Yank.setupDataSource(dbProps);`
-1. Use Yank's methods: `Yank.execute(...) `,`Yank.executeBatch(...) `, `Yank.insert(...) `, `Yank.queryColumnList(...) `, `Yank.queryObjectArrayList(...) `, `Yank.queryBeanList(...) `, `Yank.queryBean(...) `, `Yank.queryScalar(...) `
+1. Use Yank's methods: `Yank.execute(...) `,`Yank.executeBatch(...) `, `Yank.insert(...) `, `Yank.queryColumn(...) `, `Yank.queryObjectArrays(...) `, `Yank.queryBeanList(...) `, `Yank.queryBean(...) `, `Yank.queryScalar(...) `
 1. Release the connection pool: ` Yank.releaseDataSource();`
 
 For an example of Yank in action in a `DropWizard` web application see [XDropWizard](https://github.com/timmolter/XDropWizard).
@@ -208,7 +212,7 @@ Add the Yank library as a dependency to your pom.xml file:
 <dependency>
     <groupId>com.xeiam</groupId>
     <artifactId>yank</artifactId>
-    <version>2.3.0</version>
+    <version>3.0.0</version>
 </dependency>
 ```
 For snapshots, add the following to your pom.xml file:
@@ -222,7 +226,7 @@ For snapshots, add the following to your pom.xml file:
 <dependency>
     <groupId>com.xeiam</groupId>
     <artifactId>yank</artifactId>
-    <version>3.0.0-SNAPSHOT</version>
+    <version>3.0.1-SNAPSHOT</version>
 </dependency>
 ```
 ## Building
