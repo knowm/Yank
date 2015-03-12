@@ -1,5 +1,5 @@
 /**
- * Copyright 2011 - 2014 Xeiam LLC.
+ * Copyright 2011 - 2015 Xeiam LLC.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,12 +17,12 @@ package com.xeiam.yank.demo;
 
 import java.util.Properties;
 
-import com.xeiam.yank.DBConnectionManager;
 import com.xeiam.yank.PropertiesUtils;
+import com.xeiam.yank.Yank;
 
 /**
  * Create a table called BOOKS. Demonstrates getting the connection pool properties from a *.properties file.
- * 
+ *
  * @author timmolter
  */
 public class CreateBooksTableWithPropsFile {
@@ -30,22 +30,21 @@ public class CreateBooksTableWithPropsFile {
   public static void main(String[] args) {
 
     // MYSQL_DB.properties file on classpath
-    Properties props = PropertiesUtils.getPropertiesFromClasspath("MYSQL_DB.properties");
+    Properties dbProps = PropertiesUtils.getPropertiesFromClasspath("MYSQL_DB.properties");
 
     // Alternative method: MYSQL_DB.properties file using path to file
-    // Properties props = PropertiesUtils.getPropertiesFromPath("/path/to/MYSQL_MYSQL_DB.properties");
+    // Properties props = PropertiesUtils.getPropertiesFromPath("/path/to/MYSQL_DB.properties");
 
     // SQL Statements in Properties file
     Properties sqlProps = PropertiesUtils.getPropertiesFromClasspath("MYSQL_SQL.properties");
 
-    // init DB Connection Manager
-    DBConnectionManager.INSTANCE.init(props, sqlProps);
+    Yank.setupDataSource(dbProps);
+    Yank.addSQLStatements(sqlProps);
 
     // query
     BooksDAO.createBooksTable();
 
-    // shutodwn DB Connection Manager
-    DBConnectionManager.INSTANCE.release();
+    Yank.releaseDataSource();
 
   }
 }

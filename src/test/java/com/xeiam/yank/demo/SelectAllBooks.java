@@ -1,5 +1,5 @@
 /**
- * Copyright 2011 - 2014 Xeiam LLC.
+ * Copyright 2011 - 2015 Xeiam LLC.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,12 +18,12 @@ package com.xeiam.yank.demo;
 import java.util.List;
 import java.util.Properties;
 
-import com.xeiam.yank.DBConnectionManager;
 import com.xeiam.yank.PropertiesUtils;
+import com.xeiam.yank.Yank;
 
 /**
  * Selects all Book Objects from the BOOKS table. Demonstrates fetching the connection pool properties from a file on the classpath
- * 
+ *
  * @author timmolter
  */
 public class SelectAllBooks {
@@ -31,10 +31,9 @@ public class SelectAllBooks {
   public static void main(String[] args) {
 
     // DB Properties
-    Properties props = PropertiesUtils.getPropertiesFromClasspath("MYSQL_DB.properties");
+    Properties dbProps = PropertiesUtils.getPropertiesFromClasspath("MYSQL_DB.properties");
 
-    // init DB Connection Manager
-    DBConnectionManager.INSTANCE.init(props);
+    Yank.setupDataSource(dbProps);
 
     // query
     List<Book> allBooks = BooksDAO.selectAllBooks();
@@ -42,8 +41,7 @@ public class SelectAllBooks {
       System.out.println(book.getTitle());
     }
 
-    // shutodwn DB Connection Manager
-    DBConnectionManager.INSTANCE.release();
+    Yank.releaseDataSource();
 
   }
 }

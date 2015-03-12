@@ -1,5 +1,5 @@
 /**
- * Copyright 2011 - 2014 Xeiam LLC.
+ * Copyright 2011 - 2015 Xeiam LLC.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,12 +18,12 @@ package com.xeiam.yank.demo;
 import java.util.List;
 import java.util.Properties;
 
-import com.xeiam.yank.DBConnectionManager;
 import com.xeiam.yank.PropertiesUtils;
+import com.xeiam.yank.Yank;
 
 /**
  * Gets table status from the YANK database. Demonstrates fetching a List of Object[]s from the DB. You need not return lists of Objects!
- * 
+ *
  * @author timmolter
  */
 public class ShowTableStatus {
@@ -31,12 +31,12 @@ public class ShowTableStatus {
   public static void main(String[] args) {
 
     // DB Properties
-    Properties dbprops = PropertiesUtils.getPropertiesFromClasspath("MYSQL_DB.properties");
+    Properties dbProps = PropertiesUtils.getPropertiesFromClasspath("MYSQL_DB.properties");
     // SQL Statements in Properties file
-    Properties sqlprops = PropertiesUtils.getPropertiesFromClasspath("MYSQL_SQL.properties");
+    Properties sqlProps = PropertiesUtils.getPropertiesFromClasspath("MYSQL_SQL.properties");
 
-    // init DB Connection Manager
-    DBConnectionManager.INSTANCE.init(dbprops, sqlprops);
+    Yank.setupDataSource(dbProps);
+    Yank.addSQLStatements(sqlProps);
 
     // query
     List<Object[]> matrix = BooksDAO.getTableStatus();
@@ -46,8 +46,7 @@ public class ShowTableStatus {
       }
     }
 
-    // shutodwn DB Connection Manager
-    DBConnectionManager.INSTANCE.release();
+    Yank.releaseDataSource();
 
   }
 }

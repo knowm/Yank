@@ -1,5 +1,5 @@
 /**
- * Copyright 2011 - 2014 Xeiam LLC.
+ * Copyright 2011 - 2015 Xeiam LLC.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,12 +19,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-import com.xeiam.yank.DBConnectionManager;
 import com.xeiam.yank.PropertiesUtils;
+import com.xeiam.yank.Yank;
 
 /**
  * Inserts a Batch of Book Objects into the BOOKS table.
- * 
+ *
  * @author timmolter
  */
 public class InsertBatch {
@@ -32,10 +32,9 @@ public class InsertBatch {
   public static void main(String[] args) {
 
     // DB Properties
-    Properties props = PropertiesUtils.getPropertiesFromClasspath("MYSQL_DB.properties");
+    Properties dbProps = PropertiesUtils.getPropertiesFromClasspath("MYSQL_DB.properties");
 
-    // init DB Connection Manager
-    DBConnectionManager.INSTANCE.init(props);
+    Yank.setupDataSource(dbProps);
 
     // query
     List<Book> books = new ArrayList<Book>();
@@ -60,8 +59,7 @@ public class InsertBatch {
 
     BooksDAO.insertBatch(books);
 
-    // shutodwn DB Connection Manager
-    DBConnectionManager.INSTANCE.release();
+    Yank.releaseDataSource();
 
   }
 }

@@ -1,5 +1,5 @@
 /**
- * Copyright 2011 - 2014 Xeiam LLC.
+ * Copyright 2011 - 2015 Xeiam LLC.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,18 +22,16 @@ import java.util.Properties;
 
 import org.junit.Test;
 
-import com.xeiam.yank.PropertiesUtils;
-
 /**
  * @author timmolter
  */
-public class TestPropertiesUtils {
+public class PropertiesUtilsTest {
 
   @Test
   public void testLoadProperties() {
 
     Properties dbProps = PropertiesUtils.getPropertiesFromClasspath("HSQL_DB.properties");
-    assertThat(dbProps.get("driverclassname").toString(), equalTo("org.hsqldb.jdbcDriver"));
+    assertThat(dbProps.get("jdbcUrl").toString(), equalTo("jdbc:hsqldb:mem:blah;shutdown=true"));
 
     Properties sqlProps = PropertiesUtils.getPropertiesFromPath("./src/test/resources/HSQL_SQL.properties");
     assertThat(sqlProps.get("BOOKS_SELECT_BY_TITLE").toString(), equalTo("SELECT * FROM BOOKS WHERE TITLE = ?"));

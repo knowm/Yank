@@ -1,5 +1,5 @@
 /**
- * Copyright 2011 - 2014 Xeiam LLC.
+ * Copyright 2011 - 2015 Xeiam LLC.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@ import com.xeiam.yank.exceptions.PropertiesFileNotFoundException;
 
 /**
  * A convenience class used to load Properties files
- * 
+ *
  * @author timmolter
  */
 public class PropertiesUtils extends Properties {
@@ -42,7 +42,7 @@ public class PropertiesUtils extends Properties {
 
   /**
    * Loads a Properties file from the classpath matching the given file name
-   * 
+   *
    * @param fileName
    * @return The Properties file
    * @throws PropertiesFileNotFoundException if the Properties file could not be loaded from the classpath
@@ -58,14 +58,14 @@ public class PropertiesUtils extends Properties {
       }
       props.load(is);
     } catch (Exception e) {
-      throw new PropertiesFileNotFoundException("ERROR LOADING PROPERTIES FROM CLASSPATH!!!", e);
+      throw new PropertiesFileNotFoundException("ERROR LOADING PROPERTIES FROM CLASSPATH >" + fileName + "< !!!", e);
     }
     return props;
   }
 
   /**
    * Loads a Properties file from the given file name
-   * 
+   *
    * @param fileName
    * @return The Properties file
    * @throws PropertiesFileNotFoundException if the Properties file could not be loaded from the given path and file name
@@ -79,7 +79,7 @@ public class PropertiesUtils extends Properties {
       props.load(fis);
       fis.close();
     } catch (Exception e) {
-      throw new PropertiesFileNotFoundException("ERROR LOADING PROPERTIES FROM PATH!!!", e);
+      throw new PropertiesFileNotFoundException("ERROR LOADING PROPERTIES FROM PATH >" + fileName + "< !!!", e);
     }
     return props;
   }

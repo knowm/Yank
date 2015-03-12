@@ -1,5 +1,5 @@
 /**
- * Copyright 2011 - 2014 Xeiam LLC.
+ * Copyright 2011 - 2015 Xeiam LLC.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,14 +17,14 @@ package com.xeiam.yank.demo;
 
 import java.util.Properties;
 
-import com.xeiam.yank.DBConnectionManager;
 import com.xeiam.yank.PropertiesUtils;
+import com.xeiam.yank.Yank;
 
 /**
  * Create a table called BOOKS. <br>
  * Demonstrates hardcoding the connection pool properties rather then getting them from a Properties file. <br>
  * Note: myconnectionpoolname can be anything but it needs to match the first String argument in DBProxy.* method calls. See BooksDAO.java. <br>
- * 
+ *
  * @author timmolter
  */
 public class CreateBooksTable {
@@ -33,23 +33,20 @@ public class CreateBooksTable {
 
     // DB Properties
     Properties dbProps = new Properties();
-    dbProps.setProperty("driverclassname", "com.mysql.jdbc.Driver");
-    dbProps.setProperty("myconnectionpoolname.url", "jdbc:mysql://localhost:3306/Yank");
-    dbProps.setProperty("myconnectionpoolname.user", "root");
-    dbProps.setProperty("myconnectionpoolname.password", "");
-    dbProps.setProperty("myconnectionpoolname.maxconn", "5");
+    dbProps.setProperty("jdbcUrl", "jdbc:mysql://localhost:3306/Yank");
+    dbProps.setProperty("username", "root");
+    dbProps.setProperty("password", "");
+    dbProps.setProperty("maximumPoolSize", "5");
 
     // SQL Statements in Properties file
     Properties sqlProps = PropertiesUtils.getPropertiesFromClasspath("MYSQL_SQL.properties");
 
-    // init DB Connection Manager
-    DBConnectionManager.INSTANCE.init(dbProps, sqlProps);
+    Yank.setupDataSource(dbProps);
+    Yank.addSQLStatements(sqlProps);
 
     // create table
     BooksDAO.createBooksTable();
 
-    // shutodwn DB Connection Manager
-    DBConnectionManager.INSTANCE.release();
-
+    Yank.releaseDataSource();
   }
 }

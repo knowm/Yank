@@ -1,5 +1,5 @@
 /**
- * Copyright 2011 - 2014 Xeiam LLC.
+ * Copyright 2011 - 2015 Xeiam LLC.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,12 +17,11 @@ package com.xeiam.yank.demo;
 
 import java.util.Properties;
 
-import com.xeiam.yank.DBConnectionManager;
-import com.xeiam.yank.PropertiesUtils;
+import com.xeiam.yank.Yank;
 
 /**
- * Selects a single Book from the BOOKS table. Demonstrates using a SQL Key in MYSQL_SQL.properties
- * 
+ * Selects a single Book from the BOOKS table. Demonstrates using the Yank API without DAOs or properties.
+ *
  * @author timmolter
  */
 public class SelectBook {
@@ -30,19 +29,22 @@ public class SelectBook {
   public static void main(String[] args) {
 
     // DB Properties
-    Properties dbprops = PropertiesUtils.getPropertiesFromClasspath("MYSQL_DB.properties");
-    // SQL Statements in Properties file
-    Properties sqlprops = PropertiesUtils.getPropertiesFromClasspath("MYSQL_SQL.properties");
+    Properties dbProps = new Properties();
+    dbProps.setProperty("jdbcUrl", "jdbc:mysql://localhost:3306/Yank");
+    dbProps.setProperty("username", "root");
+    dbProps.setProperty("password", "");
 
-    // init DB Connection Manager
-    DBConnectionManager.INSTANCE.init(dbprops, sqlprops);
+    // add connection pool
+    Yank.setupDataSource(dbProps);
 
-    // query
-    Book book = BooksDAO.selectBook("Cryptonomicon");
+    // query book
+    String sql = "SELECT * FROM BOOKS WHERE TITLE = ?";
+    Object[] params = new Object[] { "Cryptonomicon" };
+    Book book = Yank.queryBean(sql, Book.class, params);
     System.out.println(book.toString());
 
-    // shutodwn DB Connection Manager
-    DBConnectionManager.INSTANCE.release();
+    // release connection pool
+    Yank.releaseDataSource();
 
   }
 }
