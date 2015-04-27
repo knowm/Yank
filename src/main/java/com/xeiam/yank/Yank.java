@@ -302,7 +302,7 @@ public final class Yank {
     if (sql == null || sql.equalsIgnoreCase("")) {
       throw new SQLStatementNotFoundException();
     } else {
-      return queryBeanList(sql, columnType, params);
+      return queryColumn(sql, columnName, columnType, params);
     }
   }
 
