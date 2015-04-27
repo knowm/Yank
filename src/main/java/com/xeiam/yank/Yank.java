@@ -160,7 +160,7 @@ public final class Yank {
     if (sql == null || sql.equalsIgnoreCase("")) {
       throw new SQLStatementNotFoundException();
     } else {
-      return queryBean(sql, scalarType, params);
+      return queryScalar(sql, scalarType, params);
     }
 
   }
