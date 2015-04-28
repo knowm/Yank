@@ -212,7 +212,7 @@ Add the Yank library as a dependency to your pom.xml file:
 <dependency>
     <groupId>com.xeiam</groupId>
     <artifactId>yank</artifactId>
-    <version>3.0.0</version>
+    <version>3.0.1</version>
 </dependency>
 ```
 For snapshots, add the following to your pom.xml file:
@@ -226,7 +226,7 @@ For snapshots, add the following to your pom.xml file:
 <dependency>
     <groupId>com.xeiam</groupId>
     <artifactId>yank</artifactId>
-    <version>3.0.1-SNAPSHOT</version>
+    <version>3.0.2-SNAPSHOT</version>
 </dependency>
 ```
 ## Building
