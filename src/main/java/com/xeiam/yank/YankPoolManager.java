@@ -66,9 +66,8 @@ public final class YankPoolManager {
   }
 
   /**
-   * Creates a Hikari connection pool and puts it in the pools map.
+   * Creates a Hikari connection pool
    *
-   * @param poolName
    * @param connectionPoolProperties
    */
   private void createPool(Properties connectionPoolProperties) {
@@ -90,7 +89,7 @@ public final class YankPoolManager {
   protected synchronized void releaseDataSource() {
 
     if (this.hikariDataSource != null) {
-      logger.debug("Releasing pool: {}...", this.hikariDataSource.getPoolName());
+      logger.info("Releasing pool: {}...", this.hikariDataSource.getPoolName());
       this.hikariDataSource.shutdown();
     }
   }
