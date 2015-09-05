@@ -6,6 +6,7 @@ Ultra-Light JDBC Persistance Layer for Java Apps
 Never deal with the monotony and pitfalls of handling JDBC ResultSets and Connections again. Yank deals with connection pooling and table row to Java object mapping for you so you don't have to worry about it.
 
 ## Long Description
+
 Yank is a very easy-to-use yet flexible SQL-centric persistence layer for JDBC-compatible databases build on top of org.apache.DBUtils. Yank is a different approach to the over-ORMing of Java persistence.
 Rather than try to abstract away the SQL underneath, Yank assumes you want low level control over the SQL queries you execute. Yank wraps DBUtils,
 hiding the nitty-gritty Connection and ResultSet handling behind a straight-forward proxy class: `Yank`. "Query" methods execute SELECT statements and return POJOs or a List of POJOs. "Execute"
@@ -196,15 +197,20 @@ Yank was designed to be ultra-light and ultra-convenient and is philosophically 
 For many cases, the above features are not necessary, but that's for you to determine. If you are developing a critical banking application, you will probably need those features. For other applications where 100% data integrity isn't critical (such as [bitcoinium.com](https://bitcoinium.com/) for example), Yank's simplicity may be attractive. In return for the sacrifices, you write less code and your code will cleaner. Additionally, since `Yank`'s methods are `public static`, you can access it from anywhere in your application and not have to worry about passing around a reference to it. If you need those missing features, check out these projects similar to Yank: [sql2o](http://www.sql2o.org/) and [JDBI](http://jdbi.org/).
 
 ## Getting Started
+
 ### Non-Maven
+
 Download Jar: http://xeiam.com/yank-change-log
+
 #### Dependencies
+
 * commons-dbutils.dbutils-1.6.0
-* org.slf4j.slf4j-api-1.7.10
-* com.zaxxer.HikariCP-java6-2.3.2
+* org.slf4j.slf4j-api-1.7.12
+* com.zaxxer.HikariCP-java6-2.3.9
 * a JDBC-compliant Connector jar
 
 ### Maven
+
 The Yank release artifacts are hosted on Maven Central.
 
 Add the Yank library as a dependency to your pom.xml file:
@@ -212,7 +218,7 @@ Add the Yank library as a dependency to your pom.xml file:
 <dependency>
     <groupId>com.xeiam</groupId>
     <artifactId>yank</artifactId>
-    <version>3.0.1</version>
+    <version>3.0.2</version>
 </dependency>
 ```
 For snapshots, add the following to your pom.xml file:
@@ -226,7 +232,7 @@ For snapshots, add the following to your pom.xml file:
 <dependency>
     <groupId>com.xeiam</groupId>
     <artifactId>yank</artifactId>
-    <version>3.0.2-SNAPSHOT</version>
+    <version>3.0.3-SNAPSHOT</version>
 </dependency>
 ```
 ## Building
