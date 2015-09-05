@@ -4,7 +4,7 @@
 	<name>Yank</name>
 	<groupId>com.xeiam</groupId>
 	<artifactId>yank</artifactId>
-	<version>3.0.2</version>
+	<version>3.0.3-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<description>Ultra-Light JDBC Persistance Layer</description>
 	<url>http://xeiam.com/yank.jsp</url>
@@ -39,7 +39,7 @@
 		<connection>scm:git:git@github.com:timmolter/Yank.git</connection>
 		<developerConnection>scm:git:git@github.com:timmolter/Yank.git</developerConnection>
 		<url>git@github.com:timmolter/Yank.git</url>
-		<tag>yank-3.0.2</tag>
+		<tag>HEAD</tag>
 	</scm>
 
 	<ciManagement>
