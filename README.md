@@ -1,4 +1,4 @@
-## [![Yank](https://raw.githubusercontent.com/timmolter/Yank/develop/etc/Yank_64_64.png)](http://xeiam.com/yank) Yank
+## [![Yank](https://raw.githubusercontent.com/timmolter/Yank/develop/etc/Yank_64_64.png)](http://knowm.org/open-source/yank/) Yank
 Ultra-Light JDBC Persistance Layer for Java Apps
 
 ## In a Nutshell
@@ -184,7 +184,7 @@ Whether or not your app is a tiny scipt, a large webapp, or anything in between 
 
 For an example of Yank in action in a `DropWizard` web application see [XDropWizard](https://github.com/timmolter/XDropWizard).
 
-Now go ahead and [study some more examples](http://xeiam.com/yank-example-code), [download the thing](http://xeiam.com/yank-change-log) and [provide feedback](https://github.com/timmolter/Yank/issues).
+Now go ahead and [study some more examples](http://knowm.org/open-source/yank/yank-example-code), [download the thing](http://knowm.org/open-source/yank/yank-change-log/) and [provide feedback](https://github.com/timmolter/Yank/issues).
 
 ## Caveats
 
@@ -200,7 +200,7 @@ For many cases, the above features are not necessary, but that's for you to dete
 
 ### Non-Maven
 
-Download Jar: http://xeiam.com/yank-change-log
+Download Jar: <http://knowm.org/open-source/yank/yank-change-log/>
 
 #### Dependencies
 
@@ -260,4 +260,8 @@ Please report any bugs or submit feature requests to [Yank's Github issue tracke
 [Build History](https://travis-ci.org/timmolter/Yank/builds)
 
 ## Donations
-15MvtM8e3bzepmZ5vTe8cHvrEZg6eDzw2w  
+15MvtM8e3bzepmZ5vTe8cHvrEZg6eDzw2w
+
+## Release Information
+
+We will announce new releases on our [Twitter page](https://twitter.com/Knowmorg).
