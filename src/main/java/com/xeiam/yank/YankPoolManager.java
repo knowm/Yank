@@ -90,7 +90,7 @@ public final class YankPoolManager {
 
     if (this.hikariDataSource != null) {
       logger.info("Releasing pool: {}...", this.hikariDataSource.getPoolName());
-      this.hikariDataSource.shutdown();
+      this.hikariDataSource.close();
     }
   }
 
