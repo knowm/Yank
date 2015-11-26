@@ -194,7 +194,7 @@ Yank was designed to be ultra-light and ultra-convenient and is philosophically 
  * Checked SQLExceptions are logged (SQL Exceptions are internally caught and logged. This is a heavily debated topic and many differing opinions exist. Yank, being ultra-light, catches and logs SQLExceptions.)
  * A Hikari connection pool is used behind the scenes (Generic DataSource integration isn't supported. If you just want a connection pool that works and don't care about the specific implementation this point is irrelevant.)
 
-For many cases, the above features are not necessary, but that's for you to determine. If you are developing a critical banking application, you will probably need those features. For other applications where 100% data integrity isn't critical (such as [bitcoinium.com](https://bitcoinium.com/) for example), Yank's simplicity may be attractive. In return for the sacrifices, you write less code and your code will cleaner. Additionally, since `Yank`'s methods are `public static`, you can access it from anywhere in your application and not have to worry about passing around a reference to it. If you need those missing features, check out these projects similar to Yank: [sql2o](http://www.sql2o.org/) and [JDBI](http://jdbi.org/).
+For many cases, the above features are not necessary, but that's for you to determine. If you are developing a critical banking application, you will probably need those features. For other applications where 100% data integrity isn't critical (such as [bitcoinium.com](https://bitcoinium.com/) for example), Yank's simplicity may be attractive. In return for the sacrifices, you write less code and your code will be cleaner. Additionally, since `Yank`'s methods are `public static`, you can access it from anywhere in your application and not have to worry about passing around a reference to it. If you need those missing features, check out these projects similar to Yank: [sql2o](http://www.sql2o.org/) and [JDBI](http://jdbi.org/).
 
 ## Getting Started
 
@@ -205,8 +205,8 @@ Download Jar: <http://knowm.org/open-source/yank/yank-change-log/>
 #### Dependencies
 
 * commons-dbutils.dbutils-1.6.0
-* org.slf4j.slf4j-api-1.7.12
-* com.zaxxer.HikariCP-java6-2.3.9
+* org.slf4j.slf4j-api-1.7.13
+* com.zaxxer.HikariCP-java6-2.3.12
 * a JDBC-compliant Connector jar
 
 ### Maven
