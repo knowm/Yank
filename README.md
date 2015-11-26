@@ -32,7 +32,7 @@ methods execute INSERT, UPDATE, and DELETE (and other) statements. Recently, ann
  * [x] Write your own SQL statements
  * [x] Optionally store connection pool properties in a Properties file
  * [x] Optionally store SQL statements in a Properties file
- * [x] Java 5 and up
+ * [x] Java 7 and up
 
 ## Basic Example
 
@@ -206,7 +206,7 @@ Download Jar: <http://knowm.org/open-source/yank/yank-change-log/>
 
 * commons-dbutils.dbutils-1.6.0
 * org.slf4j.slf4j-api-1.7.13
-* com.zaxxer.HikariCP-java6-2.3.12
+* com.zaxxer.HikariCP-2.4.1
 * a JDBC-compliant Connector jar
 
 ### Maven
@@ -232,7 +232,7 @@ For snapshots, add the following to your pom.xml file:
 <dependency>
     <groupId>com.xeiam</groupId>
     <artifactId>yank</artifactId>
-    <version>3.0.3-SNAPSHOT</version>
+    <version>3.1.0-SNAPSHOT</version>
 </dependency>
 ```
 ## Building

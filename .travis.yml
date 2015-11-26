@@ -10,6 +10,9 @@ else
     mvn clean verify --settings target/travis/settings.xml;
 fi"
 
+jdk:
+  - openjdk7
+
 # whitelist
 branches:
   only:
