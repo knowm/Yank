@@ -216,9 +216,9 @@ The Yank release artifacts are hosted on Maven Central.
 Add the Yank library as a dependency to your pom.xml file:
 ```xml
 <dependency>
-    <groupId>com.xeiam</groupId>
+    <groupId>org.knowm</groupId>
     <artifactId>yank</artifactId>
-    <version>3.0.2</version>
+    <version>3.1.0</version>
 </dependency>
 ```
 For snapshots, add the following to your pom.xml file:
@@ -230,9 +230,9 @@ For snapshots, add the following to your pom.xml file:
 </repository>
 
 <dependency>
-    <groupId>com.xeiam</groupId>
+    <groupId>org.knowm</groupId>
     <artifactId>yank</artifactId>
-    <version>3.1.0-SNAPSHOT</version>
+    <version>3.1.1-SNAPSHOT</version>
 </dependency>
 ```
 ## Building
