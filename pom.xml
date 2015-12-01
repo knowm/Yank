@@ -102,7 +102,7 @@
 			<name>Nexus Release Repository</name>
 			<url>http://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
 		</repository>
-		<downloadUrl>https://oss.sonatype.org/content/groups/public/com/xeiam/yank</downloadUrl>
+		<downloadUrl>https://oss.sonatype.org/content/groups/public/org/knowm/yank</downloadUrl>
 	</distributionManagement>
 
 	<profiles>
@@ -206,19 +206,19 @@
 					<autoversionsubmodules>true</autoversionsubmodules>
 				</configuration>
 			</plugin>
-			<!-- for header in all .java files -->
-			<plugin>
-				<groupId>com.mycila.maven-license-plugin</groupId>
-				<artifactId>maven-license-plugin</artifactId>
-				<version>1.10.b1</version>
-				<configuration>
-					<header>etc/header.txt</header>
-					<aggregate>true</aggregate>
-					<includes>
-						<include>**/*.java</include>
-					</includes>
-				</configuration>
-			</plugin>
+            <!-- for header in all .java files -->
+            <plugin>
+                <groupId>com.mycila.maven-license-plugin</groupId>
+                <artifactId>maven-license-plugin</artifactId>
+                <version>1.10.b1</version>
+                <configuration>
+                    <header>NOTICE</header>
+                    <aggregate>true</aggregate>
+                    <includes>
+                        <include>**/*.java</include>
+                    </includes>
+                </configuration>
+            </plugin>
 		</plugins>
 	</build>
 
