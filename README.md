@@ -59,6 +59,10 @@ public static void main(String[] args) {
 }
 ```
 
+## Connection Pool Configuration
+
+Yank comes bundled with the Hikari Connection Pool. When you setup Yank using the `Yank.setupDataSource()` method and pass it a `Properties` object, that object must at the very least contain `jdbcUrl`, `username` and `password` properties. Another common property is `maximumPoolSize`.To see a full list of available configuration properties along with their defaults, see [Hikari's main README](https://github.com/brettwooldridge/HikariCP).
+
 ## Hide Those Properties Away!
 
 ```java
