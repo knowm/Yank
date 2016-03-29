@@ -32,6 +32,7 @@ methods execute INSERT, UPDATE, and DELETE (and other) statements. Recently, ann
  * [x] Write your own SQL statements
  * [x] Optionally store connection pool properties in a Properties file
  * [x] Optionally store SQL statements in a Properties file
+ * [x] Multiple connection pools allows for connecting to multiple databases in a single app
  * [x] Java 7 and up
 
 ## Basic Example
@@ -182,9 +183,9 @@ int numInsertedRows = Yank.executeBatch(SQL, params);
 
 Whether or not your app is a tiny scipt, a large webapp, or anything in between the main pattern to follow is the same:
 
-1. Configure a connection pool: `Yank.setupDataSource(dbProps);`
+1. Configure a connection pool: `Yank.setupDefaultConnectionPool(dbProps);`
 1. Use Yank's methods: `Yank.execute(...) `,`Yank.executeBatch(...) `, `Yank.insert(...) `, `Yank.queryColumn(...) `, `Yank.queryObjectArrays(...) `, `Yank.queryBeanList(...) `, `Yank.queryBean(...) `, `Yank.queryScalar(...) `
-1. Release the connection pool: ` Yank.releaseDataSource();`
+1. Release the connection pool: ` Yank.releaseDefaultConnectionPool();`
 
 For an example of Yank in action in a `DropWizard` web application see [XDropWizard](https://github.com/timmolter/XDropWizard).
 
@@ -209,8 +210,8 @@ Download Jar: <http://knowm.org/open-source/yank/yank-change-log/>
 #### Dependencies
 
 * commons-dbutils.dbutils-1.6.0
-* org.slf4j.slf4j-api-1.7.13
-* com.zaxxer.HikariCP-2.4.1
+* org.slf4j.slf4j-api-1.7.19
+* com.zaxxer.HikariCP-2.4.5
 * a JDBC-compliant Connector jar
 
 ### Maven
@@ -236,7 +237,7 @@ For snapshots, add the following to your pom.xml file:
 <dependency>
     <groupId>org.knowm</groupId>
     <artifactId>yank</artifactId>
-    <version>3.1.1-SNAPSHOT</version>
+    <version>3.2.0-SNAPSHOT</version>
 </dependency>
 ```
 ## Building

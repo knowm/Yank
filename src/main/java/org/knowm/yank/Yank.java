@@ -71,11 +71,26 @@ public final class Yank {
    */
   public static Long insertSQLKey(String sqlKey, Object[] params) {
 
+    return insertSQLKey(YankPoolManager.DEFAULT_POOL_NAME, sqlKey, params);
+  }
+
+  /**
+   * Executes a given INSERT SQL prepared statement matching the sqlKey String in a properties file loaded via Yank.addSQLStatements(...). Returns the
+   * auto-increment id of the inserted row.
+   *
+   * @param poolName The name of the connection pool to query against
+   * @param sqlKey The SQL Key found in a properties file corresponding to the desired SQL statement value
+   * @param params The replacement parameters
+   * @return the auto-increment id of the inserted row, or null if no id is available
+   * @throws SQLStatementNotFoundException if an SQL statement could not be found for the given sqlKey String
+   */
+  public static Long insertSQLKey(String poolName, String sqlKey, Object[] params) {
+
     String sql = YANK_POOL_MANAGER.getMergedSqlProperties().getProperty(sqlKey);
     if (sql == null || sql.equalsIgnoreCase("")) {
       throw new SQLStatementNotFoundException();
     } else {
-      return insert(sql, params);
+      return insert(poolName, sql, params);
     }
   }
 
@@ -88,11 +103,24 @@ public final class Yank {
    */
   public static Long insert(String sql, Object[] params) {
 
+    return insert(YankPoolManager.DEFAULT_POOL_NAME, sql, params);
+  }
+
+  /**
+   * Executes a given INSERT SQL prepared statement. Returns the auto-increment id of the inserted row.
+   *
+   * @param poolName The name of the connection pool to query against
+   * @param sql The query to execute
+   * @param params The replacement parameters
+   * @return the auto-increment id of the inserted row, or null if no id is available
+   */
+  public static Long insert(String poolName, String sql, Object[] params) {
+
     Long returnLong = null;
 
     try {
       ResultSetHandler<Long> rsh = new InsertedIDResultSetHandler();
-      returnLong = new QueryRunner(YANK_POOL_MANAGER.getDataSource()).insert(sql, rsh, params);
+      returnLong = new QueryRunner(YANK_POOL_MANAGER.getConnectionPool(poolName)).insert(sql, rsh, params);
     } catch (SQLException e) {
       handleSQLException(e);
     }
@@ -113,11 +141,26 @@ public final class Yank {
    */
   public static int executeSQLKey(String sqlKey, Object[] params) {
 
+    return executeSQLKey(YankPoolManager.DEFAULT_POOL_NAME, sqlKey, params);
+  }
+
+  /**
+   * Executes the given INSERT, UPDATE, DELETE, REPLACE or UPSERT SQL statement matching the sqlKey String in a properties file loaded via
+   * Yank.addSQLStatements(...). Returns the number of rows affected.
+   *
+   * @param poolName The name of the connection pool to query against
+   * @param sqlKey The SQL Key found in a properties file corresponding to the desired SQL statement value
+   * @param params The replacement parameters
+   * @return The number of rows affected
+   * @throws SQLStatementNotFoundException if an SQL statement could not be found for the given sqlKey String
+   */
+  public static int executeSQLKey(String poolName, String sqlKey, Object[] params) {
+
     String sql = YANK_POOL_MANAGER.getMergedSqlProperties().getProperty(sqlKey);
     if (sql == null || sql.equalsIgnoreCase("")) {
       throw new SQLStatementNotFoundException();
     } else {
-      return execute(sql, params);
+      return execute(poolName, sql, params);
     }
   }
 
@@ -130,11 +173,24 @@ public final class Yank {
    */
   public static int execute(String sql, Object[] params) {
 
+    return execute(YankPoolManager.DEFAULT_POOL_NAME, sql, params);
+  }
+
+  /**
+   * Executes the given INSERT, UPDATE, DELETE, REPLACE or UPSERT SQL prepared statement. Returns the number of rows affected.
+   *
+   * @param poolName The name of the connection pool to query against
+   * @param sql The query to execute
+   * @param params The replacement parameters
+   * @return The number of rows affected
+   */
+  public static int execute(String poolName, String sql, Object[] params) {
+
     int returnInt = 0;
 
     try {
 
-      returnInt = new QueryRunner(YANK_POOL_MANAGER.getDataSource()).update(sql, params);
+      returnInt = new QueryRunner(YANK_POOL_MANAGER.getConnectionPool(poolName)).update(sql, params);
 
     } catch (SQLException e) {
       handleSQLException(e);
@@ -157,11 +213,28 @@ public final class Yank {
    */
   public static <T> T queryScalarSQLKey(String sqlKey, Class<T> scalarType, Object[] params) {
 
+    return queryScalarSQLKey(YankPoolManager.DEFAULT_POOL_NAME, sqlKey, scalarType, params);
+
+  }
+
+  /**
+   * Return just one scalar given a SQL Key using an SQL statement matching the sqlKey String in a properties file loaded via
+   * Yank.addSQLStatements(...). If more than one row match the query, only the first row is returned.
+   *
+   * @param poolName The name of the connection pool to query against
+   * @param sqlKey The SQL Key found in a properties file corresponding to the desired SQL statement value
+   * @param scalarType The Class of the desired return scalar matching the table
+   * @param params The replacement parameters
+   * @return The Object
+   * @throws SQLStatementNotFoundException if an SQL statement could not be found for the given sqlKey String
+   */
+  public static <T> T queryScalarSQLKey(String poolName, String sqlKey, Class<T> scalarType, Object[] params) {
+
     String sql = YANK_POOL_MANAGER.getMergedSqlProperties().getProperty(sqlKey);
     if (sql == null || sql.equalsIgnoreCase("")) {
       throw new SQLStatementNotFoundException();
     } else {
-      return queryScalar(sql, scalarType, params);
+      return queryScalar(poolName, sql, scalarType, params);
     }
 
   }
@@ -176,13 +249,27 @@ public final class Yank {
    */
   public static <T> T queryScalar(String sql, Class<T> scalarType, Object[] params) {
 
+    return queryScalar(YankPoolManager.DEFAULT_POOL_NAME, sql, scalarType, params);
+  }
+
+  /**
+   * Return just one scalar given a an SQL statement
+   *
+   * @param poolName The name of the connection pool to query against
+   * @param scalarType The Class of the desired return scalar matching the table
+   * @param params The replacement parameters
+   * @return The scalar Object
+   * @throws SQLStatementNotFoundException if an SQL statement could not be found for the given sqlKey String
+   */
+  public static <T> T queryScalar(String poolName, String sql, Class<T> scalarType, Object[] params) {
+
     T returnObject = null;
 
     try {
 
       ScalarHandler<T> resultSetHandler = new ScalarHandler<T>();
 
-      returnObject = new QueryRunner(YANK_POOL_MANAGER.getDataSource()).query(sql, resultSetHandler, params);
+      returnObject = new QueryRunner(YANK_POOL_MANAGER.getConnectionPool(poolName)).query(sql, resultSetHandler, params);
 
     } catch (SQLException e) {
       handleSQLException(e);
@@ -205,11 +292,27 @@ public final class Yank {
    */
   public static <T> T queryBeanSQLKey(String sqlKey, Class<T> beanType, Object[] params) {
 
+    return queryBeanSQLKey(YankPoolManager.DEFAULT_POOL_NAME, sqlKey, beanType, params);
+  }
+
+  /**
+   * Return just one Bean given a SQL Key using an SQL statement matching the sqlKey String in a properties file loaded via
+   * Yank.addSQLStatements(...). If more than one row match the query, only the first row is returned.
+   *
+   * @param poolName The name of the connection pool to query against
+   * @param sqlKey The SQL Key found in a properties file corresponding to the desired SQL statement value
+   * @param params The replacement parameters
+   * @param beanType The Class of the desired return Object matching the table
+   * @return The Object
+   * @throws SQLStatementNotFoundException if an SQL statement could not be found for the given sqlKey String
+   */
+  public static <T> T queryBeanSQLKey(String poolName, String sqlKey, Class<T> beanType, Object[] params) {
+
     String sql = YANK_POOL_MANAGER.getMergedSqlProperties().getProperty(sqlKey);
     if (sql == null || sql.equalsIgnoreCase("")) {
       throw new SQLStatementNotFoundException();
     } else {
-      return queryBean(sql, beanType, params);
+      return queryBean(poolName, sql, beanType, params);
     }
 
   }
@@ -224,13 +327,27 @@ public final class Yank {
    */
   public static <T> T queryBean(String sql, Class<T> beanType, Object[] params) {
 
+    return queryBean(YankPoolManager.DEFAULT_POOL_NAME, sql, beanType, params);
+  }
+
+  /**
+   * Return just one Bean given an SQL statement. If more than one row match the query, only the first row is returned.
+   *
+   * @param poolName The name of the connection pool to query against
+   * @param sql The SQL statement
+   * @param params The replacement parameters
+   * @param beanType The Class of the desired return Object matching the table
+   * @return The Object
+   */
+  public static <T> T queryBean(String poolName, String sql, Class<T> beanType, Object[] params) {
+
     T returnObject = null;
 
     try {
 
       BeanHandler<T> resultSetHandler = new BeanHandler<T>(beanType, new BasicRowProcessor(new YankBeanProcessor<T>(beanType)));
 
-      returnObject = new QueryRunner(YANK_POOL_MANAGER.getDataSource()).query(sql, resultSetHandler, params);
+      returnObject = new QueryRunner(YANK_POOL_MANAGER.getConnectionPool(poolName)).query(sql, resultSetHandler, params);
 
     } catch (SQLException e) {
       handleSQLException(e);
@@ -253,11 +370,27 @@ public final class Yank {
    */
   public static <T> List<T> queryBeanListSQLKey(String sqlKey, Class<T> beanType, Object[] params) {
 
+    return queryBeanListSQLKey(YankPoolManager.DEFAULT_POOL_NAME, sqlKey, beanType, params);
+  }
+
+  /**
+   * Return a List of Beans given a SQL Key using an SQL statement matching the sqlKey String in a properties file loaded via
+   * Yank.addSQLStatements(...).
+   *
+   * @param poolName The name of the connection pool to query against
+   * @param sqlKey The SQL Key found in a properties file corresponding to the desired SQL statement value
+   * @param beanType The Class of the desired return Objects matching the table
+   * @param params The replacement parameters
+   * @return The List of Objects
+   * @throws SQLStatementNotFoundException if an SQL statement could not be found for the given sqlKey String
+   */
+  public static <T> List<T> queryBeanListSQLKey(String poolName, String sqlKey, Class<T> beanType, Object[] params) {
+
     String sql = YANK_POOL_MANAGER.getMergedSqlProperties().getProperty(sqlKey);
     if (sql == null || sql.equalsIgnoreCase("")) {
       throw new SQLStatementNotFoundException();
     } else {
-      return queryBeanList(sql, beanType, params);
+      return queryBeanList(poolName, sql, beanType, params);
     }
   }
 
@@ -271,13 +404,27 @@ public final class Yank {
    */
   public static <T> List<T> queryBeanList(String sql, Class<T> beanType, Object[] params) {
 
+    return queryBeanList(YankPoolManager.DEFAULT_POOL_NAME, sql, beanType, params);
+  }
+
+  /**
+   * Return a List of Beans given an SQL statement
+   *
+   * @param poolName The name of the connection pool to query against
+   * @param sql The SQL statement
+   * @param beanType The Class of the desired return Objects matching the table
+   * @param params The replacement parameters
+   * @return The List of Objects
+   */
+  public static <T> List<T> queryBeanList(String poolName, String sql, Class<T> beanType, Object[] params) {
+
     List<T> returnList = null;
 
     try {
 
       BeanListHandler<T> resultSetHandler = new BeanListHandler<T>(beanType, new BasicRowProcessor(new YankBeanProcessor<T>(beanType)));
 
-      returnList = new QueryRunner(YANK_POOL_MANAGER.getDataSource()).query(sql, resultSetHandler, params);
+      returnList = new QueryRunner(YANK_POOL_MANAGER.getConnectionPool(poolName)).query(sql, resultSetHandler, params);
 
     } catch (SQLException e) {
       handleSQLException(e);
@@ -299,11 +446,27 @@ public final class Yank {
    */
   public static <T> List<T> queryColumnSQLKey(String sqlKey, String columnName, Class<T> columnType, Object[] params) {
 
+    return queryColumnSQLKey(YankPoolManager.DEFAULT_POOL_NAME, sqlKey, columnName, columnType, params);
+  }
+
+  /**
+   * Return a List of Objects from a single table column given a SQL Key using an SQL statement matching the sqlKey String in a properties file loaded
+   * via Yank.addSQLStatements(...).
+   *
+   * @param poolName The name of the connection pool to query against
+   * @param sqlKey The SQL Key found in a properties file corresponding to the desired SQL statement value
+   * @param params The replacement parameters
+   * @param columnType The Class of the desired return Objects matching the table
+   * @return The Column as a List
+   * @throws SQLStatementNotFoundException if an SQL statement could not be found for the given sqlKey String
+   */
+  public static <T> List<T> queryColumnSQLKey(String poolName, String sqlKey, String columnName, Class<T> columnType, Object[] params) {
+
     String sql = YANK_POOL_MANAGER.getMergedSqlProperties().getProperty(sqlKey);
     if (sql == null || sql.equalsIgnoreCase("")) {
       throw new SQLStatementNotFoundException();
     } else {
-      return queryColumn(sql, columnName, columnType, params);
+      return queryColumn(poolName, sql, columnName, columnType, params);
     }
   }
 
@@ -318,13 +481,27 @@ public final class Yank {
    */
   public static <T> List<T> queryColumn(String sql, String columnName, Class<T> columnType, Object[] params) {
 
+    return queryColumn(YankPoolManager.DEFAULT_POOL_NAME, sql, columnName, columnType, params);
+  }
+
+  /**
+   * Return a List of Objects from a single table column given an SQL statement
+   *
+   * @param poolName The name of the connection pool to query against
+   * @param sql The SQL statement
+   * @param params The replacement parameters
+   * @param columnType The Class of the desired return Objects matching the table
+   * @return The Column as a List
+   */
+  public static <T> List<T> queryColumn(String poolName, String sql, String columnName, Class<T> columnType, Object[] params) {
+
     List<T> returnList = null;
 
     try {
 
       ColumnListHandler<T> resultSetHandler = new ColumnListHandler<T>(columnName);
 
-      returnList = new QueryRunner(YANK_POOL_MANAGER.getDataSource()).query(sql, resultSetHandler, params);
+      returnList = new QueryRunner(YANK_POOL_MANAGER.getConnectionPool(poolName)).query(sql, resultSetHandler, params);
 
     } catch (SQLException e) {
       handleSQLException(e);
@@ -346,11 +523,26 @@ public final class Yank {
    */
   public static List<Object[]> queryObjectArraysSQLKey(String sqlKey, Object[] params) {
 
+    return queryObjectArraysSQLKey(YankPoolManager.DEFAULT_POOL_NAME, sqlKey, params);
+  }
+
+  /**
+   * Return a List of generic Object[]s given a SQL Key using an SQL statement matching the sqlKey String in a properties file loaded via
+   * Yank.addSQLStatements(...).
+   *
+   * @param poolName The name of the connection pool to query against
+   * @param sqlKey The SQL Key found in a properties file corresponding to the desired SQL statement value
+   * @param params The replacement parameters
+   * @return The List of generic Object[]s
+   * @throws SQLStatementNotFoundException if an SQL statement could not be found for the given sqlKey String
+   */
+  public static List<Object[]> queryObjectArraysSQLKey(String poolName, String sqlKey, Object[] params) {
+
     String sql = YANK_POOL_MANAGER.getMergedSqlProperties().getProperty(sqlKey);
     if (sql == null || sql.equalsIgnoreCase("")) {
       throw new SQLStatementNotFoundException();
     } else {
-      return queryObjectArrays(sql, params);
+      return queryObjectArrays(poolName, sql, params);
     }
   }
 
@@ -363,12 +555,25 @@ public final class Yank {
    */
   public static List<Object[]> queryObjectArrays(String sql, Object[] params) {
 
+    return queryObjectArrays(YankPoolManager.DEFAULT_POOL_NAME, sql, params);
+  }
+
+  /**
+   * Return a List of generic Object[]s given an SQL statement
+   *
+   * @param poolName The name of the connection pool to query against
+   * @param sql The SQL statement
+   * @param params The replacement parameters
+   * @return The List of generic Object[]s
+   */
+  public static List<Object[]> queryObjectArrays(String poolName, String sql, Object[] params) {
+
     List<Object[]> returnList = null;
 
     try {
 
       ArrayListHandler resultSetHandler = new ArrayListHandler();
-      returnList = new QueryRunner(YANK_POOL_MANAGER.getDataSource()).query(sql, resultSetHandler, params);
+      returnList = new QueryRunner(YANK_POOL_MANAGER.getConnectionPool(poolName)).query(sql, resultSetHandler, params);
 
     } catch (SQLException e) {
       handleSQLException(e);
@@ -390,11 +595,26 @@ public final class Yank {
    */
   public static int[] executeBatchSQLKey(String sqlKey, Object[][] params) {
 
+    return executeBatchSQLKey(YankPoolManager.DEFAULT_POOL_NAME, sqlKey, params);
+  }
+
+  /**
+   * Batch executes the given INSERT, UPDATE, DELETE, REPLACE or UPSERT SQL statement matching the sqlKey String in a properties file loaded via
+   * Yank.addSQLStatements(...).
+   *
+   * @param poolName The name of the connection pool to query against
+   * @param sqlKey The SQL Key found in a properties file corresponding to the desired SQL statement value
+   * @param params An array of query replacement parameters. Each row in this array is one set of batch replacement values
+   * @return The number of rows affected or each individual execution
+   * @throws SQLStatementNotFoundException if an SQL statement could not be found for the given sqlKey String
+   */
+  public static int[] executeBatchSQLKey(String poolName, String sqlKey, Object[][] params) {
+
     String sql = YANK_POOL_MANAGER.getMergedSqlProperties().getProperty(sqlKey);
     if (sql == null || sql.equalsIgnoreCase("")) {
       throw new SQLStatementNotFoundException();
     } else {
-      return executeBatch(sql, params);
+      return executeBatch(poolName, sql, params);
     }
   }
 
@@ -407,11 +627,24 @@ public final class Yank {
    */
   public static int[] executeBatch(String sql, Object[][] params) {
 
+    return executeBatch(YankPoolManager.DEFAULT_POOL_NAME, sql, params);
+  }
+
+  /**
+   * Batch executes the given INSERT, UPDATE, DELETE, REPLACE or UPSERT SQL statement
+   *
+   * @param poolName The name of the connection pool to query against
+   * @param sql The SQL statement
+   * @param params An array of query replacement parameters. Each row in this array is one set of batch replacement values
+   * @return The number of rows affected or each individual execution
+   */
+  public static int[] executeBatch(String poolName, String sql, Object[][] params) {
+
     int[] returnIntArray = null;
 
     try {
 
-      returnIntArray = new QueryRunner(YANK_POOL_MANAGER.getDataSource()).batch(sql, params);
+      returnIntArray = new QueryRunner(YANK_POOL_MANAGER.getConnectionPool(poolName)).batch(sql, params);
 
     } catch (SQLException e) {
       handleSQLException(e);
@@ -440,9 +673,33 @@ public final class Yank {
    *
    * @param dataSourceProperties
    */
+  @Deprecated
   public static void setupDataSource(Properties dataSourceProperties) {
 
-    YANK_POOL_MANAGER.setupDataSource(dataSourceProperties);
+    setupDefaultConnectionPool(dataSourceProperties);
+  }
+
+  /**
+   * Add properties for a DataSource (connection pool). Yank uses a Hikari DataSource (connection pool) under the hood, so you have to provide the
+   * minimal essential properties and the optional properties as defined here: https://github.com/brettwooldridge/HikariCP
+   *
+   * @param poolName
+   * @param dataSourceProperties
+   */
+  public static void setupConnectionPool(String poolName, Properties dataSourceProperties) {
+
+    YANK_POOL_MANAGER.addConnectionPool(poolName, dataSourceProperties);
+  }
+
+  /**
+   * Add properties for a DataSource (connection pool). Yank uses a Hikari DataSource (connection pool) under the hood, so you have to provide the
+   * minimal essential properties and the optional properties as defined here: https://github.com/brettwooldridge/HikariCP
+   *
+   * @param dataSourceProperties
+   */
+  public static void setupDefaultConnectionPool(Properties dataSourceProperties) {
+
+    YANK_POOL_MANAGER.addDefaultConnectionPool(dataSourceProperties);
   }
 
   /**
@@ -456,11 +713,48 @@ public final class Yank {
   }
 
   /**
-   * Closes all open connection pools
+   * Closes the default connection pool
    */
+  @Deprecated
   public static synchronized void releaseDataSource() {
 
-    YANK_POOL_MANAGER.releaseDataSource();
+    YANK_POOL_MANAGER.releaseDefaultConnectionPool();
+  }
+
+  /**
+   * Closes the given connection pool
+   */
+  public static synchronized void releaseConnectionPool(String poolName) {
+
+    YANK_POOL_MANAGER.releaseConnectionPool(poolName);
+  }
+
+  /**
+   * Closes the default connection pool
+   */
+  public static synchronized void releaseDefaultConnectionPool() {
+
+    YANK_POOL_MANAGER.releaseDefaultConnectionPool();
+  }
+
+  /**
+   * Exposes access to the default connection pool.
+   *
+   * @return a configured (pooled) HikariDataSource.
+   */
+  public static HikariDataSource getDefaultConnectionPool() {
+
+    return YANK_POOL_MANAGER.getDefaultConnectionPool();
+  }
+
+  /**
+   * Exposes access to the configured connection pool
+   *
+   * @return a configured (pooled) HikariDataSource.
+   */
+  public static HikariDataSource getConnectionPool(String poolName) {
+
+    return YANK_POOL_MANAGER.getConnectionPool(poolName);
   }
 
   /**
@@ -468,8 +762,9 @@ public final class Yank {
    *
    * @return a configured (pooled) HikariDataSource.
    */
+  @Deprecated
   public static HikariDataSource getDataSource() {
 
-    return YANK_POOL_MANAGER.getDataSource();
+    return getDefaultConnectionPool();
   }
 }

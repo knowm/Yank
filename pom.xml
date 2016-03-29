@@ -5,7 +5,7 @@
 	<name>Yank</name>
 	<groupId>org.knowm</groupId>
 	<artifactId>yank</artifactId>
-	<version>3.1.1-SNAPSHOT</version>
+	<version>3.2.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<description>Ultra-Light JDBC Persistance Layer for Java Apps</description>
 	<url>http://knowm.org/open-source/yank</url>
@@ -56,19 +56,19 @@
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
-			<version>1.7.16</version>
+			<version>1.7.19</version>
 		</dependency>
 		<dependency>
 			<groupId>com.zaxxer</groupId>
 			<artifactId>HikariCP</artifactId>
-			<version>2.4.3</version>
+			<version>2.4.5</version>
 		</dependency>
 
 		<!-- test -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-simple</artifactId>
-			<version>1.7.16</version>
+			<version>1.7.19</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -169,17 +169,9 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
 				<version>2.10.3</version>
-				<executions>
-					<execution>
-						<id>attach-javadocs</id>
-						<goals>
-							<goal>jar</goal>
-						</goals>
-						<configuration>
-							<additionalparam>-Xdoclint:none</additionalparam>
-						</configuration>
-					</execution>
-				</executions>
+				<configuration>
+					<additionalparam>-Xdoclint:none</additionalparam>
+				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
