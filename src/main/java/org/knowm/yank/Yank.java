@@ -740,6 +740,13 @@ public final class Yank {
   }
 
   /**
+   * Closes all connection pools
+   */
+  public static synchronized void releaseAllConnectionPools() {
+    YANK_POOL_MANAGER.releaseAllConnectionPools();
+  }
+
+  /**
    * Exposes access to the default connection pool.
    *
    * @return a configured (pooled) HikariDataSource.

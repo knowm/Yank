@@ -150,7 +150,7 @@ public final class YankPoolManager {
    *
    * @param poolName
    */
-  protected synchronized void releaseAllConnectionPools(String poolName) {
+  protected synchronized void releaseAllConnectionPools() {
 
     for (HikariDataSource pool : pools.values()) {
 
@@ -159,7 +159,6 @@ public final class YankPoolManager {
         pool.close();
       }
     }
-
   }
 
   /**
