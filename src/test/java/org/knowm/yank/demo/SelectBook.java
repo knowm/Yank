@@ -36,7 +36,7 @@ public class SelectBook {
     dbProps.setProperty("password", "");
 
     // add connection pool
-    Yank.setupDataSource(dbProps);
+    Yank.setupDefaultConnectionPool(dbProps);
 
     // query book
     String sql = "SELECT * FROM BOOKS WHERE TITLE = ?";
@@ -45,7 +45,7 @@ public class SelectBook {
     System.out.println(book.toString());
 
     // release connection pool
-    Yank.releaseDataSource();
+    Yank.releaseDefaultConnectionPool();
 
   }
 }

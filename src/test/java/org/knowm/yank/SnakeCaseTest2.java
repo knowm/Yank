@@ -22,8 +22,6 @@ import java.util.Properties;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.knowm.yank.PropertiesUtils;
-import org.knowm.yank.Yank;
 
 /**
  * @author timmolter
@@ -34,13 +32,13 @@ public class SnakeCaseTest2 {
 
     Properties dbProps = PropertiesUtils.getPropertiesFromClasspath("HSQL_DB.properties");
 
-    Yank.setupDataSource(dbProps);
+    Yank.setupDefaultConnectionPool(dbProps);
   }
 
   @AfterClass
   public static void tearDownDB() {
 
-    Yank.releaseDataSource();
+    Yank.releaseDefaultConnectionPool();
   }
 
   @Test

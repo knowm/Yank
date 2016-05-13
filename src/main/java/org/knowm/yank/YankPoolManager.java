@@ -83,16 +83,6 @@ public final class YankPoolManager {
     createPool(poolName, connectionPoolProperties);
   }
 
-  //  /**
-  //   * Creates a Hikari connection pool
-  //   *
-  //   * @param connectionPoolProperties
-  //   */
-  //  private void createPool(Properties connectionPoolProperties) {
-  //
-  //    createPool(DEFAULT_POOL_NAME, connectionPoolProperties);
-  //  }
-
   /**
    * Creates a Hikari connection pool and puts it in the pools map.
    *

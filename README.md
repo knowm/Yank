@@ -46,8 +46,8 @@ public static void main(String[] args) {
   dbProps.setProperty("username", "root");
   dbProps.setProperty("password", "");
 
-  // setup data source
-  Yank.setupDataSource(dbProps);
+  // setup connection pool
+  Yank.setupDefaultConnectionPool(dbProps);
 
   // query book
   String sql = "SELECT * FROM BOOKS WHERE TITLE = ?";
@@ -55,14 +55,14 @@ public static void main(String[] args) {
   Book book = Yank.queryBean(sql, Book.class, params);
   System.out.println(book.toString());
 
-  // release data source
-  Yank.releaseDataSource();
+  // release connection pool
+  Yank.releaseDefaultConnectionPool();
 }
 ```
 
 ## Connection Pool Configuration
 
-Yank comes bundled with the Hikari Connection Pool. When you setup Yank using the `Yank.setupDataSource()` method and pass it a `Properties` object, that object must at the very least contain `jdbcUrl`, `username` and `password` properties. Another common property is `maximumPoolSize`.To see a full list of available configuration properties along with their defaults, see [Hikari's main README](https://github.com/brettwooldridge/HikariCP).
+Yank comes bundled with the Hikari Connection Pool. When you setup Yank using the `Yank.setupDefaultConnectionPool` method and pass it a `Properties` object, that object must at the very least contain `jdbcUrl`, `username` and `password` properties. Another common property is `maximumPoolSize`.To see a full list of available configuration properties along with their defaults, see [Hikari's main README](https://github.com/brettwooldridge/HikariCP).
 
 ## Hide Those Properties Away!
 
@@ -71,7 +71,7 @@ Yank comes bundled with the Hikari Connection Pool. When you setup Yank using th
 Properties dbProps = PropertiesUtils.getPropertiesFromClasspath("MYSQL_DB.properties");
 
 // // setup data source
-Yank.setupDataSource(dbProps);
+Yank.setupDefaultConnectionPool(dbProps);
 ```
 Why? Hardcoding properties is fine for something quick and dirty, but loading them from a file is generally more convenient and flexible. For example, you may have separate properties for unit tests, development and production deployments. BTW, you can load them from a path too with: `PropertiesUtils.getPropertiesFromPath(String fileName)`. At the bare minimum, you need to provide `username`, `password`, and `jdbcUrl` configuration properties.
 
@@ -210,8 +210,8 @@ Download Jar: <http://knowm.org/open-source/yank/yank-change-log/>
 #### Dependencies
 
 * commons-dbutils.dbutils-1.6.0
-* org.slf4j.slf4j-api-1.7.19
-* com.zaxxer.HikariCP-2.4.5
+* org.slf4j.slf4j-api-1.7.21
+* com.zaxxer.HikariCP-2.4.6
 * a JDBC-compliant Connector jar
 
 ### Maven
@@ -223,7 +223,7 @@ Add the Yank library as a dependency to your pom.xml file:
 <dependency>
     <groupId>org.knowm</groupId>
     <artifactId>yank</artifactId>
-    <version>3.1.0</version>
+    <version>3.2.0</version>
 </dependency>
 ```
 For snapshots, add the following to your pom.xml file:
@@ -237,7 +237,7 @@ For snapshots, add the following to your pom.xml file:
 <dependency>
     <groupId>org.knowm</groupId>
     <artifactId>yank</artifactId>
-    <version>3.2.0-SNAPSHOT</version>
+    <version>3.2.1-SNAPSHOT</version>
 </dependency>
 ```
 ## Building

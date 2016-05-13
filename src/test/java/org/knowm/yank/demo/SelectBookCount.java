@@ -31,13 +31,13 @@ public class SelectBookCount {
     // DB Properties
     Properties dbProps = PropertiesUtils.getPropertiesFromClasspath("MYSQL_DB.properties");
 
-    Yank.setupDataSource(dbProps);
+    Yank.setupDefaultConnectionPool(dbProps);
 
     // query
     long numBooks = BooksDAO.getNumBooks();
     System.out.println("The number of books in the table are: " + numBooks);
 
-    Yank.releaseDataSource();
+    Yank.releaseDefaultConnectionPool();
 
   }
 }

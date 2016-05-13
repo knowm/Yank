@@ -39,13 +39,13 @@ public class CreateBooksTableWithPropsFile {
     // SQL Statements in Properties file
     Properties sqlProps = PropertiesUtils.getPropertiesFromClasspath("MYSQL_SQL.properties");
 
-    Yank.setupDataSource(dbProps);
+    Yank.setupDefaultConnectionPool(dbProps);
     Yank.addSQLStatements(sqlProps);
 
     // query
     BooksDAO.createBooksTable();
 
-    Yank.releaseDataSource();
+    Yank.releaseDefaultConnectionPool();
 
   }
 }

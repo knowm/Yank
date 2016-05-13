@@ -670,9 +670,10 @@ public final class Yank {
   }
 
   /**
-   * Add properties for a DataSource (connection pool). Yank uses a Hikari DataSource (connection pool) under the hood, so you have to provide the
-   * minimal essential properties and the optional properties as defined here: https://github.com/brettwooldridge/HikariCP
-   *
+   * @deprecated use {@link #setupDefaultConnectionPool()} instead.
+   *             <p>
+   *             Add properties for a DataSource (connection pool). Yank uses a Hikari DataSource (connection pool) under the hood, so you have to
+   *             provide the minimal essential properties and the optional properties as defined here: https://github.com/brettwooldridge/HikariCP
    * @param dataSourceProperties
    */
   @Deprecated
@@ -715,7 +716,9 @@ public final class Yank {
   }
 
   /**
-   * Closes the default connection pool
+   * @deprecated use {@link #releaseDefaultConnectionPool()} instead.
+   *             <p>
+   *             Closes the default connection pool
    */
   @Deprecated
   public static synchronized void releaseDataSource() {
