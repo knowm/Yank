@@ -41,7 +41,7 @@ import com.zaxxer.hikari.HikariDataSource;
  *
  * @author timmolter
  */
-public final class Yank {
+public class Yank {
 
   private static final YankPoolManager YANK_POOL_MANAGER = YankPoolManager.INSTANCE;
 
