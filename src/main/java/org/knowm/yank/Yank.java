@@ -95,7 +95,8 @@ public class Yank {
   }
 
   /**
-   * Executes a given INSERT SQL prepared statement. Returns the auto-increment id of the inserted row using the default connection pool.
+   * Executes a given INSERT SQL prepared statement. Returns the auto-increment id of the inserted row using the default connection pool. Note: This
+   * only works when the auto-increment table column is in the first column in the table!
    *
    * @param sql The query to execute
    * @param params The replacement parameters
@@ -107,7 +108,8 @@ public class Yank {
   }
 
   /**
-   * Executes a given INSERT SQL prepared statement. Returns the auto-increment id of the inserted row.
+   * Executes a given INSERT SQL prepared statement. Returns the auto-increment id of the inserted row. Note: This only works when the auto-increment
+   * table column is in the first column in the table!
    *
    * @param poolName The name of the connection pool to query against
    * @param sql The query to execute
@@ -127,6 +129,16 @@ public class Yank {
 
     return returnLong == null ? 0 : returnLong;
   }
+
+  //  public static Long insert(String poolName, String sql, Object[] params) {
+  //    Long returnLong = null;
+  //    try {
+  //      returnLong = new QueryRunner(YANK_POOL_MANAGER.getConnectionPool(poolName)).insert(sql, new ScalarHandler<Long>(), params);
+  //    } catch (SQLException e) {
+  //      handleSQLException(e);
+  //    }
+  //    return returnLong == null ? 0 : returnLong;
+  //  }
 
   // ////// INSERT, UPDATE, DELETE, or UPSERT //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
