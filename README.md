@@ -8,7 +8,7 @@ Never deal with the monotony and pitfalls of handling JDBC ResultSets and Connec
 ## Long Description
 
 Yank is a very easy-to-use yet flexible SQL-centric persistence layer for JDBC-compatible databases build on top of org.apache.DBUtils. Yank is a different approach to the over-ORMing of Java persistence.
-Rather than try to abstract away the SQL underneath, Yank assumes you want low level control over the SQL queries you execute. Yank wraps DBUtils,
+Rather than try to abstract away the SQL underneath, Yank assumes you want low level control over the SQL queries you execute. Yank is one level higher than raw JDBC code with minimal frills. Yank wraps DBUtils,
 hiding the nitty-gritty Connection and ResultSet handling behind a straight-forward proxy class: `Yank`. "Query" methods execute SELECT statements and return POJOs or a List of POJOs. "Execute"
 methods execute INSERT, UPDATE, and DELETE (and other) statements. Recently, annotation-based column-field mapping, batch executing, column list querying and scalar querying has been added. Since version 3.0.0, Yank uses the
 [Hikari connection pool](https://github.com/brettwooldridge/HikariCP) as its integrated connection pool.
@@ -70,7 +70,7 @@ Yank comes bundled with the Hikari Connection Pool. When you setup Yank using th
 // Connection Pool Properties
 Properties dbProps = PropertiesUtils.getPropertiesFromClasspath("MYSQL_DB.properties");
 
-// // setup data source
+// setup data source
 Yank.setupDefaultConnectionPool(dbProps);
 ```
 Why? Hardcoding properties is fine for something quick and dirty, but loading them from a file is generally more convenient and flexible. For example, you may have separate properties for unit tests, development and production deployments. BTW, you can load them from a path too with: `PropertiesUtils.getPropertiesFromPath(String fileName)`. At the bare minimum, you need to provide `username`, `password`, and `jdbcUrl` configuration properties.
@@ -179,9 +179,32 @@ String SQL = "INSERT INTO BOOKS (TITLE, AUTHOR, PRICE) VALUES (?, ?, ?)";
 int numInsertedRows = Yank.executeBatch(SQL, params);
 ```
 
+## Handle Exceptions
+
+By default Yank catches each `SQLException`, wraps them in a `YankSQLException` and logs them as error logs using the `slf4J` logging framework. If you want to change the behavior so that the `YankSQLException`s are instead rethrown, just call `Yank.setThrowWrappedExceptions(true);`. If you want direct access to the `SQLException`, simply call the `getSqlException()` method. Here's an example:
+
+```java
+Yank.setThrowWrappedExceptions(true);
+
+Object[] params = new Object[] { book.getTitle(), book.getAuthor(), book.getPrice() };
+String SQL = "INSERT INTO BOOKS (TITLE, AUT_HOR, PRICE) VALUES (?, ?, ?, ?)";
+try {
+  Yank.execute(SQL, params);
+} catch (YankSQLException e) {
+  e.printStackTrace();
+SQLException sqlException = e.getSqlException();
+}
+```
+
+```java
+org.knowm.yank.exceptions.YankSQLException: Error in SQL query!!!; row column count mismatch Query: INSERT INTO BOOKS (TITLE, AUT_HOR, PRICE) VALUES (?, ?, ?, ?) Parameters: [Cryptonomicon, Neal Stephenson, 23.99]; Pool Name= yank-default; SQL= INSERT INTO BOOKS (TITLE, AUT_HOR, PRICE) VALUES (?, ?, ?, ?)
+...
+```
+
+
 ## Summary
 
-Whether or not your app is a tiny scipt, a large webapp, or anything in between the main pattern to follow is the same:
+Whether or not your app is a tiny script, a large webapp, or anything in between the main pattern to follow is the same:
 
 1. Configure a connection pool: `Yank.setupDefaultConnectionPool(dbProps);`
 1. Use Yank's methods: `Yank.execute(...) `,`Yank.executeBatch(...) `, `Yank.insert(...) `, `Yank.queryColumn(...) `, `Yank.queryObjectArrays(...) `, `Yank.queryBeanList(...) `, `Yank.queryBean(...) `, `Yank.queryScalar(...) `
@@ -196,7 +219,7 @@ Now go ahead and [study some more examples](http://knowm.org/open-source/yank/ya
 Yank was designed to be ultra-light and ultra-convenient and is philosophically different than most other competing libraries. Some "sacrifices" were made to stick to this design.
 
  * No multi-statement transaction service (This may be just fine for small to medium projects or to back a REST web application's API: POST, GET, PUT, and DELETE. These correspond to create, read, update, and delete (or CRUD) operations, respectively.)
- * Checked SQLExceptions are logged (SQL Exceptions are internally caught and logged. This is a heavily debated topic and many differing opinions exist. Yank, being ultra-light, catches and logs SQLExceptions.)
+ * Checked SQLExceptions are wrapped into unchecked `YankSQLException`s (SQL Exceptions are internally caught and wrapped. This is a heavily debated topic and many differing opinions exist. Yank, being ultra-light, catches and logs or rethrows YankSQLExceptions.)
  * A Hikari connection pool is used behind the scenes (Generic DataSource integration isn't supported. If you just want a connection pool that works and don't care about the specific implementation this point is irrelevant.)
 
 For many cases, the above features are not necessary, but that's for you to determine. If you are developing a critical banking application, you will probably need those features. For other applications where 100% data integrity isn't critical (such as [bitcoinium.com](https://bitcoinium.com/) for example), Yank's simplicity may be attractive. In return for the sacrifices, you write less code and your code will be cleaner. Additionally, since `Yank`'s methods are `public static`, you can access it from anywhere in your application and not have to worry about passing around a reference to it. If you need those missing features, check out these projects similar to Yank: [sql2o](http://www.sql2o.org/) and [JDBI](http://jdbi.org/).
@@ -211,7 +234,7 @@ Download Jar: <http://knowm.org/open-source/yank/yank-change-log/>
 
 * commons-dbutils.dbutils-1.6.0
 * org.slf4j.slf4j-api-1.7.21
-* com.zaxxer.HikariCP-2.4.6
+* com.zaxxer.HikariCP-2.4.7
 * a JDBC-compliant Connector jar
 
 ### Maven
@@ -237,7 +260,7 @@ For snapshots, add the following to your pom.xml file:
 <dependency>
     <groupId>org.knowm</groupId>
     <artifactId>yank</artifactId>
-    <version>3.2.1-SNAPSHOT</version>
+    <version>3.3.0-SNAPSHOT</version>
 </dependency>
 ```
 ## Building

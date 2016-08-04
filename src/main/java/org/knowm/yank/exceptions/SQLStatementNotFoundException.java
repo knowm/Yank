@@ -18,8 +18,6 @@ package org.knowm.yank.exceptions;
 
 /**
  * An exception to indicate that an SQL statement could not be found for the given key String
- * 
- * @author timmolter
  */
 public class SQLStatementNotFoundException extends RuntimeException {
 

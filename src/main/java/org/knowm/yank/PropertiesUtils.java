@@ -47,7 +47,7 @@ public class PropertiesUtils extends Properties {
    * @return The Properties file
    * @throws PropertiesFileNotFoundException if the Properties file could not be loaded from the classpath
    */
-  public static Properties getPropertiesFromClasspath(String fileName) {
+  public static Properties getPropertiesFromClasspath(String fileName) throws PropertiesFileNotFoundException {
 
     Properties props = new Properties();
     try {
@@ -70,7 +70,7 @@ public class PropertiesUtils extends Properties {
    * @return The Properties file
    * @throws PropertiesFileNotFoundException if the Properties file could not be loaded from the given path and file name
    */
-  public static Properties getPropertiesFromPath(String fileName) {
+  public static Properties getPropertiesFromPath(String fileName) throws PropertiesFileNotFoundException {
 
     Properties props = new Properties();
     FileInputStream fis;

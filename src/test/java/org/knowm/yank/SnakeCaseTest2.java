@@ -16,6 +16,9 @@
  */
 package org.knowm.yank;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
+
 import java.util.List;
 import java.util.Properties;
 
@@ -27,6 +30,7 @@ import org.junit.Test;
  * @author timmolter
  */
 public class SnakeCaseTest2 {
+
   @BeforeClass
   public static void setUpDB() {
 
@@ -52,11 +56,14 @@ public class SnakeCaseTest2 {
     Object[] params = new Object[] { test0Bean.getSpotfix_id() };
     String SQL = "INSERT INTO TEST0 (spotfix_id) VALUES (?)";
     int numInserted = Yank.execute(SQL, params);
-    System.out.println("numInserted: " + numInserted);
+    //    System.out.println("numInserted: " + numInserted);
+    assertThat(numInserted, equalTo(1));
 
     SQL = "SELECT * FROM TEST0";
     List<Test0Bean> testBeans = Yank.queryBeanList(SQL, Test0Bean.class, null);
-    System.out.println(testBeans.get(0).toString());
+    //    System.out.println(testBeans.get(0).toString());
+    assertThat(testBeans.get(0).getSpotfix_id(), equalTo(87L));
+
   }
 
   public static class Test0Bean {
