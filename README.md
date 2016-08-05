@@ -33,6 +33,7 @@ methods execute INSERT, UPDATE, and DELETE (and other) statements. Recently, ann
  * [x] Optionally store connection pool properties in a Properties file
  * [x] Optionally store SQL statements in a Properties file
  * [x] Multiple connection pools allows for connecting to multiple databases in a single app
+ * [x] Choice to either log or receive SQLEceptions
  * [x] Java 7 and up
 
 ## Basic Example
