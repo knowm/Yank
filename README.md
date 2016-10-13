@@ -247,7 +247,7 @@ Add the Yank library as a dependency to your pom.xml file:
 <dependency>
     <groupId>org.knowm</groupId>
     <artifactId>yank</artifactId>
-    <version>3.2.0</version>
+    <version>3.3.0</version>
 </dependency>
 ```
 For snapshots, add the following to your pom.xml file:
@@ -261,7 +261,7 @@ For snapshots, add the following to your pom.xml file:
 <dependency>
     <groupId>org.knowm</groupId>
     <artifactId>yank</artifactId>
-    <version>3.3.0-SNAPSHOT</version>
+    <version>3.3.1-SNAPSHOT</version>
 </dependency>
 ```
 ## Building
