@@ -68,15 +68,15 @@ public class YankSQLExceptionTest {
       Yank.execute(SQL, params);
       fail("YankSQLException should have been thrown!!!");
     } catch (YankSQLException e) {
-      e.printStackTrace();
+      // e.printStackTrace();
       assertThat(e.getMessage(), equalTo(
-          "Error in SQL query!!!; row column count mismatch Query: INSERT INTO BOOKS (TITLE, AUT_HOR, PRICE) VALUES (?, ?, ?, ?) Parameters: [Cryptonomicon, Neal Stephenson, 23.99]; Pool Name= yank-default; SQL= INSERT INTO BOOKS (TITLE, AUT_HOR, PRICE) VALUES (?, ?, ?, ?)"));
+          "Error in SQL query!!!; row column count mismatch in statement [INSERT INTO BOOKS (TITLE, AUT_HOR, PRICE) VALUES (?, ?, ?, ?)] Query: INSERT INTO BOOKS (TITLE, AUT_HOR, PRICE) VALUES (?, ?, ?, ?) Parameters: [Cryptonomicon, Neal Stephenson, 23.99]; Pool Name= yank-default; SQL= INSERT INTO BOOKS (TITLE, AUT_HOR, PRICE) VALUES (?, ?, ?, ?)"));
       SQLException sqlException = e.getSqlException();
     }
 
-    //    book = BooksDAO.selectBook("Cryptonomicon");
-    //    assertThat(book.getPrice(), equalTo(23.99));
-    //    assertThat(book.getAuthor(), equalTo("Neal Stephenson"));
+    // book = BooksDAO.selectBook("Cryptonomicon");
+    // assertThat(book.getPrice(), equalTo(23.99));
+    // assertThat(book.getAuthor(), equalTo("Neal Stephenson"));
 
     Yank.setThrowWrappedExceptions(false);
 
