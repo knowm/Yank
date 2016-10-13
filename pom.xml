@@ -4,7 +4,7 @@
 	<name>Yank</name>
 	<groupId>org.knowm</groupId>
 	<artifactId>yank</artifactId>
-	<version>3.3.0-SNAPSHOT</version>
+	<version>3.3.0</version>
 	<packaging>jar</packaging>
 	<description>Ultra-Light JDBC Persistance Layer for Java Apps</description>
 	<url>http://knowm.org/open-source/yank</url>
@@ -39,7 +39,7 @@
 		<connection>scm:git:git@github.com:timmolter/Yank.git</connection>
 		<developerConnection>scm:git:git@github.com:timmolter/Yank.git</developerConnection>
 		<url>git@github.com:timmolter/Yank.git</url>
-		<tag>HEAD</tag>
+		<tag>yank-3.3.0</tag>
 	</scm>
 
 	<ciManagement>
