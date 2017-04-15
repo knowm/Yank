@@ -55,25 +55,25 @@
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
-			<version>1.7.21</version>
+			<version>1.7.25</version>
 		</dependency>
 		<dependency>
 			<groupId>com.zaxxer</groupId>
 			<artifactId>HikariCP</artifactId>
-			<version>2.5.1</version>
+			<version>2.6.1</version>
 		</dependency>
 
 		<!-- test -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-simple</artifactId>
-			<version>1.7.21</version>
+			<version>1.7.25</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
-			<version>6.0.4</version>
+			<version>5.1.41</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -141,7 +141,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.5.1</version>
+				<version>3.6.1</version>
 				<configuration>
 					<source>1.7</source>
 					<target>1.7</target>
@@ -177,14 +177,14 @@
 				<artifactId>maven-release-plugin</artifactId>
 				<version>2.5.3</version>
 				<configuration>
-					<autoversionsubmodules>true</autoversionsubmodules>
+					<autoVersionSubmodules>true</autoVersionSubmodules>
 				</configuration>
 			</plugin>
 			<!-- for header in all .java files -->
 			<plugin>
-				<groupId>com.mycila.maven-license-plugin</groupId>
-				<artifactId>maven-license-plugin</artifactId>
-				<version>1.10.b1</version>
+				<groupId>com.mycila</groupId>
+				<artifactId>license-maven-plugin</artifactId>
+				<version>3.0</version>
 				<configuration>
 					<header>NOTICE</header>
 					<aggregate>true</aggregate>
