@@ -16,7 +16,7 @@ methods execute INSERT, UPDATE, and DELETE (and other) statements. Recently, ann
 ## Features
 
  * [x] Apache 2.0 license
- * [x] ~15KB Jar
+ * [x] ~16KB Jar
  * [x] Uses Apache DBUtils for JDBC
  * [x] Uses HikariCP for connection pooling
  * [x] Supports prepared statements
