@@ -17,5 +17,6 @@ The following list of authors was automatically generated from the Yank project'
     git log --format='%aN' | sort -u
 
 Ezra Epstein
+Nelson Gomes
 Tim Molter
 timmolter
