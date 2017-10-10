@@ -277,6 +277,10 @@ For snapshots, add the following to your pom.xml file:
     mvn license:format
     mvn license:remove
 
+#### Check for updated dependencies
+
+    mvn versions:display-dependency-updates
+
 ## DropWizard Integration
 
 If you want to integrate Yank into a DropWizard application, head over to [XDropWizard](https://github.com/timmolter/XDropWizard) and grab [YankManager.java](https://github.com/timmolter/XDropWizard/blob/master/src/main/java/org/knowm/xdropwizard/manager/YankManager.java) and add a simple configuration to your DropWizard [myapp.yml](https://github.com/timmolter/XDropWizard/blob/master/xdropwizard.yml) file.
