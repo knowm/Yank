@@ -1,12 +1,12 @@
 package org.knowm.yank.demo;
 
 import java.util.Properties;
-
 import org.knowm.yank.PropertiesUtils;
 import org.knowm.yank.Yank;
 
 /**
- * Create a table called BOOKS. Demonstrates getting the connection pool properties from a *.properties file.
+ * Create a table called BOOKS. Demonstrates getting the connection pool properties from a
+ * *.properties file.
  *
  * @author timmolter
  */
@@ -30,6 +30,5 @@ public class CreateBooksTableWithPropsFile {
     BooksDAO.createBooksTable();
 
     Yank.releaseDefaultConnectionPool();
-
   }
 }

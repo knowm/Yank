@@ -2,12 +2,12 @@ package org.knowm.yank.demo;
 
 import java.util.List;
 import java.util.Properties;
-
 import org.knowm.yank.PropertiesUtils;
 import org.knowm.yank.Yank;
 
 /**
- * Selects all Book Objects from the BOOKS table. Demonstrates fetching the connection pool properties from a file on the classpath
+ * Selects all Book Objects from the BOOKS table. Demonstrates fetching the connection pool
+ * properties from a file on the classpath
  *
  * @author timmolter
  */
@@ -27,6 +27,5 @@ public class SelectAllBooks {
     }
 
     Yank.releaseDefaultConnectionPool();
-
   }
 }

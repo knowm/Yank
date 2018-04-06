@@ -1,20 +1,19 @@
 package org.knowm.yank;
 
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.zaxxer.hikari.HikariConfig;
-import com.zaxxer.hikari.HikariDataSource;
-
 /**
- * This class is a Singleton that provides access to one or more connection pools defined in a Property file. When the client shuts down it should
- * call the release() method to close all open connections and do other clean up.
- * <p>
- * This class should not be directly accessed by client code.
+ * This class is a Singleton that provides access to one or more connection pools defined in a
+ * Property file. When the client shuts down it should call the release() method to close all open
+ * connections and do other clean up.
+ *
+ * <p>This class should not be directly accessed by client code.
  *
  * @author timmolter
  */
@@ -29,22 +28,21 @@ public final class YankPoolManager {
 
   protected static final String DEFAULT_POOL_NAME = "yank-default";
 
-  private final Map<String, HikariDataSource> pools = new ConcurrentHashMap<String, HikariDataSource>(2);
+  private final Map<String, HikariDataSource> pools =
+      new ConcurrentHashMap<String, HikariDataSource>(2);
+
+  /** A private constructor since this is a Singleton */
+  private YankPoolManager() {}
 
   /**
-   * A private constructor since this is a Singleton
-   */
-  private YankPoolManager() {
-
-  }
-
-  /**
-   * Add properties for a DataSource (connection pool). Yank uses a Hikari DataSource (connection pool) under the hood, so you have to provide the
-   * minimal essential properties and the optional properties as defined here: https://github.com/brettwooldridge/HikariCP
-   * <p>
-   * This convenience method will create a connection pool in the default pool.
-   * <p>
-   * Note that if you call this method repeatedly, the existing default pool will be first shutdown each time.
+   * Add properties for a DataSource (connection pool). Yank uses a Hikari DataSource (connection
+   * pool) under the hood, so you have to provide the minimal essential properties and the optional
+   * properties as defined here: https://github.com/brettwooldridge/HikariCP
+   *
+   * <p>This convenience method will create a connection pool in the default pool.
+   *
+   * <p>Note that if you call this method repeatedly, the existing default pool will be first
+   * shutdown each time.
    *
    * @param dataSourceProperties
    */
@@ -54,10 +52,12 @@ public final class YankPoolManager {
   }
 
   /**
-   * Add properties for a DataSource (connection pool). Yank uses a Hikari DataSource (connection pool) under the hood, so you have to provide the
-   * minimal essential properties and the optional properties as defined here: https://github.com/brettwooldridge/HikariCP
-   * <p>
-   * Note that if you call this method providing a poolName corresponding to an existing connection pool, the existing pool will be first shutdown.
+   * Add properties for a DataSource (connection pool). Yank uses a Hikari DataSource (connection
+   * pool) under the hood, so you have to provide the minimal essential properties and the optional
+   * properties as defined here: https://github.com/brettwooldridge/HikariCP
+   *
+   * <p>Note that if you call this method providing a poolName corresponding to an existing
+   * connection pool, the existing pool will be first shutdown.
    *
    * @param poolName
    * @param connectionPoolProperties
@@ -87,10 +87,7 @@ public final class YankPoolManager {
     logger.info("Initialized pool '{}'", poolName);
   }
 
-
-  /**
-   * Closes the default connection pool
-   */
+  /** Closes the default connection pool */
   protected synchronized void releaseDefaultConnectionPool() {
 
     releaseConnectionPool(DEFAULT_POOL_NAME);
@@ -111,10 +108,7 @@ public final class YankPoolManager {
     }
   }
 
-  /**
-   * Closes all connection pools
-   *
-   */
+  /** Closes all connection pools */
   protected synchronized void releaseAllConnectionPools() {
 
     for (HikariDataSource pool : pools.values()) {
@@ -151,12 +145,9 @@ public final class YankPoolManager {
     this.mergedSqlProperties.putAll(sqlProperties);
   }
 
-  /**
-   * @return the mergedSqlProperties
-   */
+  /** @return the mergedSqlProperties */
   protected Properties getMergedSqlProperties() {
 
     return mergedSqlProperties;
   }
-
 }

@@ -1,13 +1,10 @@
 package org.knowm.yank.demo;
 
 import java.util.Properties;
-
 import org.knowm.yank.PropertiesUtils;
 import org.knowm.yank.Yank;
 
-/**
- * Selects Book count from the BOOKS table.
- */
+/** Selects Book count from the BOOKS table. */
 public class SelectBookCount {
 
   public static void main(String[] args) {
@@ -22,6 +19,5 @@ public class SelectBookCount {
     System.out.println("The number of books in the table are: " + numBooks);
 
     Yank.releaseDefaultConnectionPool();
-
   }
 }

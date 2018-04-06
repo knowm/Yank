@@ -1,12 +1,12 @@
 package org.knowm.yank.demo;
 
 import java.util.Properties;
-
 import org.knowm.yank.PropertiesUtils;
 import org.knowm.yank.Yank;
 
 /**
- * Inserts a Book into the BOOKS table. Demonstrates fetching the connection pool properties from a file on the classpath
+ * Inserts a Book into the BOOKS table. Demonstrates fetching the connection pool properties from a
+ * file on the classpath
  *
  * @author timmolter
  */
@@ -28,6 +28,5 @@ public class InsertBook {
     System.out.println(autoID);
 
     Yank.releaseDefaultConnectionPool();
-
   }
 }

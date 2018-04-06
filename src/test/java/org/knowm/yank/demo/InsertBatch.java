@@ -3,7 +3,6 @@ package org.knowm.yank.demo;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
-
 import org.knowm.yank.PropertiesUtils;
 import org.knowm.yank.Yank;
 
@@ -45,6 +44,5 @@ public class InsertBatch {
     BooksDAO.insertBatch(books);
 
     Yank.releaseDefaultConnectionPool();
-
   }
 }

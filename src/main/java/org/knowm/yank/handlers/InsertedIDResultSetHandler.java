@@ -2,11 +2,11 @@ package org.knowm.yank.handlers;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
 import org.apache.commons.dbutils.ResultSetHandler;
 
 /**
- * This gets the long value representing the auto-assigned primary key id from the ResultSet object generated from inserting a row.
+ * This gets the long value representing the auto-assigned primary key id from the ResultSet object
+ * generated from inserting a row.
  *
  * @author timmolter
  */
@@ -19,5 +19,4 @@ public class InsertedIDResultSetHandler implements ResultSetHandler<Long> {
     }
     return null;
   }
-
 }

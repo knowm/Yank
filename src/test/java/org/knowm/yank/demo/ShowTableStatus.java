@@ -2,12 +2,12 @@ package org.knowm.yank.demo;
 
 import java.util.List;
 import java.util.Properties;
-
 import org.knowm.yank.PropertiesUtils;
 import org.knowm.yank.Yank;
 
 /**
- * Gets table status from the YANK database. Demonstrates fetching a List of Object[]s from the DB. You need not return lists of Objects!
+ * Gets table status from the YANK database. Demonstrates fetching a List of Object[]s from the DB.
+ * You need not return lists of Objects!
  *
  * @author timmolter
  */
@@ -32,6 +32,5 @@ public class ShowTableStatus {
     }
 
     Yank.releaseDefaultConnectionPool();
-
   }
 }

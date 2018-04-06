@@ -1,7 +1,6 @@
 package org.knowm.yank.demo;
 
 import java.util.List;
-
 import org.knowm.yank.Yank;
 
 /**
@@ -15,24 +14,27 @@ public class BooksDAO {
 
   /**
    * This method demonstrates:
+   *
    * <ul>
-   * <li>executing an SQL statement with DBProxy.executeSQL</li>
-   * <li>using a prepared statement with corresponding params</li>
-   * <li>retrieving assigned auto-increment primary key ID</li>
+   *   <li>executing an SQL statement with DBProxy.executeSQL
+   *   <li>using a prepared statement with corresponding params
+   *   <li>retrieving assigned auto-increment primary key ID
    * </ul>
    */
   public static long insertBook(Book book) {
 
-    Object[] params = new Object[] { book.getTitle(), book.getAuthor(), book.getPrice() };
+    Object[] params = new Object[] {book.getTitle(), book.getAuthor(), book.getPrice()};
     String SQL = "INSERT INTO BOOKS (TITLE, AUTHOR, PRICE) VALUES (?, ?, ?)";
     return Yank.insert(SQL, params);
   }
 
   /**
    * This method demonstrates:
+   *
    * <ul>
-   * <li>querying a table for a list of Objects, in this case Book objects, using DBProxy.queryObjectListSQL</li>
-   * <li>using a non-prepared statement with null params</li>
+   *   <li>querying a table for a list of Objects, in this case Book objects, using
+   *       DBProxy.queryObjectListSQL
+   *   <li>using a non-prepared statement with null params
    * </ul>
    */
   public static List<Book> selectAllBooks() {
@@ -43,9 +45,11 @@ public class BooksDAO {
 
   /**
    * This method demonstrates:
+   *
    * <ul>
-   * <li>querying a table for a list of Strings, in this case Book titles, using DBProxy.queryObjectListSQL</li>
-   * <li>using a non-prepared statement with null params</li>
+   *   <li>querying a table for a list of Strings, in this case Book titles, using
+   *       DBProxy.queryObjectListSQL
+   *   <li>using a non-prepared statement with null params
    * </ul>
    */
   public static List<String> selectAllBookTitles() {
@@ -57,9 +61,10 @@ public class BooksDAO {
 
   /**
    * This method demonstrates:
+   *
    * <ul>
-   * <li>executing a batch insert statement using DBProxy.executeBatchSQL</li>
-   * <li>using a prepared statement with corresponding params</li>
+   *   <li>executing a batch insert statement using DBProxy.executeBatchSQL
+   *   <li>using a prepared statement with corresponding params
    * </ul>
    */
   public static int[] insertBatch(List<Book> books) {
@@ -68,7 +73,7 @@ public class BooksDAO {
 
     for (int i = 0; i < books.size(); i++) {
       Book book = books.get(i);
-      params[i] = new Object[] { book.getTitle(), book.getAuthor(), book.getPrice() };
+      params[i] = new Object[] {book.getTitle(), book.getAuthor(), book.getPrice()};
     }
 
     String SQL = "INSERT INTO BOOKS (TITLE, AUTHOR, PRICE) VALUES (?, ?, ?)";
@@ -77,9 +82,11 @@ public class BooksDAO {
 
   /**
    * This method demonstrates:
+   *
    * <ul>
-   * <li>the advanced feature of using an SQL Key corresponding to an actual SQL statement stored in a Properties file using DBProxy.executeSQLKey</li>
-   * <li>using a non-prepared statement with null params</li>
+   *   <li>the advanced feature of using an SQL Key corresponding to an actual SQL statement stored
+   *       in a Properties file using DBProxy.executeSQLKey
+   *   <li>using a non-prepared statement with null params
    * </ul>
    */
   public static int createBooksTable() {
@@ -90,15 +97,16 @@ public class BooksDAO {
 
   /**
    * This method demonstrates:
+   *
    * <ul>
-   * <li>the advanced feature of using an SQL Key corresponding to an actual SQL statement stored in a Properties file using
-   * DBProxy.querySingleObjectSQLKey</li>
-   * <li>using a prepared statement with corresponding params</li>
+   *   <li>the advanced feature of using an SQL Key corresponding to an actual SQL statement stored
+   *       in a Properties file using DBProxy.querySingleObjectSQLKey
+   *   <li>using a prepared statement with corresponding params
    * </ul>
    */
   public static Book selectBook(String title) {
 
-    Object[] params = new Object[] { title };
+    Object[] params = new Object[] {title};
 
     String sqlKey = "BOOKS_SELECT_BY_TITLE";
     return Yank.queryBeanSQLKey(sqlKey, Book.class, params);
@@ -106,11 +114,12 @@ public class BooksDAO {
 
   /**
    * This method demonstrates:
+   *
    * <ul>
-   * <li>the advanced feature of using an SQL Key corresponding to an actual SQL statement stored in a Properties file using
-   * DBProxy.queryGenericObjectArrayListSQLKey</li>
-   * <li>using a non-prepared statement with null params</li>
-   * <li>querying for a List of Objects representing all columns in a table</li>
+   *   <li>the advanced feature of using an SQL Key corresponding to an actual SQL statement stored
+   *       in a Properties file using DBProxy.queryGenericObjectArrayListSQLKey
+   *   <li>using a non-prepared statement with null params
+   *   <li>querying for a List of Objects representing all columns in a table
    * </ul>
    */
   public static List<Object[]> getTableStatus() {
@@ -121,9 +130,10 @@ public class BooksDAO {
 
   /**
    * This method demonstrates:
+   *
    * <ul>
-   * <li>using a non-prepared statement with null params</li>
-   * <li>querying for a Scalar value the row count of a table</li>
+   *   <li>using a non-prepared statement with null params
+   *   <li>querying for a Scalar value the row count of a table
    * </ul>
    */
   public static long getNumBooks() {
@@ -134,9 +144,11 @@ public class BooksDAO {
 
   /**
    * This method demonstrates:
+   *
    * <ul>
-   * <li>using a non-prepared statement with null params</li>
-   * <li>the advanced feature of using an SQL Key corresponding to an actual SQL statement stored in a Properties file using DBProxy.executeSQLKey</li>
+   *   <li>using a non-prepared statement with null params
+   *   <li>the advanced feature of using an SQL Key corresponding to an actual SQL statement stored
+   *       in a Properties file using DBProxy.executeSQLKey
    * </ul>
    */
   public static Book selectRandomBook() {
@@ -144,5 +156,4 @@ public class BooksDAO {
     String sqlKey = "BOOKS_SELECT_RANDOM_BOOK";
     return Yank.queryBeanSQLKey(sqlKey, Book.class, null);
   }
-
 }

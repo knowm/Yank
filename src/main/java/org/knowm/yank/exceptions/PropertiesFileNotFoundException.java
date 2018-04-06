@@ -1,7 +1,8 @@
 package org.knowm.yank.exceptions;
 
 /**
- * An exception to indicate that a Connection pool could not be found given the Connection pool name.
+ * An exception to indicate that a Connection pool could not be found given the Connection pool
+ * name.
  */
 public class PropertiesFileNotFoundException extends RuntimeException {
 
@@ -15,5 +16,4 @@ public class PropertiesFileNotFoundException extends RuntimeException {
 
     super(message, cause);
   }
-
 }

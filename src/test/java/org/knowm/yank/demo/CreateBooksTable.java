@@ -1,14 +1,15 @@
 package org.knowm.yank.demo;
 
 import java.util.Properties;
-
 import org.knowm.yank.PropertiesUtils;
 import org.knowm.yank.Yank;
 
 /**
  * Create a table called BOOKS. <br>
- * Demonstrates hardcoding the connection pool properties rather then getting them from a Properties file. <br>
- * Note: myconnectionpoolname can be anything but it needs to match the first String argument in DBProxy.* method calls. See BooksDAO.java. <br>
+ * Demonstrates hardcoding the connection pool properties rather then getting them from a Properties
+ * file. <br>
+ * Note: myconnectionpoolname can be anything but it needs to match the first String argument in
+ * DBProxy.* method calls. See BooksDAO.java. <br>
  *
  * @author timmolter
  */

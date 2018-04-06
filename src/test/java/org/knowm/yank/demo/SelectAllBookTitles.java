@@ -2,12 +2,12 @@ package org.knowm.yank.demo;
 
 import java.util.List;
 import java.util.Properties;
-
 import org.knowm.yank.PropertiesUtils;
 import org.knowm.yank.Yank;
 
 /**
- * Selects all Book titles from the BOOKS table. Demonstrates fetching a column as a List in a table given the column name
+ * Selects all Book titles from the BOOKS table. Demonstrates fetching a column as a List in a table
+ * given the column name
  *
  * @author timmolter
  */
@@ -27,6 +27,5 @@ public class SelectAllBookTitles {
     }
 
     Yank.releaseDefaultConnectionPool();
-
   }
 }

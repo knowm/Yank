@@ -6,16 +6,13 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
-
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.knowm.yank.demo.Book;
 import org.knowm.yank.demo.BooksDAO;
 
-/**
- * @author timmolter
- */
+/** @author timmolter */
 public class BooksTableDataSourceClassNameTest {
 
   @BeforeClass
@@ -83,6 +80,5 @@ public class BooksTableDataSourceClassNameTest {
 
     long numBooks = BooksDAO.getNumBooks();
     assertThat(numBooks, equalTo(5L));
-
   }
 }

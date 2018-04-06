@@ -7,24 +7,23 @@ import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-
 import org.apache.commons.dbutils.BeanProcessor;
 import org.knowm.yank.annotations.Column;
 
 /**
- * Combines the override map of BeanProcessor with the snake case mapping of GenererousBeanProcessor. Uses Column annotations to build map
+ * Combines the override map of BeanProcessor with the snake case mapping of
+ * GenererousBeanProcessor. Uses Column annotations to build map
  *
  * @author timmolter
  */
 public class YankBeanProcessor<T> extends BeanProcessor {
 
-  /**
-   * ResultSet column to bean property name overrides.
-   */
+  /** ResultSet column to bean property name overrides. */
   private final Map<String, String> columnToFieldOverrides;
 
   /**
-   * Constructor for YankBeanProcessor configured with Bean class type to look for "Column" annotations for column ==> field mapping
+   * Constructor for YankBeanProcessor configured with Bean class type to look for "Column"
+   * annotations for column ==> field mapping
    *
    * @param type The Bean type
    */
@@ -47,17 +46,20 @@ public class YankBeanProcessor<T> extends BeanProcessor {
   }
 
   /**
-   * The positions in the returned array represent column numbers. The values stored at each position represent the index in the
-   * <code>PropertyDescriptor[]</code> for the bean property that matches the column name. Also tried to match snake case column names or overrides.
-   * If no bean property was found for a column, the position is set to <code>PROPERTY_NOT_FOUND</code>.
+   * The positions in the returned array represent column numbers. The values stored at each
+   * position represent the index in the <code>PropertyDescriptor[]</code> for the bean property
+   * that matches the column name. Also tried to match snake case column names or overrides. If no
+   * bean property was found for a column, the position is set to <code>PROPERTY_NOT_FOUND</code>.
    *
    * @param rsmd The <code>ResultSetMetaData</code> containing column information.
    * @param props The bean property descriptors.
    * @throws SQLException if a database access error occurs
-   * @return An int[] with column index to property index mappings. The 0th element is meaningless because JDBC column indexing starts at 1.
+   * @return An int[] with column index to property index mappings. The 0th element is meaningless
+   *     because JDBC column indexing starts at 1.
    */
   @Override
-  protected int[] mapColumnsToProperties(final ResultSetMetaData rsmd, final PropertyDescriptor[] props) throws SQLException {
+  protected int[] mapColumnsToProperties(
+      final ResultSetMetaData rsmd, final PropertyDescriptor[] props) throws SQLException {
 
     final int cols = rsmd.getColumnCount();
     final int[] columnToProperty = new int[cols + 1];
@@ -81,7 +83,9 @@ public class YankBeanProcessor<T> extends BeanProcessor {
         final String propName = props[i].getName();
 
         // see if either the column name, or the generous one matches
-        if (columnName.equalsIgnoreCase(propName) || generousColumnName.equalsIgnoreCase(propName) || overrideName.equalsIgnoreCase(propName)) {
+        if (columnName.equalsIgnoreCase(propName)
+            || generousColumnName.equalsIgnoreCase(propName)
+            || overrideName.equalsIgnoreCase(propName)) {
           columnToProperty[col] = i;
           break;
         }
@@ -90,5 +94,4 @@ public class YankBeanProcessor<T> extends BeanProcessor {
 
     return columnToProperty;
   }
-
 }

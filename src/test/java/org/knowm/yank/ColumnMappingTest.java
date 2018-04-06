@@ -4,15 +4,12 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 import java.util.Properties;
-
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.knowm.yank.annotations.Column;
 
-/**
- * @author timmolter
- */
+/** @author timmolter */
 public class ColumnMappingTest {
 
   @BeforeClass
@@ -35,33 +32,36 @@ public class ColumnMappingTest {
   public void testBooksTable() {
 
     // Make the column names German :)
-    String sql = "CREATE TABLE Buecher (TITEL VARCHAR(42) NULL, AUTOR VARCHAR(42) NULL, PREIS DECIMAL(10,2) NOT NULL)";
+    String sql =
+        "CREATE TABLE Buecher (TITEL VARCHAR(42) NULL, AUTOR VARCHAR(42) NULL, PREIS DECIMAL(10,2) NOT NULL)";
     Yank.execute(sql, null);
 
     Buch book = new Buch();
     book.setTitle("Cryptonomicon");
     book.setAuthor("Neal Stephenson");
     book.setPrice(23.99);
-    Object[] params = new Object[] { book.getTitle(), book.getAuthor(), book.getPrice() };
+    Object[] params = new Object[] {book.getTitle(), book.getAuthor(), book.getPrice()};
     sql = "INSERT INTO Buecher  (TITEL, AUTOR, PREIS) VALUES (?, ?, ?)";
     Yank.execute(sql, params);
 
     sql = "SELECT * FROM Buecher WHERE TITEL = ?";
-    params = new Object[] { "Cryptonomicon" };
+    params = new Object[] {"Cryptonomicon"};
     book = Yank.queryBean(sql, Buch.class, params);
 
     assertThat(book.getPrice(), equalTo(23.99));
     assertThat(book.getAuthor(), equalTo("Neal Stephenson"));
-
   }
 
   public static class Buch {
 
     private int id;
+
     @Column("TITEL")
     private String title;
+
     @Column("AUTOR")
     private String author;
+
     @Column("PREIS")
     private double price;
 
@@ -100,7 +100,5 @@ public class ColumnMappingTest {
 
       this.price = price;
     }
-
   }
-
 }

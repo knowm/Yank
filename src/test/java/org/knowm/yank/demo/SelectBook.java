@@ -1,11 +1,11 @@
 package org.knowm.yank.demo;
 
 import java.util.Properties;
-
 import org.knowm.yank.Yank;
 
 /**
- * Selects a single Book from the BOOKS table. Demonstrates using the Yank API without DAOs or properties.
+ * Selects a single Book from the BOOKS table. Demonstrates using the Yank API without DAOs or
+ * properties.
  *
  * @author timmolter
  */
@@ -24,12 +24,11 @@ public class SelectBook {
 
     // query book
     String sql = "SELECT * FROM BOOKS WHERE TITLE = ?";
-    Object[] params = new Object[] { "Cryptonomicon" };
+    Object[] params = new Object[] {"Cryptonomicon"};
     Book book = Yank.queryBean(sql, Book.class, params);
     System.out.println(book.toString());
 
     // release connection pool
     Yank.releaseDefaultConnectionPool();
-
   }
 }

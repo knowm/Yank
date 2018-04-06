@@ -5,16 +5,13 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 import java.util.List;
 import java.util.Properties;
-
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.knowm.yank.demo.Book;
 import org.knowm.yank.demo.BooksDAO;
 
-/**
- * @author timmolter
- */
+/** @author timmolter */
 public class BooksTableJdbcUrlTest {
 
   @BeforeClass
@@ -47,6 +44,5 @@ public class BooksTableJdbcUrlTest {
 
     List<Book> allBooks = BooksDAO.selectAllBooks();
     assertThat(allBooks.size(), equalTo(1));
-
   }
 }
