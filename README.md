@@ -235,7 +235,7 @@ Download Jar: <http://knowm.org/open-source/yank/yank-change-log/>
 
 * commons-dbutils.dbutils-1.7.0
 * org.slf4j.slf4j-api-1.7.25
-* com.zaxxer.HikariCP-2.6.3
+* com.zaxxer.HikariCP-3.0.0
 * a JDBC-compliant Connector jar
 
 ### Maven
@@ -247,7 +247,7 @@ Add the Yank library as a dependency to your pom.xml file:
 <dependency>
     <groupId>org.knowm</groupId>
     <artifactId>yank</artifactId>
-    <version>3.3.1</version>
+    <version>3.3.2</version>
 </dependency>
 ```
 For snapshots, add the following to your pom.xml file:
@@ -261,7 +261,7 @@ For snapshots, add the following to your pom.xml file:
 <dependency>
     <groupId>org.knowm</groupId>
     <artifactId>yank</artifactId>
-    <version>3.3.2-SNAPSHOT</version>
+    <version>3.3.3-SNAPSHOT</version>
 </dependency>
 ```
 ## Building
