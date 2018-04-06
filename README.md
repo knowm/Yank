@@ -34,7 +34,7 @@ methods execute INSERT, UPDATE, and DELETE (and other) statements. Recently, ann
  * [x] Optionally store SQL statements in a Properties file
  * [x] Multiple connection pools allows for connecting to multiple databases in a single app
  * [x] Choice to either log or receive SQLEceptions
- * [x] Java 7 and up
+ * [x] Java 8 and up
 
 ## Basic Example
 
@@ -280,6 +280,23 @@ For snapshots, add the following to your pom.xml file:
 #### Check for updated dependencies
 
     mvn versions:display-dependency-updates
+
+#### Formatting
+
+    mvn com.coveo:fmt-maven-plugin:format
+    
+Formats your code using [google-java-format](https://github.com/google/google-java-format) which follows [Google's code styleguide](https://google.github.io/styleguide/javaguide.html).
+
+If you want your IDE to stick to the same format, check out the available configuration plugins:
+
+#### Eclipse
+
+Download [`google-java-format-eclipse-plugin_*.jar`](https://github.com/google/google-java-format/releases) and place in `/Applications/Eclipse Java.app/Contents/Eclipse/dropins`. Restart Eclipse. Select the plugin in `Preferences > Java > Code Style > Formatter > Formatter Implementation`. 
+
+#### IntelliJ
+
+In the plugins section in IntelliJ search for `google-java-format` and install the plugin. Restart IntelliJ.
+
 
 ## DropWizard Integration
 
