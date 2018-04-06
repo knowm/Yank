@@ -271,12 +271,6 @@ For snapshots, add the following to your pom.xml file:
     mvn clean package  
     mvn javadoc:javadoc  
 
-#### maven-license-plugin
-
-    mvn license:check
-    mvn license:format
-    mvn license:remove
-
 #### Check for updated dependencies
 
     mvn versions:display-dependency-updates
