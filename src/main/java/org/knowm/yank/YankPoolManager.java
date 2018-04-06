@@ -103,14 +103,6 @@ public final class YankPoolManager {
     logger.info("Initialized pool '{}'", poolName);
   }
 
-  /**
-   * Closes the default connection pool
-   */
-  @Deprecated
-  protected synchronized void releaseDataSource() {
-
-    releaseDefaultConnectionPool();
-  }
 
   /**
    * Closes the default connection pool
@@ -136,9 +128,8 @@ public final class YankPoolManager {
   }
 
   /**
-   * Closes a connection pool
+   * Closes all connection pools
    *
-   * @param poolName
    */
   protected synchronized void releaseAllConnectionPools() {
 
@@ -154,7 +145,7 @@ public final class YankPoolManager {
   /**
    * Get a connection pool
    *
-   * @return
+   * @return a connection pool by name
    */
   protected HikariDataSource getConnectionPool(String poolName) {
 
@@ -164,7 +155,7 @@ public final class YankPoolManager {
   /**
    * Get the default connection pool
    *
-   * @return
+   * @return the default connection pool
    */
   protected HikariDataSource getDefaultConnectionPool() {
 

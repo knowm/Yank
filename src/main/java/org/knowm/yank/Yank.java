@@ -682,18 +682,6 @@ public class Yank {
     }
   }
 
-  /**
-   * @deprecated use {@link #setupDefaultConnectionPool()} instead.
-   *             <p>
-   *             Add properties for a DataSource (connection pool). Yank uses a Hikari DataSource (connection pool) under the hood, so you have to
-   *             provide the minimal essential properties and the optional properties as defined here: https://github.com/brettwooldridge/HikariCP
-   * @param dataSourceProperties
-   */
-  @Deprecated
-  public static void setupDataSource(Properties dataSourceProperties) {
-
-    setupDefaultConnectionPool(dataSourceProperties);
-  }
 
   /**
    * Add properties for a DataSource (connection pool). Yank uses a Hikari DataSource (connection pool) under the hood, so you have to provide the
@@ -728,16 +716,6 @@ public class Yank {
     YANK_POOL_MANAGER.addSQLStatements(sqlProperties);
   }
 
-  /**
-   * @deprecated use {@link #releaseDefaultConnectionPool()} instead.
-   *             <p>
-   *             Closes the default connection pool
-   */
-  @Deprecated
-  public static synchronized void releaseDataSource() {
-
-    YANK_POOL_MANAGER.releaseDefaultConnectionPool();
-  }
 
   /**
    * Closes the given connection pool
@@ -782,16 +760,6 @@ public class Yank {
     return YANK_POOL_MANAGER.getConnectionPool(poolName);
   }
 
-  /**
-   * Exposes access to the configured DataSource
-   *
-   * @return a configured (pooled) HikariDataSource.
-   */
-  @Deprecated
-  public static HikariDataSource getDataSource() {
-
-    return getDefaultConnectionPool();
-  }
 
   public static boolean isThrowWrappedExceptions() {
     return throwWrappedExceptions;
