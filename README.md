@@ -1,4 +1,4 @@
-## [![Yank](https://raw.githubusercontent.com/timmolter/Yank/develop/etc/Yank_64_64.png)](http://knowm.org/open-source/yank/) Yank
+## [![Yank](https://raw.githubusercontent.com/knowm/Yank/develop/etc/Yank_64_64.png)](http://knowm.org/open-source/yank/) Yank
 Ultra-Light JDBC Persistance Layer for Java Apps
 
 ## In a Nutshell
@@ -86,7 +86,7 @@ Yank.addSQLStatements(sqlProps);
 String sqlKey = "BOOKS_CREATE_TABLE";
 Yank.executeSQLKey(sqlKey, null);
 ```
-Why? Sometimes it's nice to have all your SQL statements in one place. As an example see: [MYSQL_SQL.properties](https://github.com/timmolter/Yank/blob/develop/src/test/resources/MYSQL_SQL.properties). Also this allows you to swap databases easily without changing any code. Keep one for database type `X` and one for database type `Y`. BTW, to access the actual statements in the  properties file, you use the `Yank.*SQLKey(...)` methods in `Yank`. You can also add multiple properties files and they will be merged! If the SQL statement cannot be found, a `SQLStatementNotFoundException` runtime exception is thrown.
+Why? Sometimes it's nice to have all your SQL statements in one place. As an example see: [MYSQL_SQL.properties](https://github.com/knowm/Yank/blob/develop/src/test/resources/MYSQL_SQL.properties). Also this allows you to swap databases easily without changing any code. Keep one for database type `X` and one for database type `Y`. BTW, to access the actual statements in the  properties file, you use the `Yank.*SQLKey(...)` methods in `Yank`. You can also add multiple properties files and they will be merged! If the SQL statement cannot be found, a `SQLStatementNotFoundException` runtime exception is thrown.
 
 ## Stay Organized! You Will Thank Yourself Later.
 ```java
@@ -211,9 +211,9 @@ Whether or not your app is a tiny script, a large webapp, or anything in between
 1. Use Yank's methods: `Yank.execute(...) `,`Yank.executeBatch(...) `, `Yank.insert(...) `, `Yank.queryColumn(...) `, `Yank.queryObjectArrays(...) `, `Yank.queryBeanList(...) `, `Yank.queryBean(...) `, `Yank.queryScalar(...) `
 1. Release the connection pool: ` Yank.releaseDefaultConnectionPool();`
 
-For an example of Yank in action in a `DropWizard` web application see [XDropWizard](https://github.com/timmolter/XDropWizard).
+For an example of Yank in action in a `DropWizard` web application see [XDropWizard](https://github.com/knowm/XDropWizard).
 
-Now go ahead and [study some more examples](http://knowm.org/open-source/yank/yank-example-code), [download the thing](http://knowm.org/open-source/yank/yank-change-log/) and [provide feedback](https://github.com/timmolter/Yank/issues).
+Now go ahead and [study some more examples](http://knowm.org/open-source/yank/yank-example-code), [download the thing](http://knowm.org/open-source/yank/yank-change-log/) and [provide feedback](https://github.com/knowm/Yank/issues).
 
 ## Caveats
 
@@ -283,10 +283,10 @@ For snapshots, add the following to your pom.xml file:
 
 ## DropWizard Integration
 
-If you want to integrate Yank into a DropWizard application, head over to [XDropWizard](https://github.com/timmolter/XDropWizard) and grab [YankManager.java](https://github.com/timmolter/XDropWizard/blob/master/src/main/java/org/knowm/xdropwizard/manager/YankManager.java) and add a simple configuration to your DropWizard [myapp.yml](https://github.com/timmolter/XDropWizard/blob/master/xdropwizard.yml) file.
+If you want to integrate Yank into a DropWizard application, head over to [XDropWizard](https://github.com/knowm/XDropWizard) and grab [YankManager.java](https://github.com/knowm/XDropWizard/blob/master/src/main/java/org/knowm/xdropwizard/manager/YankManager.java) and add a simple configuration to your DropWizard [myapp.yml](https://github.com/knowm/XDropWizard/blob/master/xdropwizard.yml) file.
 
 ## Bugs
-Please report any bugs or submit feature requests to [Yank's Github issue tracker](https://github.com/timmolter/Yank/issues).  
+Please report any bugs or submit feature requests to [Yank's Github issue tracker](https://github.com/knowm/Yank/issues).  
 
 ## Continuous Integration
 [![Build Status](https://travis-ci.org/timmolter/Yank.png?branch=develop)](https://travis-ci.org/timmolter/Yank.png)  
