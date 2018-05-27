@@ -59,8 +59,6 @@ public class IntegerColumnListHandler extends ColumnListHandler<Integer> {
    * @throws ClassCastException if the class datatype does not match the column type
    * @see org.apache.commons.dbutils.handlers.AbstractListHandler#handle(ResultSet)
    */
-  // We assume that the user has picked the correct type to match the column
-  // so getObject will return the appropriate type and the cast will succeed.
   @Override
   protected Integer handleRow(ResultSet rs) throws SQLException {
     if (this.columnName == null) {
