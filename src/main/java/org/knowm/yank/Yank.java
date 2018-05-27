@@ -1,6 +1,5 @@
 package org.knowm.yank;
 
-import com.zaxxer.hikari.HikariDataSource;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Properties;
@@ -15,9 +14,12 @@ import org.apache.commons.dbutils.handlers.ScalarHandler;
 import org.knowm.yank.exceptions.SQLStatementNotFoundException;
 import org.knowm.yank.exceptions.YankSQLException;
 import org.knowm.yank.handlers.InsertedIDResultSetHandler;
+import org.knowm.yank.handlers.IntegerColumnListHandler;
+import org.knowm.yank.handlers.LongColumnListHandler;
 import org.knowm.yank.processors.YankBeanProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import com.zaxxer.hikari.HikariDataSource;
 
 /**
  * A wrapper for DBUtils' QueryRunner's methods: update, query, and batch. Connections are retrieved
@@ -561,8 +563,14 @@ public class Yank {
     List<T> returnList = null;
 
     try {
-
-      ColumnListHandler<T> resultSetHandler = new ColumnListHandler<T>(columnName);
+      ColumnListHandler<T> resultSetHandler;
+      if (columnType.equals(Integer.class)) {
+        resultSetHandler = (ColumnListHandler<T>) new IntegerColumnListHandler(columnName);
+      } else if (columnType.equals(Integer.class)) {
+        resultSetHandler = (ColumnListHandler<T>) new LongColumnListHandler(columnName);
+      } else {
+        resultSetHandler = new ColumnListHandler<T>(columnName);
+      }
 
       returnList =
           new QueryRunner(YANK_POOL_MANAGER.getConnectionPool(poolName))
