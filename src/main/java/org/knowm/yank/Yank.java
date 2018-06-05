@@ -566,7 +566,7 @@ public class Yank {
       ColumnListHandler<T> resultSetHandler;
       if (columnType.equals(Integer.class)) {
         resultSetHandler = (ColumnListHandler<T>) new IntegerColumnListHandler(columnName);
-      } else if (columnType.equals(Integer.class)) {
+      } else if (columnType.equals(Long.class)) {
         resultSetHandler = (ColumnListHandler<T>) new LongColumnListHandler(columnName);
       } else {
         resultSetHandler = new ColumnListHandler<T>(columnName);
