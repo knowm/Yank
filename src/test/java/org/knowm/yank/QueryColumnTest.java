@@ -2,6 +2,7 @@ package org.knowm.yank;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
+
 import java.util.List;
 import java.util.Properties;
 import org.junit.AfterClass;
