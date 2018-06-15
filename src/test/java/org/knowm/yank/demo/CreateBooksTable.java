@@ -19,7 +19,7 @@ public class CreateBooksTable {
 
     // DB Properties
     Properties dbProps = new Properties();
-    dbProps.setProperty("jdbcUrl", "jdbc:mysql://localhost:3306/Yank");
+    dbProps.setProperty("jdbcUrl", "jdbc:mysql://localhost:3306/Yank?serverTimezone=UTC");
     dbProps.setProperty("username", "root");
     dbProps.setProperty("password", "");
     dbProps.setProperty("maximumPoolSize", "5");
