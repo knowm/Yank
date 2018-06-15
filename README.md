@@ -274,6 +274,7 @@ For snapshots, add the following to your pom.xml file:
 #### Check for updated dependencies
 
     mvn versions:display-dependency-updates
+    mvn versions:display-plugin-updates
 
 #### Formatting
 
