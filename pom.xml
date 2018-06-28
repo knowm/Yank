@@ -47,11 +47,11 @@
 	<ciManagement>
 		<url>https://travis-ci.org/timmolter/Yank</url>
 	</ciManagement>
-	
+
 	<prerequisites>
 		<maven>3.0</maven>
 	</prerequisites>
-	
+
 	<dependencies>
 		<dependency>
 			<groupId>commons-dbutils</groupId>
@@ -66,7 +66,7 @@
 		<dependency>
 			<groupId>com.zaxxer</groupId>
 			<artifactId>HikariCP</artifactId>
-			<version>3.0.0</version>
+			<version>3.2.0</version>
 		</dependency>
 
 		<!-- test -->
@@ -175,7 +175,7 @@
 				<artifactId>maven-javadoc-plugin</artifactId>
 				<version>3.0.1</version>
 				<configuration>
-					<additionalparam>-Xdoclint:none</additionalparam>
+					<doclint>none</doclint>
 				</configuration>
 			</plugin>
 			<plugin>
