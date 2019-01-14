@@ -301,6 +301,6 @@ If you want to integrate Yank into a DropWizard application, head over to [XDrop
 Please report any bugs or submit feature requests to [Yank's Github issue tracker](https://github.com/knowm/Yank/issues).  
 
 ## Continuous Integration
-[![Build Status](https://travis-ci.org/timmolter/Yank.png?branch=develop)](https://travis-ci.org/timmolter/Yank.png)  
-[Build History](https://travis-ci.org/timmolter/Yank/builds)
+[![Build Status](https://travis-ci.org/knowm/Yank.png?branch=develop)](https://travis-ci.org/timmolter/Yank.png)  
+[Build History](https://travis-ci.org/knowm/Yank/builds)
 
