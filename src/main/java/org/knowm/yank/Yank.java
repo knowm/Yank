@@ -1,6 +1,7 @@
 package org.knowm.yank;
 
 import com.zaxxer.hikari.HikariDataSource;
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Properties;
@@ -14,7 +15,17 @@ import org.apache.commons.dbutils.handlers.ColumnListHandler;
 import org.apache.commons.dbutils.handlers.ScalarHandler;
 import org.knowm.yank.exceptions.SQLStatementNotFoundException;
 import org.knowm.yank.exceptions.YankSQLException;
+import org.knowm.yank.handlers.BigDecimalColumnListHandler;
+import org.knowm.yank.handlers.BigDecimalScalarHandler;
+import org.knowm.yank.handlers.DoubleColumnListHandler;
+import org.knowm.yank.handlers.DoubleScalarHandler;
+import org.knowm.yank.handlers.FloatColumnListHandler;
+import org.knowm.yank.handlers.FloatScalarHandler;
 import org.knowm.yank.handlers.InsertedIDResultSetHandler;
+import org.knowm.yank.handlers.IntegerColumnListHandler;
+import org.knowm.yank.handlers.IntegerScalarHandler;
+import org.knowm.yank.handlers.LongColumnListHandler;
+import org.knowm.yank.handlers.LongScalarHandler;
 import org.knowm.yank.processors.YankBeanProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -282,8 +293,20 @@ public class Yank {
     T returnObject = null;
 
     try {
-
-      ScalarHandler<T> resultSetHandler = new ScalarHandler<T>();
+      ScalarHandler<T> resultSetHandler;
+      if (scalarType.equals(Integer.class)) {
+        resultSetHandler = (ScalarHandler<T>) new IntegerScalarHandler();
+      } else if (scalarType.equals(Long.class)) {
+        resultSetHandler = (ScalarHandler<T>) new LongScalarHandler();
+      } else if (scalarType.equals(Float.class)) {
+        resultSetHandler = (ScalarHandler<T>) new FloatScalarHandler();
+      } else if (scalarType.equals(Double.class)) {
+        resultSetHandler = (ScalarHandler<T>) new DoubleScalarHandler();
+      } else if (scalarType.equals(BigDecimal.class)) {
+        resultSetHandler = (ScalarHandler<T>) new BigDecimalScalarHandler();
+      } else {
+        resultSetHandler = new ScalarHandler<T>();
+      }
 
       returnObject =
           new QueryRunner(YANK_POOL_MANAGER.getConnectionPool(poolName))
@@ -561,8 +584,20 @@ public class Yank {
     List<T> returnList = null;
 
     try {
-
-      ColumnListHandler<T> resultSetHandler = new ColumnListHandler<T>(columnName);
+      ColumnListHandler<T> resultSetHandler;
+      if (columnType.equals(Integer.class)) {
+        resultSetHandler = (ColumnListHandler<T>) new IntegerColumnListHandler(columnName);
+      } else if (columnType.equals(Long.class)) {
+        resultSetHandler = (ColumnListHandler<T>) new LongColumnListHandler(columnName);
+      } else if (columnType.equals(Float.class)) {
+        resultSetHandler = (ColumnListHandler<T>) new FloatColumnListHandler(columnName);
+      } else if (columnType.equals(Double.class)) {
+        resultSetHandler = (ColumnListHandler<T>) new DoubleColumnListHandler(columnName);
+      } else if (columnType.equals(BigDecimal.class)) {
+        resultSetHandler = (ColumnListHandler<T>) new BigDecimalColumnListHandler(columnName);
+      } else {
+        resultSetHandler = new ColumnListHandler<T>(columnName);
+      }
 
       returnList =
           new QueryRunner(YANK_POOL_MANAGER.getConnectionPool(poolName))

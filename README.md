@@ -235,7 +235,7 @@ Download Jar: <http://knowm.org/open-source/yank/yank-change-log/>
 
 * commons-dbutils.dbutils-1.7.0
 * org.slf4j.slf4j-api-1.7.25
-* com.zaxxer.HikariCP-3.0.0
+* com.zaxxer.HikariCP-3.2.0
 * a JDBC-compliant Connector jar
 
 ### Maven
@@ -247,7 +247,7 @@ Add the Yank library as a dependency to your pom.xml file:
 <dependency>
     <groupId>org.knowm</groupId>
     <artifactId>yank</artifactId>
-    <version>3.3.2</version>
+    <version>3.3.3</version>
 </dependency>
 ```
 For snapshots, add the following to your pom.xml file:
@@ -261,7 +261,7 @@ For snapshots, add the following to your pom.xml file:
 <dependency>
     <groupId>org.knowm</groupId>
     <artifactId>yank</artifactId>
-    <version>3.3.3-SNAPSHOT</version>
+    <version>3.3.4-SNAPSHOT</version>
 </dependency>
 ```
 ## Building
@@ -274,6 +274,7 @@ For snapshots, add the following to your pom.xml file:
 #### Check for updated dependencies
 
     mvn versions:display-dependency-updates
+    mvn versions:display-plugin-updates
 
 #### Formatting
 
@@ -300,6 +301,6 @@ If you want to integrate Yank into a DropWizard application, head over to [XDrop
 Please report any bugs or submit feature requests to [Yank's Github issue tracker](https://github.com/knowm/Yank/issues).  
 
 ## Continuous Integration
-[![Build Status](https://travis-ci.org/timmolter/Yank.png?branch=develop)](https://travis-ci.org/timmolter/Yank.png)  
-[Build History](https://travis-ci.org/timmolter/Yank/builds)
+[![Build Status](https://travis-ci.org/knowm/Yank.png?branch=develop)](https://travis-ci.org/timmolter/Yank.png)  
+[Build History](https://travis-ci.org/knowm/Yank/builds)
 

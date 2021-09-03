@@ -1,0 +1,27 @@
+language: java
+sudo: false
+
+before_install: "git clone -b travis `git config --get remote.origin.url` target/travis"
+install: true
+script: "
+if [ ${TRAVIS_PULL_REQUEST} = 'false' ];
+then 
+    mvn clean deploy --settings target/travis/settings.xml; 
+else 
+    mvn clean verify --settings target/travis/settings.xml;
+fi"
+
+dist: trusty
+
+jdk:
+  - oraclejdk8
+
+# whitelist
+branches:
+  only:
+    - develop
+
+env:
+  global:
+    - secure: "Q/psV9NDZnhCbavTrHAkcl3FTVQikOxcPL5M9juTu0+37hK7SB01iQPy5dzcdkRPbkQx5T9MKRToVcwSFkY09tQiDzSOpnFOlsREgtR40lErU/8Yxw5iCY3LLxkIUEP2YpgzsdFu5hqgXkK63Swowh4VmNh3fCnwf9oj8Att2Ck="
+    - secure: "Xu+mVXYylMklhdZjYacN6d0PV/ATsNQZDRXRXoVCVk+VNicLL9hKhO2Knb9PJZZDtOEfE3yWxu9e+nnBjEi5yrPnNutMDGCC9EdE0V6s6GuZnPk1CowLmuP1Tqy9Qe/U9+dsEo1cRSQhGlNy6rjTYyd9MT74eRB7Uk2zi+jjMHw="

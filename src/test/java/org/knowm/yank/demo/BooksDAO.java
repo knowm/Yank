@@ -136,10 +136,10 @@ public class BooksDAO {
    *   <li>querying for a Scalar value the row count of a table
    * </ul>
    */
-  public static long getNumBooks() {
+  public static int getNumBooks() {
 
     String SQL = "SELECT COUNT(*) FROM BOOKS";
-    return Yank.queryScalar(SQL, Long.class, null);
+    return Yank.queryScalar(SQL, Integer.class, null);
   }
 
   /**
