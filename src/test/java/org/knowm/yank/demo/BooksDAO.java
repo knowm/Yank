@@ -6,7 +6,7 @@ import org.knowm.yank.Yank;
 /**
  * DAO (Data Access Object) Class for BOOKS table. <br>
  * This is where you create your own methods for SQL interaction with a database table.<br>
- * Each table in your database should have it's own DAO Class.<br>
+ * Each table in your database should have its own DAO Class.<br>
  *
  * @author timmolter
  */
