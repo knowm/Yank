@@ -17,6 +17,10 @@ The following list of authors was automatically generated from the Yank project'
     git log --format='%aN' | sort -u
 
 Ezra Epstein
+Jonathan Leitschuh
 Nelson Gomes
 Tim Molter
+dependabot-preview[bot]
+dependabot[bot]
 timmolter
+
