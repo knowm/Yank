@@ -12,7 +12,9 @@ import org.junit.Test;
 import org.knowm.yank.demo.Book;
 import org.knowm.yank.exceptions.YankSQLException;
 
-/** @author timmolter */
+/**
+ * @author timmolter
+ */
 public class YankSQLExceptionTest {
 
   @BeforeClass

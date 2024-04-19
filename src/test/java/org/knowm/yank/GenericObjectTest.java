@@ -12,7 +12,9 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.knowm.yank.demo.Book;
 
-/** @author timmolter */
+/**
+ * @author timmolter
+ */
 public class GenericObjectTest {
 
   @BeforeClass

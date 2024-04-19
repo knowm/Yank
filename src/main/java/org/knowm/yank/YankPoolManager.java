@@ -145,7 +145,9 @@ public final class YankPoolManager {
     this.mergedSqlProperties.putAll(sqlProperties);
   }
 
-  /** @return the mergedSqlProperties */
+  /**
+   * @return the mergedSqlProperties
+   */
   protected Properties getMergedSqlProperties() {
 
     return mergedSqlProperties;

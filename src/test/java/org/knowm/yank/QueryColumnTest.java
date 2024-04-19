@@ -10,7 +10,9 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.knowm.yank.annotations.Column;
 
-/** @author timmolter */
+/**
+ * @author timmolter
+ */
 public class QueryColumnTest {
 
   @BeforeClass

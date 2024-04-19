@@ -8,7 +8,9 @@ import java.util.Properties;
 import org.junit.Test;
 import org.knowm.yank.exceptions.PropertiesFileNotFoundException;
 
-/** @author timmolter */
+/**
+ * @author timmolter
+ */
 public class PropertiesUtilsTest {
 
   @Test

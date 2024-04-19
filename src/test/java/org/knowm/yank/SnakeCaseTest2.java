@@ -9,7 +9,9 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-/** @author timmolter */
+/**
+ * @author timmolter
+ */
 public class SnakeCaseTest2 {
 
   @BeforeClass
@@ -50,12 +52,16 @@ public class SnakeCaseTest2 {
 
     private long spotfix_id;
 
-    /** @return the spotfix_id */
+    /**
+     * @return the spotfix_id
+     */
     public long getSpotfix_id() {
       return spotfix_id;
     }
 
-    /** @param spotfix_id the spotfix_id to set */
+    /**
+     * @param spotfix_id the spotfix_id to set
+     */
     public void setSpotfix_id(long spotfix_id) {
       this.spotfix_id = spotfix_id;
     }
