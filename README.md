@@ -278,7 +278,7 @@ For snapshots, add the following to your pom.xml file:
 
 #### Formatting
 
-    mvn com.coveo:fmt-maven-plugin:format
+    mvn com.spotify.fmt:fmt-maven-plugin:format
     
 Formats your code using [google-java-format](https://github.com/google/google-java-format) which follows [Google's code styleguide](https://google.github.io/styleguide/javaguide.html).
 
