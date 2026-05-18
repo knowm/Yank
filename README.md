@@ -261,7 +261,7 @@ For snapshots, add the following to your pom.xml file:
 <dependency>
     <groupId>org.knowm</groupId>
     <artifactId>yank</artifactId>
-    <version>3.5.1-SNAPSHOT</version>
+    <version>3.6.0-SNAPSHOT</version>
 </dependency>
 ```
 ## Building
