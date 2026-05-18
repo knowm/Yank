@@ -148,7 +148,25 @@ Object[] params = new Object[] { book.getTitle(), book.getAuthorName(), book.get
 String SQL = "INSERT INTO BOOKS (TITLE, AUTHOR, PRICE) VALUES (?, ?, ?)";
 Long id = Yank.insert(SQL, params);
 ```
-With a special `Yank.insert(...)` method, Yank will return the assigned auto-increment primary key ID. Note that you can alternatively use the `Yank.execute(...)` method for inserts, which returns the number of affected rows.
+With a special `Yank.insert(...)` method, Yank will return the assigned auto-increment primary key ID as a `Long`. Note that you can alternatively use the `Yank.execute(...)` method for inserts, which returns the number of affected rows.
+
+## Insert and Receive the Assigned ID (Generic Form)
+```java
+Object[] params = new Object[] { book.getTitle(), book.getAuthorName(), book.getPrice() };
+String SQL = "INSERT INTO BOOKS (TITLE, AUTHOR, PRICE) VALUES (?, ?, ?)";
+
+// MySQL / PostgreSQL — driver returns Long
+Long id = Yank.insert(SQL, params, Long.class);
+
+// SQLite (xerial sqlite-jdbc) — driver returns Integer for row IDs that fit in 32 bits
+Integer id = Yank.insert(SQL, params, Integer.class);
+
+// Safe for any driver — use Number and call longValue()
+Number id = Yank.insert(SQL, params, Number.class);
+long idLong = id.longValue();
+```
+Some JDBC drivers return a type other than `Long` from `getGeneratedKeys()`. SQLite (xerial sqlite-jdbc) returns `Integer` for row IDs that fit in 32 bits. Passing `Long.class` with SQLite will throw a `ClassCastException`. Use the generic `Yank.insert(SQL, params, Class<T> idType)` overload to specify the exact type your driver returns, or use `Number.class` as a driver-agnostic alternative. The same overloads are available on `Yank.insertSQLKey(...)`.
+
 
 ## Retrieve a Column as a List
 ```java

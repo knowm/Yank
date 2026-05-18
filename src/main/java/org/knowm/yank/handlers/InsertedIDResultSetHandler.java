@@ -9,7 +9,10 @@ import org.apache.commons.dbutils.ResultSetHandler;
  * generated from inserting a row.
  *
  * @author timmolter
+ * @deprecated Use {@link org.apache.commons.dbutils.handlers.ScalarHandler} directly, or rely on
+ *     the {@code Yank.insert} methods which handle type conversion automatically.
  */
+@Deprecated
 public class InsertedIDResultSetHandler implements ResultSetHandler<Long> {
 
   public Long handle(ResultSet rs) throws SQLException {

@@ -1,13 +1,12 @@
 package org.knowm.yank;
 
-import com.zaxxer.hikari.HikariDataSource;
 import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Properties;
+
 import org.apache.commons.dbutils.BasicRowProcessor;
 import org.apache.commons.dbutils.QueryRunner;
-import org.apache.commons.dbutils.ResultSetHandler;
 import org.apache.commons.dbutils.handlers.ArrayListHandler;
 import org.apache.commons.dbutils.handlers.BeanHandler;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
@@ -21,7 +20,6 @@ import org.knowm.yank.handlers.DoubleColumnListHandler;
 import org.knowm.yank.handlers.DoubleScalarHandler;
 import org.knowm.yank.handlers.FloatColumnListHandler;
 import org.knowm.yank.handlers.FloatScalarHandler;
-import org.knowm.yank.handlers.InsertedIDResultSetHandler;
 import org.knowm.yank.handlers.IntegerColumnListHandler;
 import org.knowm.yank.handlers.IntegerScalarHandler;
 import org.knowm.yank.handlers.LongColumnListHandler;
@@ -29,6 +27,8 @@ import org.knowm.yank.handlers.LongScalarHandler;
 import org.knowm.yank.processors.YankBeanProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.zaxxer.hikari.HikariDataSource;
 
 /**
  * A wrapper for DBUtils' QueryRunner's methods: update, query, and batch. Connections are retrieved
@@ -51,84 +51,103 @@ public class Yank {
   // ////// INSERT
   // //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  /**
-   * Executes a given INSERT SQL prepared statement matching the sqlKey String in a properties file
-   * loaded via Yank.addSQLStatements(...) using the default connection pool. Returns the
-   * auto-increment id of the inserted row.
-   *
-   * @param sqlKey The SQL Key found in a properties file corresponding to the desired SQL statement
-   *     value
-   * @param params The replacement parameters
-   * @return the auto-increment id of the inserted row, or null if no id is available
-   * @throws SQLStatementNotFoundException if an SQL statement could not be found for the given
-   *     sqlKey String
-   */
+  /** @see #insertSQLKey(String, String, Object[]) */
   public static Long insertSQLKey(String sqlKey, Object[] params)
       throws SQLStatementNotFoundException, YankSQLException {
-
     return insertSQLKey(YankPoolManager.DEFAULT_POOL_NAME, sqlKey, params);
   }
 
   /**
-   * Executes a given INSERT SQL prepared statement matching the sqlKey String in a properties file
-   * loaded via Yank.addSQLStatements(...). Returns the auto-increment id of the inserted row.
+   * Executes an INSERT for the SQL key from the loaded properties. Returns the auto-increment id as
+   * a {@code Long} (safe for MySQL, PostgreSQL, etc.).
    *
-   * @param poolName The name of the connection pool to query against
-   * @param sqlKey The SQL Key found in a properties file corresponding to the desired SQL statement
-   *     value
+   * @param poolName The connection pool name
+   * @param sqlKey The SQL key in the properties file
    * @param params The replacement parameters
-   * @return the auto-increment id of the inserted row, or null if no id is available
-   * @throws SQLStatementNotFoundException if an SQL statement could not be found for the given
-   *     sqlKey String
+   * @return the auto-increment id, or 0 if none available
    */
   public static Long insertSQLKey(String poolName, String sqlKey, Object[] params)
       throws SQLStatementNotFoundException, YankSQLException {
+    Number id = insertSQLKey(poolName, sqlKey, params, Number.class);
+    return id == null ? 0L : id.longValue();
+  }
 
-    String sql = YANK_POOL_MANAGER.getMergedSqlProperties().getProperty(sqlKey);
-    if (sql == null || sql.equalsIgnoreCase("")) {
-      throw new SQLStatementNotFoundException();
-    } else {
-      return insert(poolName, sql, params);
-    }
+  /** @see #insertSQLKey(String, String, Object[], Class) */
+  public static <T> T insertSQLKey(String sqlKey, Object[] params, Class<T> idType)
+      throws SQLStatementNotFoundException, YankSQLException {
+    return insertSQLKey(YankPoolManager.DEFAULT_POOL_NAME, sqlKey, params, idType);
   }
 
   /**
-   * Executes a given INSERT SQL prepared statement. Returns the auto-increment id of the inserted
-   * row using the default connection pool. Note: This only works when the auto-increment table
-   * column is in the first column in the table!
+   * Executes an INSERT for the SQL key from the loaded properties. Returns the auto-increment id
+   * cast to {@code idType} — use when the JDBC driver returns a type other than {@code Long} (e.g.
+   * SQLite returns {@code Integer}).
    *
-   * @param sql The query to execute
+   * @param <T> the expected id type (e.g. {@code Long.class}, {@code Integer.class})
+   * @param poolName The connection pool name
+   * @param sqlKey The SQL key in the properties file
    * @param params The replacement parameters
-   * @return the auto-increment id of the inserted row, or null if no id is available
+   * @param idType The class of the expected id type
+   * @return the auto-increment id, or null if none available
    */
-  public static Long insert(String sql, Object[] params) throws YankSQLException {
+  public static <T> T insertSQLKey(String poolName, String sqlKey, Object[] params, Class<T> idType)
+      throws SQLStatementNotFoundException, YankSQLException {
+    String sql = YANK_POOL_MANAGER.getMergedSqlProperties().getProperty(sqlKey);
+    if (sql == null || sql.equalsIgnoreCase("")) {
+      throw new SQLStatementNotFoundException();
+    }
+    return insert(poolName, sql, params, idType);
+  }
 
+  /** @see #insert(String, String, Object[]) */
+  public static Long insert(String sql, Object[] params) throws YankSQLException {
     return insert(YankPoolManager.DEFAULT_POOL_NAME, sql, params);
   }
 
   /**
-   * Executes a given INSERT SQL prepared statement. Returns the auto-increment id of the inserted
-   * row. Note: This only works when the auto-increment table column is in the first column in the
-   * table!
+   * Executes an INSERT statement. Returns the auto-increment id as a {@code Long} (safe for MySQL,
+   * PostgreSQL, etc.).
    *
-   * @param poolName The name of the connection pool to query against
-   * @param sql The query to execute
+   * @param poolName The connection pool name
+   * @param sql The INSERT statement
    * @param params The replacement parameters
-   * @return the auto-increment id of the inserted row, or null if no id is available
+   * @return the auto-increment id, or 0 if none available
    */
   public static Long insert(String poolName, String sql, Object[] params) throws YankSQLException {
+    Number id = insert(poolName, sql, params, Number.class);
+    return id == null ? 0L : id.longValue();
+  }
 
-    Long returnLong = null;
+  /** @see #insert(String, String, Object[], Class) */
+  public static <T> T insert(String sql, Object[] params, Class<T> idType) throws YankSQLException {
+    return insert(YankPoolManager.DEFAULT_POOL_NAME, sql, params, idType);
+  }
 
+  /**
+   * Executes an INSERT statement. Returns the auto-increment id cast to {@code idType} — use when
+   * the JDBC driver returns a type other than {@code Long} (e.g. SQLite returns {@code Integer}).
+   *
+   * @param <T> the expected id type (e.g. {@code Long.class}, {@code Integer.class})
+   * @param poolName The connection pool name
+   * @param sql The INSERT statement
+   * @param params The replacement parameters
+   * @param idType The class of the expected id type
+   * @return the auto-increment id, or null if none available
+   */
+  public static <T> T insert(String poolName, String sql, Object[] params, Class<T> idType)
+      throws YankSQLException {
+    T returnVal = null;
     try {
-      ResultSetHandler<Long> rsh = new InsertedIDResultSetHandler();
-      returnLong =
-          new QueryRunner(YANK_POOL_MANAGER.getConnectionPool(poolName)).insert(sql, rsh, params);
+      Object raw =
+          new QueryRunner(YANK_POOL_MANAGER.getConnectionPool(poolName))
+              .insert(sql, new ScalarHandler<>(), params);
+      if (raw != null) {
+        returnVal = idType.cast(raw);
+      }
     } catch (SQLException e) {
       handleSQLException(e, poolName, sql);
     }
-
-    return returnLong == null ? 0 : returnLong;
+    return returnVal;
   }
 
   // ////// INSERT, UPDATE, DELETE, or UPSERT
