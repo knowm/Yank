@@ -56,7 +56,7 @@
 		<dependency>
 			<groupId>com.zaxxer</groupId>
 			<artifactId>HikariCP</artifactId>
-			<version>6.3.0</version>
+			<version>7.0.2</version>
 		</dependency>
 
 		<!-- test -->
